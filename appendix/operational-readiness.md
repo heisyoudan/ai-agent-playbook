@@ -1,118 +1,114 @@
-# 付録D — 実運用・ガバナンスチェックリスト
+# Appendix D — Operational Readiness and Governance
 
-[English](operational-readiness.en.md) · [简体中文](operational-readiness.zh-CN.md)
+[日本語](operational-readiness.ja.md) · **English** · [简体中文](operational-readiness.zh-CN.md)
 
-タスク設計が優れていても、権限、データ、責任、評価方法が曖昧なら、本番運用は安定しない。ここでは、Playbookの原則を個人利用からチーム・組織運用へ広げるための最小条件を整理する。
+Good task design is not enough for production. Permissions, data handling, accountability, evaluation, and stop conditions must also be explicit. This checklist extends the playbook from individual practice to team and organizational use.
 
 ---
 
-## 1. リスクを先に分類する
+## 1. Classify Risk First
 
-すべてのタスクを同じ自由度でAgentに渡さない。
-
-| リスク | 例 | 基本方針 |
+| Risk | Examples | Default treatment |
 |---|---|---|
-| **低** | 説明文、下書き、局所的なリファクタリング | 自動実行可。差分と自動検証を確認する |
-| **中** | 依存関係変更、DBマイグレーション、ユーザー向け挙動 | 実行前後に人間が確認する。ロールバック手段を用意する |
-| **高** | 認証・認可、決済、個人情報、法規制、商用リリース | 人間が設計と最終判断を担う。独立レビューと証跡を必須にする |
-| **禁止** | 承認なしの本番削除、秘密情報の外部送信、不可逆な対外操作 | Agentに権限を与えない |
+| **Low** | Drafts, explanations, local refactoring | May run automatically; review the delta and automated checks |
+| **Medium** | Dependency changes, database migrations, user-visible behavior | Human review before and after execution; prepare rollback |
+| **High** | Authentication, payments, personal data, regulation, production release | Human owns design and final decision; require independent review and evidence |
+| **Prohibited** | Unapproved production deletion, secret exfiltration, irreversible external action | Do not grant the capability |
 
-リスク分類はモデルの能力ではなく、失敗時の影響と可逆性で決める。
+Classify by impact and reversibility, not by confidence in the model.
 
-## 2. データと権限を最小化する
+## 2. Minimize Data and Permissions
 
-- 必要なファイルとデータだけを渡す
-- 秘密情報、個人情報、顧客データをプロンプトやログへ直接貼らない
-- 読み取り、書き込み、外部通信、本番操作を別々の権限として扱う
-- 一時的な認証情報を使い、用途と有効期限を限定する
-- 利用するモデル、サービス、プラグインの保存・学習・転送条件を確認する
+- Provide only the files and data required for the task.
+- Do not paste secrets, personal information, or customer data into prompts or logs.
+- Treat read, write, network, and production access as separate permissions.
+- Use short-lived credentials restricted by scope and expiration.
+- Check retention, training, and transfer terms for every model, service, and plugin.
 
-**原則**: Agentが便利に動ける最大権限ではなく、今回のタスクを完了できる最小権限を与える。
+Give the minimum authority needed to finish the current task, not the maximum authority that makes the agent convenient.
 
-## 3. 人間の承認点を決める
+## 3. Define Human Approval Points
 
-次の操作は、実行前に明示的な承認を要求する。
+Require explicit approval before:
 
-- 本番環境への変更
-- データの削除・上書き・移行
-- 課金、送金、発注、公開、メール送信などの外部作用
-- 認証、認可、暗号、決済ロジックの変更
-- 新しい外部依存、サービス、プラグインの導入
-- 法務、プライバシー、コンプライアンス判断
+- production changes;
+- deletion, overwrite, or migration of data;
+- payments, purchases, publication, messages, or other external side effects;
+- changes to authentication, authorization, cryptography, or payment logic;
+- adding an external dependency, service, or plugin;
+- legal, privacy, or compliance decisions.
 
-承認者は「Agentがそう判断した」ことではなく、差分、影響、検証結果、復旧手順を確認する。
+The approver reviews the delta, impact, verification evidence, and recovery plan—not merely the agent’s confidence.
 
-## 4. 成果を測る
+## 4. Measure Outcomes
 
-生成行数や完了タスク数だけでは、改善を判断できない。
-
-| 観点 | 指標例 |
+| Dimension | Example metrics |
 |---|---|
-| **速度** | 着手から検収までの時間、レビュー待ち時間 |
-| **品質** | 手戻り率、漏出不具合、再オープン率、越境変更数 |
-| **検収** | 人間のレビュー時間、自動検証率、証拠不足率 |
-| **経済性** | 1タスクあたりのモデル費用、再試行回数、計算時間 |
-| **運用性** | 人間介入率、例外率、ロールバック率、復旧時間 |
+| **Speed** | Lead time to acceptance, review wait time |
+| **Quality** | Rework rate, escaped defects, reopen rate, out-of-scope changes |
+| **Verification** | Human review time, automated-check coverage, missing-evidence rate |
+| **Economics** | Model cost per accepted task, retries, compute time |
+| **Operations** | Human intervention rate, exception rate, rollback rate, recovery time |
 
-導入前の基準値を取り、小さな対象で比較する。速度が上がっても手戻りや事故が増えたなら、成功とは言えない。
+Capture a baseline before rollout and compare on a limited task type. Faster output with more rework or incidents is not a success.
 
-## 5. 作業状態と証跡を分離する
+## 5. Separate Working State from Evidence
 
-Agentの判断に必要な作業用コンテキストは短く保つ。一方、次の情報はタスクやリリースに紐づけて保持する。
+Keep the context used by an agent compact. Retain the following separately when required for release, audit, or incident response:
 
-- 入力となった要件と承認済みの決定
-- 変更差分と対象バージョン
-- 実行したテスト、環境、日時、結果
-- Gateの判定と承認者
-- 例外、差し戻し、ロールバックの理由
-- 利用したモデルやツールの識別情報（必要な範囲）
+- approved requirements and decisions;
+- changed files and target version;
+- tests, environment, timestamp, and results;
+- gate decisions and approvers;
+- exception, rejection, and rollback reasons;
+- model and tool identifiers where relevant.
 
-「最新状態だけを参照する」ことと「過去の証跡を消す」ことは別である。
+Reading only the latest state does not mean deleting historical evidence.
 
-## 6. 停止・縮退・復旧条件を定義する
+## 6. Define Stop, Degrade, and Recovery Conditions
 
-以下のいずれかが起きたら、自動実行を停止して人間へ戻す。
+Stop autonomous execution and return control to a human when:
 
-- 同じ失敗を繰り返し、原因仮説が更新されない
-- 事前に定めた時間、費用、再試行回数を超える
-- 対象範囲外のファイルや外部システムへ変更が広がる
-- テスト結果、仕様、実行ログの間に矛盾がある
-- 秘密情報、個人情報、セキュリティ上の懸念を検知する
-- ロールバック手段が確認できない
+- the same failure repeats without a new hypothesis;
+- time, cost, or retry limits are exceeded;
+- changes expand outside the approved scope;
+- specifications, tests, and runtime evidence disagree;
+- a privacy, secret, or security concern appears;
+- rollback cannot be confirmed.
 
-停止後は、背景、現在地、証拠、試行済み内容、未完了項目を構造化して引き継ぐ。
+At stop time, hand off a structured report containing background, current state, evidence, attempted approaches, and unfinished work.
 
-## 7. 小さく導入する
+## 7. Roll Out Gradually
 
 ```text
-対象を1種類の低リスクタスクに限定
+Choose one low-risk task type
   ↓
-ベースラインと成功条件を記録
+Record baseline and success criteria
   ↓
-2〜4週間の試行
+Run a two-to-four-week pilot
   ↓
-品質・速度・費用・例外をレビュー
+Review quality, speed, cost, and exceptions
   ↓
-Gateと権限を調整
+Adjust gates and permissions
   ↓
-次のタスク種別へ拡張
+Expand to the next task type
 ```
 
-最初から全工程を自動化しない。例外の種類と検収コストが見えるまで、範囲を限定する。
+Do not automate the whole lifecycle first. Limit scope until exception patterns and verification cost are understood.
 
-## 導入前チェック
+## Pre-Launch Checklist
 
 ```text
-□ タスクのリスク区分と責任者が明確か
-□ Agentの権限は必要最小限か
-□ 秘密情報・個人情報の扱いが定義されているか
-□ 人間の事前承認が必要な操作を列挙したか
-□ 検収基準とロールバック手順があるか
-□ 速度・品質・費用の基準値を取ったか
-□ 作業状態と監査証跡の保管先を分けたか
-□ 停止条件とエスカレーション先が決まっているか
+□ Risk class and accountable owner are defined
+□ Agent permissions follow least privilege
+□ Secret and personal-data handling is defined
+□ Operations requiring prior approval are listed
+□ Acceptance criteria and rollback procedure exist
+□ Speed, quality, and cost baselines are recorded
+□ Working state and retained evidence use separate stores
+□ Stop conditions and escalation owners are defined
 ```
 
 ---
 
-[付録A → よくある失敗パターン](anti-patterns.md) · [付録B → AI 出力の検収戦略](verification-strategies.md) · [← README に戻る](../README.ja.md)
+[English README](../README.md) · [Japanese appendix](operational-readiness.ja.md) · [Chinese appendix](operational-readiness.zh-CN.md)

@@ -1,74 +1,50 @@
-# 01 — AIが仕事の構造を変えた
+# 01 — AI Has Redefined the Structure of Work
 
-## コード力の価値は下がり続けている
+[日本語](README.ja.md) · **English** · [简体中文](README.zh-CN.md)
 
-この2年間、私はAIを高い密度で実務に取り入れてきた。さまざまなAIエージェントや支援ツールを試し、開発のほぼあらゆる場面で活用してきた。
+## The Scarcity of Writing Code Is Declining
 
-率直に言えば、現在の自分の生産性はAIによって大きく押し上げられている。自分ひとりの力で進めているというより、仕事を適切な形に整理し、AIに渡し、成果を統合する役割を担っている感覚に近い。
+Over the past two years, I have used AI intensively across professional and personal development. It now supports implementation, investigation, testing, review, and learning across unfamiliar technologies.
 
-AIは、IDE、言語、技術スタックの壁を大きく下げた。以前なら学習コストの高さゆえに手を出しにくかった分野でも、今はAIの支援を受けながら実装や検証を進められるようになっている。
+My productivity no longer comes only from what I can produce alone. Increasingly, my role is to shape work, provide the right context, direct AI, evaluate the result, and integrate it into a larger system.
 
-2年前、ChatGPTが登場したばかりのころは、スネークゲームを書けるだけでも十分に衝撃的だった。当時の私はJavaを学び始めたばかりで、文法やフレームワークを理解することに精一杯だった。
+AI has lowered the barriers between IDEs, languages, and technology stacks. Areas that once required a long period of isolated study can now be approached through a combination of guided learning and practical execution.
 
-それが今では、個人開発でも業務開発でもAIを前提に進めることが当たり前になりつつある。AIの能力がどこまで届くのか、その上限を見積もること自体が難しくなってきた。
+## Letting Go of “Learn to Code the Hard Way” as the Main Strategy
 
----
+I no longer treat the difficult accumulation of language syntax and framework knowledge as the primary way to build an advantage.
 
-## 「苦労してコード力を磨く」という戦略を手放した
+**The scarcity of routine coding ability is falling quickly.**
 
-私はすでに、「プログラミング言語を苦労して習得し、その蓄積によって優位性を築く」という戦略を中心には置いていない。
+AI can already generate much of the code humans routinely write, often faster and with a wider set of candidate approaches. This does not make engineering skill irrelevant. It changes where that skill creates the most value: judgment, decomposition, architecture, debugging, verification, and responsibility.
 
-理由は明確だ。
+For engineers who mainly combine existing technologies to deliver products, relying on hand-written code as the only durable advantage is increasingly fragile.
 
-**純粋なコーディング能力は、急速に希少性を失いつつある。**
+## What Is Happening in Real Projects
 
-人間が書けるコードの多くは、今やAIも生成できる。しかも速く、場合によってはより広い観点で候補を提示してくれる。人間の稼働時間には限界があるが、AIは継続的に働き続けられる。
+The same change is visible in large systems that require reliability and coordination. Humans use AI to clarify technical direction and prepare designs. AI then participates in coding, unit testing, integration testing, investigation, and review support.
 
-技術を生み出す研究者や基盤開発者ではなく、既存技術を組み合わせて価値を届ける立場のエンジニアであれば、なおさらこの変化を直視する必要がある。自分のコード力だけが揺るがない価値だと考えているなら、AIを使った開発の現場をまだ十分に経験していない可能性が高い。
+The human role moves toward defining instructions, evaluating artifacts, managing risk, and making final decisions. AI also makes it possible to understand unfamiliar parts of a system faster, shortening the path from learning to useful contribution.
 
-少なくとも私の実感では、**一般的な開発タスクの多くにおいて、AIはすでに多くの開発者にとって非常に強力な支援者になっている。**
+## AI as a Teacher
 
----
+In Japanese, people sometimes call ChatGPT “ChatGPT-sensei.” The phrase captures something important: AI can be a tutor, a discussion partner, and a practical guide.
 
-## 実務の現場で起きていること
+It can draw on patterns found across open-source code, technical writing, design patterns, incident reports, common failures, and established solutions. Knowledge that once depended heavily on access to an experienced colleague can now be surfaced as a starting point.
 
-私が関わっているのは、高い信頼性と大規模な協業が求められる業務システム開発だ。こうした現場でも、すでにAIへの依存度は着実に高まっている。
+But a starting point is not a guarantee. AI can produce convincing errors, outdated specifications, and nonexistent APIs. Calling AI a teacher does not remove the need to verify claims against primary sources and runtime evidence. Security, payments, and regulated decisions still require human ownership.
 
-人間はAIの助けを借りながら技術方針を整理し、設計書をまとめる。その後の工程でも、コーディング、ユニットテスト、結合テスト、調査、レビュー支援といった領域に、AIが深く入り込んできている。人間の役割は、指示を設計し、成果物を評価し、最終判断を下す方向へと移りつつある。
+## What Remains Valuable?
 
-私自身も、この環境の中でAIを活用しながらシステム全体の構造を理解し、未経験だった技術領域を短期間で把握してきた。以前なら長い学習期間が必要だった内容にも、今は実務の中で到達できるようになっている。
+This is the starting question for the playbook.
 
----
+When routine code becomes easier to generate and experience is less exclusive, what continues to make an engineer valuable?
 
-## AIは「先生」である
-
-日本語圏では、ChatGPTを「ChatGPT先生」と呼ぶ人がいる。私はこの表現が非常に本質的だと感じている。
-
-なぜなら、AIは単なる補助ツールにとどまらず、学習相手であり、相談相手であり、実務上の壁打ち相手にもなっているからだ。
-
-**AIは、この世界に公開されている膨大な技術知識に触れ、そのパターンを横断的に扱える。**
-
-オープンソースのコード、技術記事、設計パターン、トラブル事例、よくある失敗、定番の改善策。そうした知識の蓄積を背景に、AIは実装案を出し、問題点を指摘し、代替案を示してくれる。
-
-多くのエンジニアが長い時間をかけて身につけてきた知見の一部を、AIは最初から候補として提示できる。その意味で、従来の「経験を積んだ人だけが知っている」という構造は、確実に崩れ始めている。
-
-だからこそ、**コーディング能力そのものや、失敗経験の蓄積だけに価値を依存する考え方は、これからますます通用しにくくなる。**
-
-ただし、AIが提示するのはあくまで候補であり、正しさの保証ではない。もっともらしい誤り、古い仕様、存在しないAPIを含むこともある。AIを「先生」と呼ぶことはできても、一次情報や実行結果による検証を省略してよいという意味ではない。特にセキュリティ、決済、法規制に関わる判断では、根拠の確認と人間の最終責任が不可欠である。
+The following chapters argue that the answer lies in task design, context control, explicit constraints, verification, and the ability to turn collaboration into a reliable workflow.
 
 ---
 
-## では、何が残るのか
+> **Practice note**
+> These observations come from sustained use in both production work and personal development. They are not a prediction that fundamentals disappear; they describe a shift in where those fundamentals deliver leverage.
 
-ここが、このPlaybookの出発点である。
-
-コード力の希少性が薄れ、経験の独占も崩れていく時代に、エンジニアとして本当に価値を持ち続けるものは何か。
-
-私は、その答えを次章以降で整理していきたい。
-
----
-
-> **実践ノート**  
-> ここに書いた認識は、AIを日常的に業務へ組み込み、試行錯誤を重ねる中で得た実感に基づいている。机上の理論ではなく、継続的な実務と個人開発の両方から見えてきた変化である。
-
-[次章 → タスク粒度がすべてを決める](../02-task-granularity/README.md)
+[Next → Task Granularity Determines Everything](../02-task-granularity/README.md)

@@ -1,10 +1,8 @@
-# AI Agent Playbook — 中文概览
+# AI Agent Playbook — 中文版
 
 [日本語](README.ja.md) · [English](README.md) · **简体中文**
 
 > 一套面向 AI Agent 协作的实用方法论，来自两年大型支付系统生产实践。
-
-> 本文件是中文概览。各详细章节目前仍为日文；“生产就绪与治理”附录已提供中文版。
 
 ---
 
@@ -15,6 +13,12 @@
 真正可持续的优势来自对工作本身的设计：选择合适的任务粒度、隔离上下文、明确约束、验证产出，并把一次成功的协作固化成可重复执行的流程。
 
 本 Playbook 将这些实践整理为一套不依赖具体平台的方法论。
+
+## 它解决什么问题
+
+AI Agent 经常因为可预测的原因失败：任务过大、上下文噪声过多、责任不清、验收标准薄弱，以及交接状态缺失。
+
+这些并不是孤立的模型故障，而是工作流故障。本 Playbook 提供一套可重复的方法，在问题发展为范围漂移、返工或无法验证的输出之前对其进行控制。
 
 ## 适合谁
 
@@ -37,22 +41,22 @@ AI 只是执行层。
 
 | 章节 | 主题 | 核心观点 |
 |---|---|---|
-| [01](01-ai-redefines-work/README.md) | AI 重新定义工作（日文） | AI 改变工程价值与瓶颈所在的位置。 |
-| [02](02-task-granularity/README.md) | 任务粒度（日文） | 任务既要小到能独立完成，又要大到能闭合一个有价值的循环。 |
-| [03](03-prompt-philosophy/README.md) | “复杂的极简”（日文） | 最大化相关信息，最小化噪声。 |
-| [04](04-context-isolation/README.md) | 上下文隔离（日文） | 一个会话只承担一个职责，用结构化交接连接会话。 |
-| [05](05-agent-management/README.md) | 多 Agent 管理（日文） | 定义角色、约束、汇报、验收、失败处理和交接。 |
-| [06](06-workflow-as-product/README.md) | 把工作流当作产品（日文） | 固化可重复步骤、质量门、回滚和单一事实来源。 |
-| [07](07-what-really-matters/README.md) | 真正重要的竞争力（日文） | 长期优势是系统设计能力，而不是绑定某个工具。 |
+| [01](01-ai-redefines-work/README.zh-CN.md) | AI 重新定义工作 | AI 改变工程价值与瓶颈所在的位置。 |
+| [02](02-task-granularity/README.zh-CN.md) | 任务粒度 | 任务既要小到能独立完成，又要大到能闭合一个有价值的循环。 |
+| [03](03-prompt-philosophy/README.zh-CN.md) | “复杂的极简” | 最大化相关信息，最小化噪声。 |
+| [04](04-context-isolation/README.zh-CN.md) | 上下文隔离 | 一个会话只承担一个职责，用结构化交接连接会话。 |
+| [05](05-agent-management/README.zh-CN.md) | 多 Agent 管理 | 定义角色、约束、汇报、验收、失败处理和交接。 |
+| [06](06-workflow-as-product/README.zh-CN.md) | 把工作流当作产品 | 固化可重复步骤、质量门、回滚和单一事实来源。 |
+| [07](07-what-really-matters/README.zh-CN.md) | 真正重要的竞争力 | 长期优势是系统设计能力，而不是绑定某个工具。 |
 
 ### 附录
 
 | 附录 | 主题 |
 |---|---|
-| [A](appendix/anti-patterns.md) | 常见失败模式（日文） |
-| [B](appendix/verification-strategies.md) | AI 产出验收策略（日文） |
-| [C](appendix/cheatsheet.md) | 速查表（日文） |
-| [D](appendix/operational-readiness.zh-CN.md) | 生产就绪与治理检查表（中文） |
+| [A](appendix/anti-patterns.zh-CN.md) | 常见失败模式 |
+| [B](appendix/verification-strategies.zh-CN.md) | AI 产出验收策略 |
+| [C](appendix/cheatsheet.zh-CN.md) | 速查表 |
+| [D](appendix/operational-readiness.zh-CN.md) | 生产就绪与治理检查表 |
 
 ## 一次完整协作循环
 
@@ -75,6 +79,31 @@ boundaries:          哪些内容不得修改或尝试？
 
 四项缺少任何一项，任务都还不适合交给 Agent。
 
+### 从模糊请求到可执行任务
+
+```text
+差：
+修复认证系统。
+
+更好：
+summary:
+修复访问令牌过期后刷新令牌失败的问题。
+
+currentAction:
+追踪刷新流程，只修补令牌续期路径。
+
+acceptanceCriteria:
+- 过期的访问令牌可以成功续期
+- 现有登录流程仍然通过
+- 增加刷新成功和失败测试
+
+boundaries:
+- 不修改用户数据结构
+- 不修改 OAuth 提供方配置
+```
+
+第二个任务范围更小、边界清晰并且可以独立验证。Agent 不需要自行发明产品决策就能开始工作。
+
 ## 适用边界与责任
 
 Agent 可以提出方案并执行，但不会转移人的责任。安全、权限、支付行为、隐私、合规、生产发布、破坏性操作和不可逆的外部动作，都需要明确负责人和审批规则。
@@ -92,7 +121,9 @@ Agent 可以提出方案并执行，但不会转移人的责任。安全、权�
 
 ## 背景
 
-本 Playbook 的方法来自生产与个人开发实践，其中包括把任务契约、上下文隔离、质量门和结构化交接写进 Agent 协作框架。这里关注的是可迁移的方法，而不是绑定某个模型或平台的操作指南。
+本 Playbook 的方法来自生产与个人开发实践，并通过工作流框架 **Maestro** 持续实践。Maestro 把任务契约、上下文隔离、质量门和结构化交接编码成可执行工作流。
+
+两者的关系是：**Playbook 定义方法论，Maestro 让方法论可以执行。** 方法本身不绑定任何单一模型或 Agent 平台。
 
 ## License
 

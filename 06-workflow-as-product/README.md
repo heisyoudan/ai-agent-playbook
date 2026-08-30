@@ -1,250 +1,154 @@
-# 06 — ワークフローを製品として設計する
+# 06 — Designing Workflow as a Product
 
-## なぜワークフローが必要なのか
+[日本語](README.ja.md) · **English** · [简体中文](README.zh-CN.md)
 
-前章では、複数のAgentを管理するための6つの要素について述べた。
+## Why a Workflow Is Necessary
 
-役割、制約、報告形式、検収基準、失敗時の戻し方、引き継ぎ定義。  
-ただし、これらはそれぞれ個別のルールにすぎない。ルールを並べただけでは、まだ「体系」とは呼べない。
+Task design, context isolation, and role definitions improve individual sessions. But if people must remember and reconstruct those practices every time, quality still depends on personal discipline.
 
-**体系にするには、ルールを一連の流れの中へ組み込む必要がある。**
+A workflow turns the method into an executable system. It determines how tasks enter, which role acts, what evidence is required, when state may change, and how failure returns to a safe point.
 
-そこで重要になるのが、ワークフローである。
+## Why I Built Maestro
 
----
+I wanted the principles in this playbook to survive beyond a successful conversation. Maestro began as a way to encode task contracts, role boundaries, structured handoffs, quality gates, and recoverable transitions.
 
-## 私がMaestroを作った理由
+The relationship is simple:
 
-この段階に来たとき、私はあるツールの開発を始めた。  
-その名前が **Maestro** である。
+```text
+Playbook = methodology and operating principles
+Maestro  = executable workflow framework
+```
 
-きっかけは、現実的な必要性だった。管理すべきAgentが増え、タスクが複雑になるにつれて、ルールの注入、タスクの割り振り、進捗確認、検収、引き継ぎを毎回手作業で回すやり方に限界を感じるようになった。
+The framework is not the source of the methodology. It is a practical environment in which the methodology is exercised, tested, and refined.
 
-**自分の作業基盤として、Agent管理のワークフローを自動化する仕組みが必要だった。**
+## Template-Driven Execution
 
-理想の状態は次のとおりである。
+### Free Interpretation vs. Templates
 
-- 各Agentが、事前に設定された指令、構成、ルールに基づいて、自動的に現在のタスクを受け取れる
-- タスクに関連する文脈を自動で参照できる
-- 自分の役割に応じた行動規範を自動で把握できる
-- あらかじめ設計されたワークフローに従って動ける
-
-**正常系では、Agentは例外的な境界に触れない限り、最後まで自律的に進行できる。**  
-完了後は、次のAgentに渡すための引き継ぎ情報を整理し、私はそれを確認して受け渡すだけでよい。余分なコミュニケーションコストは極力抑えられる。
-
-異常が発生した場合も、Agentはどう振る舞うべきかをあらかじめ理解している。どのルールに従って報告するか、どのように修正提案を出すか、どのように記録を残すかが、事前に定義されている。
-
----
-
-## テンプレート駆動という設計思想
-
-Maestroの設計で特に重要だったのが、**テンプレート駆動**という考え方である。
-
-### 自由理解とテンプレート駆動
-
-| アプローチ | 正常時 | 異常時 |
+| Mode | Behavior | Risk |
 |---|---|---|
-| **自由理解** | Agentが文脈を解釈して動く | 判断がぶれやすく、出力が不安定になる |
-| **テンプレート駆動** | Agentが定められた手順に従って動く | 異常用テンプレートへ切り替えて処理する |
-
-自由理解は、一見すると柔軟で強力に見える。  
-ただ、実際には毎回の実行結果に微妙な揺れが生じやすく、品質のばらつきも大きくなりやすい。
-
-テンプレート駆動では、正常系でAgentが従うべき手順を固定し、異常時には別のテンプレートへ切り替える。
+| **Free interpretation** | The agent invents the procedure from general instructions. | Decisions drift and output varies. |
+| **Template-driven** | The agent follows a defined normal path and switches to a defined exception path. | Behavior is constrained and inspectable. |
 
 ```text
-正常時: メインテンプレートの手順を実行
-↓
-異常発生を検知したらケーステンプレートへ切り替える
-↓
-ケース完了後、次のフェーズへ引き継ぐ
+normal template
+  ↓ exception detected
+case template
+  ↓ case complete
+explicit handoff to the next phase
 ```
 
-### メインテンプレートの構造
+### Main Template
 
-各役割と各状態に対して、テンプレートを定義する。
+Each role and state needs:
 
-- **目的**  
-  そのフェーズで何を達成するのか
-- **手順**  
-  実行すべき具体的なステップ
-- **完了条件**  
-  何をもって完了とするか
-- **許可されるケース**  
-  どのような異常パターンが起こりうるか
+- **Objective** — what this phase achieves;
+- **Procedure** — steps to perform;
+- **Completion conditions** — evidence required to leave the phase;
+- **Allowed cases** — exceptions that may interrupt the normal path.
 
-### ケーステンプレートの構造
+### Case Template
 
-異常パターンにも、定型的な構造を持たせる。
+Each exception needs:
 
-- **トリガー**  
-  何が起きたらそのケースに入るのか
-- **適用対象**  
-  どの役割、どの状態に適用するのか
-- **手順**  
-  異常をどのように処理するか
-- **完了条件**  
-  そのケースをどこで終了とみなすか
-- **引き継ぎ先**  
-  次に誰が何をすべきか
+- **Trigger** — the condition that activates it;
+- **Applicability** — roles and states in which it is valid;
+- **Procedure** — how to handle the exception;
+- **Completion** — when the case is resolved;
+- **Handoff** — who acts next and with what state.
 
----
+## Compress the Normal Path; Explain Exceptions
 
-## 正常系は圧縮し、異常系だけを厚くする
+The normal path should become shorter as the workflow matures. Add a rule only when it measurably reduces ambiguity, error, or communication cost.
 
-ここで、設計上きわめて重要な原則がある。
+- Replace outdated rules instead of stacking new ones indefinitely.
+- Remove duplicate templates and expired operational knowledge.
+- Keep unusual and dangerous paths explicit, because that is where improvisation is costly.
 
-**正常系は継続的に圧縮し、異常系にだけ説明を厚くする。**
+**Rules are not a collection to grow. They are a product to refine.**
 
-これは、最小限で有効な規則だけを残すという考え方である。
+## Quality Gates
 
-- 新しいルールを追加する前に、そのルールが本当に曖昧さ、エラー率、コミュニケーションコストの低減に寄与するかを検討する
-- ルールの追加が主にコンテキスト長の増加や実行負荷の増加をもたらすだけなら、採用しない
-- 新しいルールは、できるだけ古いルールを置き換える方向で導入する
-- 定期的に、失効したルール、重複したテンプレート、古くなった運用ルールを整理する
-
-**ルールは増やし続けるものではなく、磨き込み続けるものである。**
-
----
-
-## Gateという品質保証
-
-ワークフローの各フェーズの間には、**Gate** を置く。
-
-Gateは、「このフェーズを通過してよいか」を客観的に確認するための仕組みである。
+A gate determines whether a phase may transition.
 
 ```text
-Dev（実装）
-  ↓
-  Gate: ジャーナルが存在するか。ビルドが通るか
-  ↓ pass
-QA（テスト）
-  ↓
-  Gate: テスト結果が記録されているか。エビデンスが残っているか
-  ↓ pass
-Sage（クロージング）
+Dev
+  ↓ Gate: journal exists; build and required checks pass
+QA
+  ↓ Gate: test results and evidence are recorded
+Sage / closure
 ```
 
-Gateで条件を満たせなければ、次のフェーズへ進めない。  
-これは、人間の注意力や気合いに頼らない品質保証である。
-
----
+If a condition fails, the next phase cannot begin. A gate converts quality from an intention into a structural requirement.
 
 ## Atomic Rollback
 
-問題が発生したとき、状態を戻す操作は**原子的**である必要がある。
-
-「先に状態だけ変えて、理由は後で書く」という運用は避けるべきである。
-
-適切な戻し方は次のとおりである。
+When work is rejected or returned, three things must happen together:
 
 ```text
-1. 差し戻しの理由を記録する
-2. 状態を変更する
-3. 引き継ぎ指令を生成する
-
-→ この3つをひとつの操作として完了させる
+1. Record the reason and evidence.
+2. Change the state.
+3. Generate the next handoff.
 ```
 
-なぜか。  
-状態だけが変わって理由が残っていない瞬間が生じると、次の担当者は何が起きたのか把握できず、確認のための往復が発生するからである。
-
----
+If state changes before the reason is recorded, the next role sees an unexplained transition. Treating these steps as one operation prevents that gap.
 
 ## Single Source of Truth
 
-ワークフロー全体を通して、**タスクの状態を正しく表す場所はひとつだけ**でなければならない。
+Chat history is not a reliable task database. It is incomplete, difficult to query, and full of competing interpretations.
 
-チャット履歴は、その役割を担えない。省略も起きるし、解釈の揺れもあるし、後から追いにくいことも多い。
-
-**信頼できる唯一の情報源になれるのは、構造化されたデータストアだけである。**
+Keep authoritative state in one structured system:
 
 ```text
-タスクの現在状態   → tasks.json
-実行ログ           → journal_entries.json
-Gate結果           → gate_runs.json
-状態遷移履歴       → transition_requests.json
-補足事項           → task_notes.json
+current task state     → tasks
+execution history      → journal entries
+gate evidence          → gate runs
+transition history     → transition requests
+supplemental context   → task notes
 ```
 
-Agentは正の情報源を直接参照する。  
-口頭説明や断片的な会話内容ではなく、データとして記録された事実に基づいて動く。
+Agents should read the authoritative data, not depend on someone retelling the conversation.
+
+## Workflow as a Reusable Product
+
+Once encoded, the workflow can be reused across projects, agents, and platforms.
+
+```text
+platform-independent core templates
+                 ↓ derive
+Codex / Copilot / other platform-specific instructions
+```
+
+Platform files are delivery formats, not the source of truth. Maintain the core method and derive adapters from it.
+
+## Command-Driven Work in Practice
+
+### Without a Workflow System
+
+The human repeatedly reconstructs background, collects files, lists constraints, explains completion, summarizes results, and prepares the next handoff. Each cycle adds explanation and transmission cost.
+
+### With a Workflow System
+
+```text
+Sage issues a task
+  ↓ structured task and Dev instruction are generated
+Dev executes and records evidence
+  ↓ QA instruction is generated
+QA verifies independently
+  ↓ exception is recorded or task is closed
+```
+
+The human remains responsible for decisions and high-risk approval, but no longer has to manually rebuild ordinary context at every transition.
+
+### What the Difference Means
+
+The value is not automation by itself. It is **fixing the methodology into an executable structure and reducing friction between humans and agents**.
+
+Task contracts, isolated responsibilities, explicit constraints, templates, gates, and structured handoffs make a command-driven workflow possible. Without those foundations, a new tool merely moves the same explanation cost elsewhere.
 
 ---
 
-## ワークフローは製品である
+> **Practice note**
+> Maestro applies this architecture by deriving platform-specific instructions from a shared workflow core. The platform can change while the operating method remains stable.
 
-ここまで来ると、ワークフローは単なる作業手順ではなくなる。
-
-**ワークフローそのものが、繰り返し利用できる製品になる。**
-
-一度きちんと設計すれば、新しいプロジェクトでも、新しいAgentでも、新しいプラットフォームでも使い回せる。中核となるルールが共通だからである。
-
-```text
-核心テンプレート層（プラットフォーム非依存）
-  ↓ 導出
-プラットフォーム固有ファイル（Codex / Copilot / ほか）
-```
-
-プラットフォームごとのファイルは正の情報源ではない。  
-それらはあくまで導出物であり、長期的に保守すべき入口は核心テンプレート層だけである。
-
----
-
-> **実践ノート**  
-> Maestro 2.0では、この「核心テンプレート層からプラットフォーム向け設定を導出する」という考え方を、正式なアーキテクチャの中心に置いている。同一のルール母体から、Codex向け設定やGitHub Copilot向け設定を生成できるようにすることで、利用環境が変わっても方法論そのものは維持できる。これこそが、「ワークフローを製品として設計する」ということだ。
-
----
-
-## 指令駆動ワークフローの実際
-
-ここまで述べてきた設計原則が、実際の作業ではどのような形になるのか。  
-Maestroを使った開発では、**人間とAgent間のやり取りはほぼ「指令の受け渡し」だけ**で成立する。
-
-### ツールなしの場合
-
-通常、人間は以下のような作業を毎回行う必要がある。
-
-- タスクの背景と目的を自分の言葉で整理し、Agentに伝える
-- 関連ファイルや技術仕様を手動で集めてコンテキストを組み立てる
-- 完了条件や制約事項を漏れなく書き出す
-- 作業が完了したら、次のAgentへの引き継ぎ情報を自分でまとめ直す
-- 異常があれば、状況を聞き取り、記録し、判断する
-
-毎回これを繰り返すたびに、説明のコスト、整理のコスト、伝達のコストが積み重なる。
-
-### ツールがある場合
-
-Maestroでは、この流れが次のようになる。
-
-```text
-Sage（管理者）がタスクを発行
-  ↓
-タスクカードが生成され、Dev向けの作業指令が自動で出力される
-  ↓
-人間はその指令をDevに渡すだけ（補足説明は不要）
-  ↓
-Devが作業を完了し、QA向けの検証指令を出力する
-  ↓
-人間はその指令をQAに渡すだけ
-  ↓
-問題があればAgentが自らカードの備考に記録する（人間への口頭報告ではない）
-  ↓
-問題がなければタスク完了
-```
-
-このフローにおいて、人間が行うのは**指令の確認と転送**だけである。  
-タスクの文脈、制約、検収基準、引き継ぎ情報はすべてシステム側で構造化されており、Agentはそれを直接参照して動く。人間が改めて説明し直す場面はほとんど発生しない。
-
-### この違いが意味すること
-
-ツールの価値は、自動化そのものにあるわけではない。
-
-**方法論を実行可能な構造として固定し、人間とAgentの間の摩擦を最小限にすること。**  
-それが、ワークフローを製品として設計することの実際的な効果である。
-
-ここまでの章で述べてきた原則——タスク定義の構造化、コンテキスト分離、役割と制約の明示、テンプレート駆動、品質ゲート——が仕組みとして組み込まれているからこそ、指令を渡すだけで作業が回る状態が成り立つ。
-
-原則が浸透していなければ、どれほど優れたツールを導入しても、結局は毎回の説明と調整に時間を取られることになる。
-
-[次章 → 本当の競争力はどこにあるか](../07-what-really-matters/README.md)
+[Next → Where the Real Competitive Advantage Lies](../07-what-really-matters/README.md)

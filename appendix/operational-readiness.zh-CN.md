@@ -1,6 +1,6 @@
 # 附录D — 生产就绪与治理检查表
 
-[日本語](operational-readiness.md) · [English](operational-readiness.en.md)
+[日本語](operational-readiness.ja.md) · [English](operational-readiness.md) · **简体中文**
 
 只有良好的任务设计，并不足以支撑生产运行。权限、数据、责任、评估方法和停止条件也必须明确。本检查表用于把 Playbook 从个人实践扩展到团队与组织。
 
@@ -111,4 +111,4 @@ Agent 使用的工作上下文应保持精简。发布、审计或事故调查�
 
 ---
 
-[中文概览](../README.zh-CN.md) · [日文附录](operational-readiness.md) · [英文附录](operational-readiness.en.md)
+[中文README](../README.zh-CN.md) · [日文附录](operational-readiness.ja.md) · [英文附录](operational-readiness.md)

@@ -1,174 +1,105 @@
-# 05 — 複数Agentの管理体系
+# 05 — Managing Multiple Agents
 
-## セッション分離の先にある問題
+[日本語](README.ja.md) · **English** · [简体中文](README.zh-CN.md)
 
-前章では、コンテキスト分離の重要性について述べた。
+## The Problem Beyond Session Isolation
 
-ただ、分離を実践して出力が安定し始めると、次の問題が見えてくる。
+Once responsibilities are split across sessions, another cost appears: the same rules must be repeated for every agent and every conversation.
 
-**同じルールを、毎回すべての会話で繰り返し伝えなければならない。**
+Examples include execution order, failure reporting, file boundaries, documentation rules, and when approval is required. Repeating them manually creates drift and preparation overhead.
 
-たとえば、次のような内容である。
+## When the Question Changes
 
-- タスクの実行手順
-- 問題発生時の報告方法
-- プロジェクトディレクトリに不要なMarkdownを増やさないこと
-- 関係のないファイルを勝手に変更しないこと
-- 確認なしに作業を始めないこと
+The question changes from “How should I prompt this agent?” to **“How should I manage several AI executors as a system?”** This is now a team-design problem.
 
-1回だけ伝えるなら難しくない。  
-ただ、それを毎回、すべてのAgentに、すべての会話で伝えるとなると、**管理コストは急激に膨らむ。**
+## Six Elements to Define
 
----
+### 1. Roles
 
-## 問いの質が変わる瞬間
-
-ここで、考えるべき問いそのものが変わる。
-
-「どう指示を出すか」から、**「複数のAI実行者をどう管理するか」** へ移る。
-
-これは、ひとりの開発者がひとつの会話でAIを使う段階の話ではない。  
-すでに、**チーム運営の問題**になっている。
-
----
-
-## 管理すべき6つの要素
-
-複数のAgentを安定して動かすには、少なくとも次の6つを定義する必要がある。
-
-### 1. 役割定義
-
-誰が何を担当するのかを明確にする。
+Assign a clear responsibility to each role.
 
 ```text
-Sage（管理者）: タスク発行、引き継ぎ判断、例外処理、最終的な収束
-Dev（開発者）:  タスク理解、ロジック実装、ログ記録、品質ゲート通過
-QA（テスト）:   テスト設計、実行、判定、結果報告
-Design（UI）:   UI実装、スタイル調整、モックデータによる表示確認、インターフェース定義
+Sage:   issue tasks, decide handoffs, handle exceptions, close work
+Dev:    understand tasks, implement logic, record work, pass gates
+QA:     design and run tests, judge results, report evidence
+Design: implement UI with mock data, iterate visually, define interfaces
 ```
 
-Designを独立した役割にしている理由は明確である。  
-UI作業は本質的に繰り返しの調整を伴う。文字サイズ、配色、余白、ボタンのスタイル——こうした細かな修正が何度も発生し、その都度会話のコンテキストが膨らんでいく。この種のやり取りをロジック実装と同じセッションで行うと、コンテキストが急速に汚染される。
+Design is separate because UI work is exploratory: comparison, visual judgment, and repeated adjustment are normal. Logic work is convergent: it seeks correctness, stability, closure, and verification.
 
-この背景には、より根本的な原則がある。
+Mixing these cognitive modes damages both. Design therefore avoids business logic and uses mock data; Dev connects the approved interface to real behavior.
 
-**AIとの協業は、認知モードに基づいて明確にレイヤー分けされなければならない。**
+### 2. Constraints
 
-ロジックの問題は「収束型」の問題に属する。  
-追求するのは、唯一性、安定性、完結性（閉ループ）、そして検証可能性である。
+Define prohibited behavior as carefully as assigned work.
 
-UIの問題は「探索型」の問題に属する。  
-追求するのは、試行錯誤、比較、体感、そして反復的な修正である。
+- Dev does not rewrite requirements.
+- QA does not silently fix implementation.
+- Design does not implement business logic.
+- No role changes unrelated files.
+- High-risk or irreversible actions require human approval.
 
-この2つの性質が異なる問題を分離せずに混在させれば、協業には必ず歪みが生じる。  
-収束を目指す作業が探索のノイズに引きずられ、探索を必要とする作業が収束の制約に縛られる。どちらも本来の力を発揮できなくなる。
+Agents often expand scope with good intentions. Explicit non-goals make the change surface predictable.
 
-そのため、Designはロジックに一切関与しない。UIはすべてモックデータで駆動し、データの受け渡しに必要なインターフェースだけを定義する。ロジック層との接続はDevが担う。
+### 3. Reporting Format
 
-役割が曖昧なままだと、Agent同士の責任範囲が重なり、矛盾した出力が生まれやすくなる。
-
-### 2. 制約定義
-
-してはいけないことを明示する。
-
-- Devは要件を勝手に変更しない
-- QAは実装を直接修正しない
-- Designはビジネスロジックに関与しない。UIはモックデータで動作させ、実データとの接続はDevに任せる
-- すべての役割は、指示されていないファイルを変更しない
-
-**やることの定義も重要だが、やってはいけないことの定義はさらに重要である。** Agentは善意で余計なことをしがちであり、その善意が厄介な不具合の原因になることがある。
-
-### 3. 報告形式定義
-
-Agentが作業結果をどのように報告するかを統一する。
-
-自由形式で報告させると、毎回フォーマットが変わり、他のAgentやレビュアーが内容を読み解くコストが発生する。
-
-最低限、ログには次の情報が必要になる。
-
-- 何をしたか（事実）
-- なぜその判断をしたか（判断根拠）
-- 何が残っているか（残課題）
-- 次に何をすべきか（引き継ぎ）
-
-### 4. 検収基準定義
-
-「完了」を客観的に定義する。
-
-「実装しました」では足りない。  
-「どの条件を満たせば完了とみなすか」を事前に定義しておく必要がある。
+Use a stable report structure:
 
 ```text
-✅ ソートが3カラムで動作する
-✅ 既存テストがすべて通る
-✅ 新規パッケージを追加していない
-✅ TypeScriptのstrict modeでエラーが出ない
+Changed: files and behavior
+Why: decision and rationale
+Verified: commands, checks, and results
+Remaining: risks, limits, unfinished items
+Next: required handoff or action
 ```
 
-検収基準がなければ、Agentは自分の基準で「完了した」と判断する。  
-その判断は、発注側の期待とずれる可能性が高い。
+A fixed format reduces the work required to understand and transfer results.
 
-### 5. 失敗時の戻し方の定義
+### 4. Acceptance Criteria
 
-問題が起きたとき、Agentがどう振る舞うべきかも定めておく必要がある。
+“Looks good” is not an acceptance criterion. Completion should be observable: a build passes, a scenario behaves as specified, a diff stays inside boundaries, or required evidence exists.
+
+If completion cannot be judged objectively, the task was not ready to execute.
+
+### 5. Failure Handling
+
+Define what happens when an agent is blocked:
+
+- stop after the retry or cost limit;
+- record the error and evidence;
+- list attempted approaches and changed assumptions;
+- do not hide partial work behind a completion state;
+- hand control to the designated role or human owner.
+
+### 6. Handoffs
+
+A handoff must transfer state, not conversational memory.
+
+It should include the objective, accepted decisions, changed artifacts, evidence, remaining risks, and the exact responsibility of the receiver.
+
+## How Rules Reach Agents
+
+Do not rely on manually pasting the same instructions into every chat. Keep shared rules in versioned configuration or templates, then add only task-specific context.
 
 ```text
-仕様が不明確        → 作業を停止し、管理者へ差し戻す
-実装がゲートを通らない → 原因を記録したうえで再実装する
-テストが失敗した     → 失敗理由を記録し、開発者へ差し戻す
+shared role and safety rules
+        +
+task contract and local context
+        =
+executable instruction
 ```
 
-この定義がないと、Agentは問題に遭遇した際に無理に進めようとして暴走するか、停止したまま何も報告しなくなる。
+The shared layer should be small, stable, and platform-independent where possible.
 
-### 6. 引き継ぎ定義
+## What This Changes
 
-あるフェーズが終わったあと、次の担当者へ何を渡すかを定める。
+With roles, constraints, reports, acceptance, failure behavior, and handoffs defined, agent collaboration becomes less like a series of improvised conversations and more like an operating system for work.
 
-引き継ぎ時に必要な情報は、少なくとも次の4つである。
-
-- 現在のタスク状態
-- 完了済みの作業内容
-- 残っている課題
-- 次の担当者がすぐに動ける指示
-
-**チャット上の口頭伝達を引き継ぎ手段にしてはいけない。** その方法では情報が抜け落ち、文脈が変質し、誤解が蓄積していく。
+The goal is not maximum autonomy. The goal is predictable execution, visible state, bounded authority, and recoverable failure.
 
 ---
 
-## ルールをどう注入するか
+> **Practice note**
+> Maestro encodes these role and transition rules so the operator does not have to reconstruct them for each session. The methodology defines the behavior; the framework makes it executable.
 
-これらの定義が決まったら、次に考えるべきなのは「どうAgentに伝えるか」である。
-
-毎回手で書くのではなく、**固定設定として事前に読み込ませる**のが望ましい。
-
-方法はいくつかある。
-
-- **プロジェクト内の設定ファイル**：Agentが自動で参照する規則ファイルを置く
-- **テンプレート注入**：新しい会話を始めるたびに、最初に規則セットを流し込む
-- **システムプロンプト設定**：Agentのプラットフォームが対応していれば、永続的に注入する
-
-どの方法でも狙いは同じである。
-
-**新しい会話を開始した時点で、Agentが現在のルール、役割、制約を自動的に把握できる状態をつくること。**
-
----
-
-## これがもたらす変化
-
-ルールが固定化されると、次の変化が起きる。
-
-- **新しい会話のたびにゼロから説明し直す必要がなくなる**
-- **役割ごとの出力スタイルが揃いやすくなる**
-- **よくあるミスが構造的に減っていく**
-- **管理コストが継続的に下がる**
-
-さらに重要なのは、**Agentプラットフォームを切り替えても、この管理体系が維持しやすい**ことである。
-
-トークン制限やサービス障害などの理由でツールを乗り換える必要が出ても、固定化されたルールセットがあれば、新しいAgentも現在のワークフローに比較的スムーズに入れられる。
-
----
-
-> **実践ノート**  
-> Maestroでは、これらの管理要素をコードレベルで扱えるようにしている。役割ごとの権限境界はCLIコマンドの実行権限として制御し、引き継ぎにはゲート通過を必須条件として設け、失敗時の戻し方も理由付きの原子的な操作として定義している。つまり、ルール遵守を個人の意識だけに委ねず、破りにくい構造として組み込んでいる。さらに、すべてのAgentが共有するコアテンプレートを持たせており、新しいプロジェクトでも初期化コマンドひとつでルールセット全体を展開できるようにしている。
-
-[次章 → ワークフローを製品として設計する](../06-workflow-as-product/README.md)
+[Next → Designing Workflow as a Product](../06-workflow-as-product/README.md)

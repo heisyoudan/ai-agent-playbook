@@ -1,130 +1,86 @@
-# 04 — コンテキスト分離戦略
+# 04 — Context Isolation Strategy
 
-## 会話は必ず汚染される
+[日本語](README.ja.md) · **English** · [简体中文](README.zh-CN.md)
 
-Agentと一緒にコードを書き始めると、すぐに深刻な問題に気づく。
+## Every Conversation Accumulates Contamination
 
-同じ会話の中で、要件の整理、実装方針の検討、テスト内容の議論、バグ修正までを同時に進めていると、**その会話は急速に汚染されていく。**
+When requirements, implementation, test design, bug fixing, and unrelated discussion share one long session, the context becomes progressively less reliable.
 
-コンテキストは徐々に濁り、モデルの出力はぶれやすくなり、コード品質も下がっていく。
+Old assumptions remain visible. Failed approaches compete with accepted decisions. The agent has to infer which parts still matter, so output becomes less stable and rework increases.
 
----
+## Why Contamination Happens
 
-## なぜ汚染が起きるのか
+The model treats most of the current conversation as potentially relevant. Humans can often dismiss an earlier idea as obsolete without effort; a model may continue to use it unless the state is restated clearly.
 
-理由は単純だ。
+Context is therefore not just a storage limit. It is an attention and responsibility boundary.
 
-**モデルは、現在の会話に含まれるほぼすべての内容を、関連しうる情報として扱う。**
+## One Session, One Responsibility
 
-要件の議論、実装の詳細、テストロジック、過去に失敗した試行、途中の雑談。こうした要素がすべて混ざった状態では、モデルが「今やるべきこと」に安定して集中し続けるのは構造的に難しい。
+Open separate sessions and give each one a single role.
 
-人間であれば、「それはさっきの話だから今は関係ない」と切り分けられる。モデルはその切り分けが人間ほど得意ではない。会話の中に存在する情報は、その後も現在の文脈として影響を与え続ける。
-
----
-
-## 解決策は「1セッション1責務」
-
-解決策は単純だが、効果は大きい。
-
-**複数の会話を分けて開き、それぞれにひとつの責務だけを持たせる。**
-
-| セッション | 責務 | 含めるもの | 含めないもの |
+| Session | Responsibility | Include | Exclude |
 |---|---|---|---|
-| セッションA | **要件整理** | 要件定義、スコープ確認、境界の整理 | 実装の詳細、テストケース |
-| セッションB | **実装** | 技術仕様、コード、実装上の判断 | 要件の曖昧な議論、テスト設計 |
-| セッションC | **テスト** | テスト設計、テストケース、検証方法 | 実装中の試行錯誤 |
-| セッションD | **レビュー** | コード品質、設計妥当性の確認 | 新機能の追加実装 |
+| A | Requirements | scope, decisions, boundaries | implementation attempts |
+| B | Implementation | technical contract, code, constraints | unresolved requirement debate |
+| C | Testing | cases, evidence, expected behavior | implementation history |
+| D | Review | acceptance, design quality, unintended changes | new feature work |
 
----
+## Before and After Isolation
 
-## コンテキスト分離がもたらす変化
-
-この単純な切り分けだけで、Agentの振る舞いは目に見えて安定する。
-
-### 分離前
+### Before
 
 ```text
-会話: 要件 + 実装 + テスト + 修正 = 混線
-
-→ モデルが、いま要件を整理しているのか、実装中なのか、テスト中なのかを安定して判断しにくい
-→ 出力が中途半端になる
-→ 手戻りが増える
+requirements + implementation + tests + fixes = mixed context
+→ unclear current responsibility
+→ partial output
+→ more rework
 ```
 
-### 分離後
+### After
 
 ```text
-会話A: 要件だけ      → 要件が明確に固まる
-会話B: 実装だけ      → 一貫した実装が出やすくなる
-会話C: テストだけ    → テストが漏れにくくなる
-会話D: レビューだけ  → フィードバックが的確になる
-
-→ 各フェーズの出力品質が安定する
+requirements session → stable decisions
+implementation session → focused change
+testing session → independent evidence
+review session → objective evaluation
 ```
 
----
+## Bridging Sessions
 
-## 会話間のブリッジ
+Isolation creates a handoff problem: how does the next session receive decisions without inheriting all the noise?
 
-セッションを分離すると、次の課題が出てくる。
-
-**「会話Aで決まった内容を、会話Bへどう渡すか」**
-
-ここで多くの人が失敗する。  
-「前の会話でこう決まった」と口頭で伝えてしまうからだ。
-
-口頭での引き継ぎでは、情報が劣化しやすい。要約の過程で文脈が抜け、ニュアンスが変わり、重要な制約が落ちることもある。
-
-適切なのは、**構造化された引き継ぎ情報を用意する**ことだ。
+Use a structured bridge rather than “we discussed this earlier.”
 
 ```text
-[ 会話Bに渡す引き継ぎ ]
-
-■ 目的: ユーザーテーブルのソート機能を実装する
-■ 決定事項: フロントエンドのみ。サーバーサイドソートは対象外
-■ 技術仕様: 対象カラムは name / email / createdAt
-■ 制約: 既存API構造は変更しない。新規パッケージは追加しない
-■ 検収基準: 3カラムで昇順・降順ソートが正しく動作すること
+Objective: Implement sorting for the user table.
+Decisions: Client-side only; server-side sorting is out of scope.
+Specification: name, email, and createdAt are sortable.
+Constraints: Do not change the API or add a package.
+Acceptance: Ascending and descending sorting works for all three columns.
 ```
 
-一見すると手間に見える。  
-それでも、**手戻りにかかるコストと比べればはるかに安い。**
+A bridge costs less than reconstructing lost context after a wrong implementation.
+
+## When to Start a New Session
+
+Consider a new context when:
+
+1. the responsibility changes, such as requirements to implementation;
+2. the number of files, unresolved decisions, or conversational turns makes current state hard to restate;
+3. the discussion repeatedly returns to old topics;
+4. output quality declines under otherwise comparable instructions.
+
+Fifteen to twenty exchanges can be a warning signal, not a universal limit. Content and responsibility matter more than the raw turn count.
+
+## Is This Extra Work?
+
+At first it can feel slower. In practice, context isolation also organizes human thinking. Requirements remain requirements, implementation can converge, and testing can challenge the result independently.
+
+**Context isolation is both a model-control strategy and a work-quality strategy.**
 
 ---
 
-## いつ新しいセッションを開くべきか
+> **Practice note**
+> Maestro separates management, development, QA, and design responsibilities. Each role has explicit authority boundaries, so context isolation is enforced by the workflow rather than remembered by the operator.
 
-判断基準は明確にしておいたほうがよい。
-
-1. **責務が変わるとき**  
-   要件整理から実装へ、実装からテストへ移るとき
-
-2. **会話が長くなってきたとき**  
-   往復数だけでなく、含まれるファイル数、議論した責務の数、未確定事項の量を見て判断する。15回から20回程度はあくまで分割を検討する目安であり、固定ルールではない
-
-3. **話題が混ざり始めたとき**  
-   「さっきの話に戻るけど」が増えてきたら危険信号である
-
-4. **出力品質が落ちたとき**  
-   同じレベルの指示を出しているのに以前より質が落ちたなら、コンテキスト汚染を疑うべきである
-
----
-
-## これは面倒なのか
-
-最初は面倒に感じるかもしれない。
-
-ただ、慣れてくると、この方法なしでは作業しづらくなる。
-
-**セッション分離は、AIのための戦略であると同時に、自分自身の思考を整理するための戦略でもある。**
-
-要件と実装が分かれていれば、自分の頭の中でも混線が起きにくい。テスト設計を別枠で考えるからこそ、実装時には実装に集中しやすくなる。
-
-コンテキスト分離は、AIの制約に対応する手法であると同時に、人間側の作業品質を引き上げる方法でもある。
-
----
-
-> **実践ノート**  
-> Maestroでは、この「セッション分離」を仕組みのレベルで扱っている。Sage、Dev、QA、Designという4つの役割を定義し、それぞれに明確な権限境界を設けている。Devは要件を変更できず、QAは実装を修正できない。役割が分かれているため、自然にコンテキストも分離される。これにより、「ひとつの会話で全部やろうとして崩れる」という失敗パターンが起きにくくなる。
-
-[次章 → 複数Agentの管理体系](../05-agent-management/README.md)
+[Next → Managing Multiple Agents](../05-agent-management/README.md)

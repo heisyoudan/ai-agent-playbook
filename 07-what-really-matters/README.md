@@ -1,125 +1,83 @@
-# 07 — 本当の競争力はどこにあるのか
+# 07 — Where the Real Competitive Advantage Lies
 
-## ここまでの振り返り
+[日本語](README.ja.md) · **English** · [简体中文](README.zh-CN.md)
 
-ここまでの流れを整理すると、次のようになる。
+## The Journey So Far
 
-**第1段階**  
-AIを使い始め、その変化の大きさに衝撃を受けた。あわせて、コードを書く力そのものの希少性が急速に薄れていることにも気づいた。
+The playbook follows six stages of change:
 
-**第2段階**  
-成果を左右するのは、AIの性能だけではなく、タスクの切り方そのものだとわかった。問いの重心も、「AIにできるか」から「自分がどう設計するか」へ移っていった。
+1. AI makes the structural change in engineering work visible.
+2. Task design becomes more important than asking whether AI is capable.
+3. Prompt quality becomes a matter of information density, boundaries, context, and constraints.
+4. One session per responsibility stabilizes output.
+5. Multiple agents require roles, reports, acceptance, failure behavior, and handoffs.
+6. The workflow becomes a reusable product rather than a personal habit.
 
-**第3段階**  
-プロンプトの本質は、表面的な技巧ではなく、情報密度と制約の明確さにあると理解した。
+This is not simply a journey of learning new tools. It is a redesign of how work is organized.
 
-**第4段階**  
-コンテキスト分離を実践し、1セッション1責務にするだけで、出力品質が大きく安定することを確認した。
+## Where Differences Actually Emerge
 
-**第5段階**  
-複数のAgentを管理するために、役割、制約、報告、検収、差し戻し、引き継ぎの体系を整えた。
+Durable advantage does not come from being first to subscribe to a model, using the longest prompt, or attaching identity to one agent platform.
 
-**第6段階**  
-ワークフロー全体を製品として設計し、テンプレート駆動によって再利用可能な仕組みにまで引き上げた。
+It comes from understanding and implementing three principles.
 
-この6段階は、単にツールの使い方を覚えてきた過程ではない。  
-**仕事の構造そのものを再設計してきた過程である。**
+### 1. AI Is the Execution Layer
 
----
+AI can execute instructions at a high level, but it does not remove the need to decide what should be executed.
 
-## 差が生まれるのはどこか
+Humans still design task boundaries, sequence, risk controls, evidence, and final acceptance. As execution becomes more powerful, the value of directing that power responsibly increases.
 
-AIと協業するうえで、本当に差がつくポイントは、次のような表面的なものではない。
+### 2. Process Creates Productivity
 
-- 誰が先にどのツールを導入したか
-- 誰がどのAgentを使っているか
-- 誰が何行のプロンプトを書いたか
-- 誰がどのサブスクリプションに課金しているか
+Producing one good result is not difficult. Producing reliable results across one hundred tasks requires a process.
 
-**差が生まれるのは、次の3点を理解し、実装できているかどうかである。**
+- structured task contracts;
+- isolated context;
+- automated quality gates;
+- standardized handoffs;
+- visible and authoritative state.
 
----
+These mechanisms turn AI collaboration from personal intuition into a repeatable production method.
 
-### 1. AIは実行層である
+### 3. Constraints Create Stability
 
-AIは、与えられた指示を高い水準で実行する。  
-ただし、何を実行すべきかを決めるのはAIではない。
+Unlimited freedom does not reliably produce better work. It enlarges the number of possible interpretations and makes output harder to predict.
 
-タスクをどう分解するか。  
-どの順序で進めるか。  
-何を制約し、何を検証するか。
+Clear scope, procedure, authority, and acceptance criteria do not weaken an agent. They create the conditions in which it can use its capability consistently.
 
-これらを設計するのは人間である。
+## What Real AI Capability Means
 
-AIの実行力が高まるほど、**その力を正しい方向へ向ける設計力**の価値はさらに大きくなる。
+Using one agent is not the same as possessing AI-era production capability.
 
-### 2. プロセスこそが生産性を生む
+The real capability is the combined ability to:
 
-一度うまくいくこと自体は、それほど難しくない。  
-ただ、100回繰り返して安定した成果を出し続けるには、明確なプロセスが必要になる。
+- decompose work at an effective granularity;
+- organize and isolate context;
+- turn rules into reusable structures;
+- separate responsibilities and authority;
+- encode processes into daily operation;
+- verify output efficiently and retain the right evidence;
+- keep multiple agents producing stable results over time.
 
-- タスク定義のテンプレート化
-- コンテキストの構造化
-- Gateによる品質保証の自動化
-- 引き継ぎプロトコルの標準化
+These capabilities survive changes in model and platform.
 
-こうした仕組みが揃って初めて、AI協業は個人の勘や属人的な技術から、再現可能な生産方式へ変わっていく。
+## Closing Thought
 
-### 3. 制約が安定性を生む
+Everything in this playbook comes from practical use and iteration. Ideas that looked elegant but did not survive real work were intentionally removed.
 
-直感に反するように見えるが、**自由度が高すぎるほど、出力は不安定になりやすい。**
-
-「自由にやってほしい」と任せるほど、Agentの出力にはばらつきが出る。  
-一方で、「この範囲で、この手順で、この基準を満たしてほしい」と制約を与えるほど、出力は揃いやすくなる。
-
-制約は、Agentの力を奪うものではない。  
-**Agentが安定して能力を発揮できる土台をつくるもの**である。
-
----
-
-## 本当の能力とは何か
-
-ひとつのAgentを使えることと、AI時代の生産力を持っていることは同義ではない。
-
-**本当にAIを使いこなす能力とは、次のような力の総体である。**
-
-- タスクを適切な粒度に分解できること
-- コンテキストを整理し、分離できること
-- ルールを定型化し、再利用可能な形にできること
-- 役割を分業として設計できること
-- プロセスを固定化し、運用に落とし込めること
-- 複数のAgentがその体系の中で、継続的かつ安定して成果を出し続ける状態を構築し、維持できること
-
-この力を持つ人は、どのAgentプラットフォームが登場しても、どのモデルに切り替わっても、生産性を保ちやすい。
-
----
-
-## 最後に
-
-このPlaybookに書いてきた内容は、すべて自分自身の実務と個人開発の中で検証してきたものに基づいている。
-
-理論としては美しくても、現場で機能しないものは意識的に外してきた。
-
-AIの進化は今後も続いていく。  
-モデルはさらに賢くなり、Agentはさらに自律的になっていくだろう。
-
-それでも、「設計する側の人間」の価値が薄れるとは思っていない。  
-むしろ、AIが強くなるほど、**それを正しい方向へ導く力**の希少性はさらに高まっていく。
+Models will become more capable and agents more autonomous. That does not reduce the value of the person who designs the system around them. It makes direction, judgment, and accountability more important.
 
 ```text
-AIは実行層である。
-プロセスこそが生産性である。
-制約が安定性を生む。
+AI is the execution layer.
+Process creates productivity.
+Constraints create stability.
 ```
 
----
-
-> **補足**  
-> AIの出力をどう効率よく検収するかも、独立した重要スキルである。具体的な検収手法については [付録B: AI出力の検収戦略](../appendix/verification-strategies.md) を参照してほしい。
+The strongest practitioner is not the person who delegates the most. It is the person who can create a system in which delegation remains useful, verifiable, bounded, and recoverable.
 
 ---
 
-> **実践ノート**  
-> 私はこの認識を土台として、Maestroというワークフロー基盤を設計している。現在は2.0に向けた整理を進めており、中心にあるのは「プラットフォームに依存しないワークフロー母体」という考え方である。ひとつの核心テンプレートから、複数のAgentプラットフォーム向け設定を導出できる形を目指している。利用するプラットフォームが変わっても、方法論そのものは揺らがない。その前提を、仕組みとして成立させることが私の現在地である。
+> **Practice note**
+> Maestro is the executable counterpart to this methodology: a platform-independent workflow core from which agent-specific instructions can be derived. The playbook explains the principles; Maestro tests whether those principles can operate as a system.
 
-[付録A → よくある失敗パターン](../appendix/anti-patterns.md) · [付録B → AI出力の検収戦略](../appendix/verification-strategies.md) · [付録C → 早見表](../appendix/cheatsheet.md)
+[Appendix A → Common Failure Patterns](../appendix/anti-patterns.md) · [Appendix B → Verification Strategies](../appendix/verification-strategies.md) · [Appendix C → Cheat Sheet](../appendix/cheatsheet.md)

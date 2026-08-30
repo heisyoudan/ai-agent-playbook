@@ -1,120 +1,108 @@
-# 付録 — よくある失敗パターン
+# Appendix A — Common Failure Patterns
 
-実戦で踏んだ地雷と、その対処法。
+[日本語](anti-patterns.ja.md) · **English** · [简体中文](anti-patterns.zh-CN.md)
 
----
-
-## Anti-Pattern 1: 先に状態を変えて、後からログを書く
-
-### 症状
-
-タスクの状態を「完了」に変えてから、後で作業記録を追加しようとする。
-
-### 何が起きるか
-
-状態だけが変わり、理由や証拠がない空白期間が生まれる。次の担当者は「何が起きたのか」が分からず、聞き直すか推測するしかない。差し戻しが必要になったとき、判断の根拠がどこにもない。
-
-### 対処法
-
-**状態変更とログ記録はアトミックな操作にする。** 片方だけが完了する状態を許さない。理由の記録、状態の変更、引き継ぎ指令の生成——この3つが同時に完了して初めて、1つの操作が成立する。
+Failures seen in real agent workflows, and how to prevent them structurally.
 
 ---
 
-## Anti-Pattern 2: タスク定義が不完全なまま引き継ぐ
+## Anti-Pattern 1: Change State First, Write the Log Later
 
-### 症状
+### Symptom
 
-「だいたいこういうことをやってほしい」という曖昧な指示だけで、Agent にタスクを渡す。
+A task is marked complete before the work record and evidence are written.
 
-### 何が起きるか
+### What Happens
 
-Agent が「よかれと思って」勝手に判断する。本来の意図とズレた実装が行われ、レビュー時に初めてズレに気づく。手戻りが発生し、時間を浪費する。
+The system contains a state transition without a reason. The next role must ask what happened or guess. If rollback is needed, the decision has no traceable basis.
 
-### 対処法
+### Response
 
-**タスク発行時に最低4項目を必須にする。**
+**Make the transition atomic.** Record the reason and evidence, change state, and generate the next handoff as one operation. Do not allow only one part to succeed.
 
-- 目的（何を達成するか）
-- 今回の実行内容（今回具体的に何をするか）
-- 検収基準（何をもって完了とするか）
-- 非目標（何をやらないか）
+## Anti-Pattern 2: Hand Off an Incomplete Task Definition
 
-この4つが揃わない限り、タスクを引き継がない。
+### Symptom
+
+An agent receives a vague request such as “roughly implement this feature.”
+
+### What Happens
+
+The agent fills the gaps with reasonable-looking assumptions. The difference from the real intent appears only during review, creating avoidable rework.
+
+### Response
+
+Require four fields before handoff:
+
+- objective;
+- current action;
+- acceptance criteria;
+- boundaries or non-goals.
+
+If one is missing, the task is not ready.
+
+## Anti-Pattern 3: Do Everything in One Conversation
+
+### Symptom
+
+Requirements, implementation, tests, and bug fixes share one session.
+
+### What Happens
+
+Context becomes contaminated. Accepted decisions, hypotheses, and failed attempts are mixed together, and output becomes less stable as the conversation grows.
+
+### Response
+
+**One session, one responsibility.** Transfer only structured decisions, constraints, evidence, and next actions between sessions.
+
+## Anti-Pattern 4: Teach Every Agent the Rules Manually
+
+### Symptom
+
+Every new conversation starts by rewriting what the agent may and may not do.
+
+### What Happens
+
+Wording changes, rules drift, preparation cost grows, and behavior differs between sessions.
+
+### Response
+
+Store shared rules in versioned configuration, templates, or system instructions. Inject them consistently and keep task-specific context separate.
+
+## Anti-Pattern 5: Treat Working Test Output as a Permanent Archive
+
+### Symptom
+
+Old test output accumulates in the same file the agent uses to understand the current state.
+
+### What Happens
+
+The agent cannot distinguish the latest result from historical snapshots. Stale evidence contaminates current decisions.
+
+### Response
+
+**Separate working state from retained evidence.** Keep only the latest result in the agent’s operational context. Store evidence required for releases, regulation, or incident response separately with timestamp, version, environment, result, and approver. Do not preserve all noise, and do not delete required audit evidence.
+
+## Anti-Pattern 6: Allow Well-Intentioned Scope Expansion
+
+### Symptom
+
+The agent changes unrelated files, adds unrequested documentation, or performs a refactor that was not part of the task.
+
+### What Happens
+
+The change surface becomes unpredictable and review cost rises. Unexpected edits are discovered late and are difficult to trace.
+
+### Response
+
+Define prohibitions and non-goals explicitly. A predictable boundary is often more valuable than an open-ended instruction to “improve anything relevant.”
+
+## Summary
+
+These failures share one cause: they depend on human attention and memory.
+
+“Be careful next time” is not a control. **Prevent recurring failure with structure.**
 
 ---
 
-## Anti-Pattern 3: 1つの会話で全部やろうとする
-
-### 症状
-
-要件確認、実装、テスト、バグ修正を同一セッションで進める。
-
-### 何が起きるか
-
-コンテキストが汚染される。会話が長くなるほどモデルの出力がブレ始め、以前の議論内容が新しい出力に干渉する。最終的に、何が決定事項で何が仮説なのかすら曖昧になる。
-
-### 対処法
-
-**1セッション1責務。** 要件は要件の会話で、実装は実装の会話で、テストはテストの会話で。会話間の引き継ぎは構造化された情報で行う。
-
----
-
-## Anti-Pattern 4: Agent に毎回ルールを口頭で教える
-
-### 症状
-
-新しい会話を開くたびに、「やっていいこと」「やってはいけないこと」を手で書き直す。
-
-### 何が起きるか
-
-毎回の記述が微妙に異なり、ルールにブレが生じる。ある会話では許可されていたことが、別の会話では禁止される。Agent の振る舞いに一貫性がなくなる。そして何より、毎回の準備コストが大きい。
-
-### 対処法
-
-**ルールを設定ファイルに定義し、自動で読み込ませる。** 設定ファイル、テンプレート注入、システムプロンプト——手段は問わないが、ルールが会話の度に人力で再入力される状態は排除する。
-
----
-
-## Anti-Pattern 5: テスト結果を永久保存しようとする
-
-### 症状
-
-テスト結果ファイルを恒久的なデータとして扱い、古い結果がどんどん蓄積する。
-
-### 何が起きるか
-
-テスト結果ファイルが肥大化し、最新の状態なのか過去のスナップショットなのか見分けがつかなくなる。古いテスト結果が新しい判断を汚染する。
-
-### 対処法
-
-**作業状態と監査証跡を分離する。** Agentが次の判断に使う作業用の結果ファイルは「直近1回」だけに保ち、コンテキストを汚染させない。一方、規制、障害調査、リリース判定に必要な証跡は、実行日時、対象バージョン、環境、結果、承認者とともに改変されにくい保管先へ残す。作業ファイルをアーカイブにせず、必要な証跡まで消さないことが重要である。
-
----
-
-## Anti-Pattern 6: Agent の「善意の暴走」を放置する
-
-### 症状
-
-指示していないファイルを Agent が勝手に修正する。関連ドキュメントを自主的に追加する。依頼していないリファクタリングを行う。
-
-### 何が起きるか
-
-一見すると「気が利く」ように見える。しかし実際には、変更の範囲が予測不可能になり、レビューコストが跳ね上がる。変更しないはずだったファイルが変わっていたことに後から気づき、原因追跡に時間がかかる。
-
-### 対処法
-
-**「やってはいけないこと」を明示的に定義する。** 禁止事項リストを設け、Agent が善意で逸脱する余地を構造的に潰す。「やるべきこと」の定義より、「やってはいけないこと」の定義の方が、実際には重要だ。
-
----
-
-## まとめ
-
-これらの失敗パターンに共通するのは、**「人間の意志力や注意力に依存している」** ことだ。
-
-「気をつける」「次から気をつける」では、同じ失敗は必ず繰り返される。
-
-解決策は常に同じだ。**意志力に頼らず、構造で防ぐ。**
-
----
-
-[付録B → AI 出力の検収戦略](verification-strategies.md) · [付録C → 早見表](cheatsheet.md) · [← README に戻る](../README.ja.md)
+[Appendix B → Verification Strategies](verification-strategies.md) · [Appendix C → Cheat Sheet](cheatsheet.md) · [← English README](../README.md)

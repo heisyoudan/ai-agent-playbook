@@ -1,264 +1,176 @@
-# 付録B — AI 出力の検収戦略
+# Appendix B — Verification Strategies for AI Output
 
-AI がコードを書いた。レビューで全行を読む時間はない。しかし品質は担保しなければならない。
+[日本語](verification-strategies.ja.md) · **English** · [简体中文](verification-strategies.zh-CN.md)
 
-この付録では、AI の成果物を**効率的かつ確実に検証する**ための実践手法をまとめる。
+## Why Verification Matters
 
----
+AI can generate thousands of lines faster than a human can review them. Verification therefore becomes the bottleneck and the control surface of AI-assisted delivery.
 
-## なぜ検収能力が重要なのか
-
-AI の実行力が上がるほど、**その出力を正しく評価する人間の能力**が律速になる。
-
-AI が1時間で3000行のコードを生成できても、人間がそれを検証するのに半日かかるなら、ボトルネックは AI ではなく人間側にある。
-
-つまり、**AI 協業の生産性は、AI の能力ではなく、人間の検収能力で決まる。**
+**Productivity is limited not only by execution speed, but by the speed at which trustworthy acceptance can be reached.**
 
 ---
 
-## 戦略1: AI に自己検証させる
+## Strategy 1: Require Self-Verification
 
-最も効率的な検収は、**AI 自身に検証プロセスを実行させること**だ。
+Ask the agent to execute applicable checks, not merely suggest them.
 
-```
-タスク指示:
-「ユーザー一覧のソート機能を実装せよ。
- 完了後、以下を自分で検証せよ：
- - ビルドが通ること
- - 既存テストが全パスすること
- - 3カラムでの昇順・降順ソートの動作確認テストを書いて実行すること
- - TypeScript strict mode エラーがないこと」
+```text
+Implement sorting for the user table. Before reporting completion:
+- build the project;
+- run the existing test suite;
+- add and run ascending/descending tests for all three columns;
+- confirm that TypeScript strict mode reports no error.
 ```
 
-AI が検証まで完了した状態で報告してくれば、人間は結果を確認するだけだ。
+“Write tests” leaves execution to the reviewer. “Write, run, and report the results” produces evidence.
 
-**ポイント**: 「テストを書け」より「テストを書いて実行し、結果を報告せよ」の方が検収コストが低い。
+Self-verification is a first line of defense, not independent acceptance. The agent may misread its own output or omit a relevant check.
 
----
+## Strategy 2: Review the Delta
 
-## 戦略2: 差分審査（Diff Review）
+Do not reread the whole repository. Start with the declared and actual change surface.
 
-全行を読む必要はない。**変更差分だけを読む。**
-
-```
-検収手順:
-1. AI に「変更したファイルと変更内容の要約」を報告させる
-2. 報告された差分だけを確認する
-3. 「変更していない」と報告されたファイルが本当に変更されていないか spot check する
+```text
+1. Require a list of changed files and a purpose for each change.
+2. Inspect the diff and compare it with the task boundaries.
+3. Check for unexpected files, dependencies, generated artifacts, and formatting churn.
+4. Review high-risk logic in full, even if the diff is small.
 ```
 
-これにより、3000行の出力でも、実質的な確認対象は数十行〜数百行に圧縮される。
+Diff review compresses the inspection surface, but it does not prove that an unchanged dependency or assumption is correct.
 
-**注意**: Anti-Pattern 6（善意の暴走）への対策として、「変更意図のないファイルまで変更していないか」の確認は必須。
+## Strategy 3: Use an Independent Review Context
 
----
+Review implementation in a separate session or role.
 
-## 戦略3: 別の Agent にレビューさせる
+```text
+Purpose: [task objective]
+Changed files: [list]
+Acceptance criteria: [checks]
 
-実装 Agent とは別の会話（別のコンテキスト）でレビューを実行する。
-
+Review for:
+- satisfaction of acceptance criteria;
+- consistency with existing architecture;
+- out-of-scope changes;
+- security, privacy, and failure behavior;
+- missing tests or evidence.
 ```
-レビュー会話への引き継ぎ:
-「以下のファイルが変更された。変更目的はXXXである。
- 以下の観点でレビューせよ：
- - 検収基準を満たしているか
- - 既存コードとの整合性
- - 指示範囲外の変更がないか
- - セキュリティ上の問題がないか」
-```
 
-**なぜ別の Agent か**: 同じ会話内でレビューさせると、実装時のコンテキストに引きずられて「自分が書いたコードを肯定する」バイアスが生まれる。別の会話＝別のコンテキスト＝客観的なレビュー。
+A separate context avoids inheriting all implementation justifications and failed attempts. Independence improves challenge, but a second model is still not a source of truth.
 
-これはまさに第4章（コンテキスト分離戦略）の実践応用だ。
+## Strategy 4: Automate Quality Gates
 
----
+Machines should decide what machines can decide.
 
-## 戦略4: 品質ゲート（Gate）の自動化
-
-人間の目に頼らず、**機械的に検証できる項目は自動化する。**
-
-| チェック項目 | 自動化手段 | 人間の判断が必要か |
+| Check | Typical mechanism | Human judgment? |
 |---|---|---|
-| ビルドが通るか | CI / ビルドスクリプト | ❌ 不要 |
-| 既存テストが通るか | テストランナー | ❌ 不要 |
-| Lint エラーがないか | Linter | ❌ 不要 |
-| 型エラーがないか | 型チェッカー | ❌ 不要 |
-| 新規パッケージが追加されていないか | diff チェック | ❌ 不要 |
-| 設計意図に合っているか | — | ✅ 必要 |
-| ユーザー体験が適切か | — | ✅ 必要 |
+| Build succeeds | build command / CI | No |
+| Existing tests pass | test runner | No |
+| Lint and type checks pass | linter / compiler | No |
+| No unapproved dependency | lockfile or manifest diff | No |
+| Design intent is correct | review | Yes |
+| User experience is appropriate | inspection and testing | Yes |
+| Business behavior is valid | domain owner | Yes |
 
-**原則**: 機械で判定できるものは機械に任せ、人間は機械が判定できない項目だけに集中する。
+Automate deterministic checks so human attention can focus on intent, tradeoffs, and risk.
 
----
+## Strategy 5: Verify in Stages
 
-## 戦略5: 段階的検収
-
-大きな成果物を一度に検収しようとしない。**各フェーズの完了時に小さく検収する。**
-
-```
-❌ 悪い例:
-全機能完成 → まとめてレビュー → 大量の手戻り
-
-✅ 良い例:
-データモデル完成 → 検収（5分） → API 実装完成 → 検収（10分） → UI 実装完成 → 検収（10分）
-```
-
-第2章（タスク粒度）で述べた「1タスク1目的」の原則は、検収の効率化にも直結する。タスクが小さければ、検収も軽い。
-
----
-
-## 戦略6: AI が苦手な領域を知る
-
-すべてを AI に任せられるわけではない。以下の領域では、**人間の判断が不可欠**だ。
-
-### AI に任せてよい領域
-
-- 既知パターンの実装（CRUD、フォーム、テーブル表示）
-- テストコードの生成
-- リファクタリング（明確なルールに基づくもの）
-- ドキュメント生成
-- 定型的なエラーハンドリング
-
-### 人間の判断が必要な領域
-
-- **セキュリティ設計**: 暗号、認証、認可のロジックは AI に任せきりにしない。AI は「よくあるパターン」を出力するが、あなたのシステム固有の脅威モデルは理解していない。
-- **アーキテクチャ判断**: システム全体の構造に影響する設計決定は、人間が責任を持つ。
-- **ビジネスロジックの正当性**: AI はコードとして正しいものを書くが、そのロジックが業務的に正しいかどうかは判断できない。
-- **パフォーマンス設計**: AI はベンチマークなしに「これが速い」と主張することがある。計測と判断は人間が行う。
-- **法規制・コンプライアンス**: 法的要件の解釈と適用は AI に依存してはならない。
-
----
-
-## 戦略7: エスカレーション — 複数モデルによる専門家会議
-
-戦略1から6は、Agentの出力を効率よく検証するための手法である。  
-ただし、これらの手法では対処しきれない状況がある。
-
-**Agentが幻覚に陥っている場合、あるいは問題の構造そのものを把握できていない場合である。**
-
-このとき、同じAgentに繰り返し再試行させても改善は見込めない。誤った前提の上で作業を続けるだけであり、時間を消費するだけの結果になりやすい。
-
-### いつエスカレーションすべきか
-
-以下のいずれかに該当したら、Agentの作業を停止する。
-
-- 同じ問題に対してAgentが複数回試行しても解決に至らない
-- Agentの出力に、事実と異なる前提や存在しないAPIへの参照が含まれている
-- アーキテクチャ上の判断が必要で、コードレベルの試行だけでは結論が出ない
-- 複数の解決方針が考えられ、どれを選ぶべきかAgentでは判断できない
-
-### 停止時にAgentが出力すべきもの
-
-Agentは「できなかった」とだけ報告するのではなく、**構造化された問題報告**を出力する必要がある。
+Do not wait for a large feature to finish before checking it.
 
 ```text
-■ 背景
-  このタスクで何を達成しようとしていたか
-
-■ 現在の状況
-  どこまで進み、どこで行き詰まったか
-
-■ 関連コード
-  問題に直接関係するファイルと該当箇所
-
-■ 発生している問題
-  何が起きているか。エラー内容、不整合、想定との乖離
-
-■ 試行済みのアプローチ
-  何を試し、なぜうまくいかなかったか
-
-■ 未実装の項目
-  本来完了すべきだったが着手できていない内容
+data model → verify
+API behavior → verify
+UI integration → verify
+end-to-end behavior → verify
 ```
 
-この報告が、次の段階への入口になる。
+Small gates reduce the amount of invalid work built on top of an early mistake. Stage boundaries should match meaningful responsibilities, not arbitrary tiny edits.
 
-### 専門家会議の進め方
+## Strategy 6: Know What Requires Human Judgment
 
-問題報告を手にしたら、**推論能力の高い複数のモデルを使い、相互レビューを繰り返す。**
+### Suitable for Delegated Execution
 
-単に複数のモデルに同じ質問を投げて回答を比べるのではない。  
-一方の提案をもう一方に評価させ、その反論をさらに元のモデルに返す。**モデル同士に議論させる**のである。
+- established implementation patterns;
+- test generation and routine automation;
+- rule-based refactoring;
+- documentation drafts;
+- deterministic error handling.
+
+### Requires Explicit Human Ownership
+
+- **Security:** authentication, authorization, secrets, and threat models;
+- **Architecture:** decisions that constrain the whole system;
+- **Business correctness:** whether code reflects real domain rules;
+- **Performance:** claims that require measurement under representative load;
+- **Legal and compliance:** interpretation and accountability;
+- **Irreversible external actions:** production deletion, payment, publication, or communication.
+
+The line is not “AI can” versus “AI cannot.” It is whether failure impact, uncertainty, and responsibility can be delegated safely.
+
+## Strategy 7: Escalate Stalled Problems
+
+Stop repeated execution when:
+
+- several attempts fail without a new hypothesis;
+- output references facts or APIs that do not exist;
+- the problem requires an architectural decision;
+- several viable directions exist and the choice depends on tradeoffs outside the task.
+
+### Structured Stop Report
 
 ```text
-Agentが問題報告を出力
-  ↓
-人間が報告内容を確認し、推論型モデルAに提示 → 解決策Aを得る
-  ↓
-解決策AをモデルBに渡し、批評・改善案を求める → 反論Bを得る
-  ↓
-反論BをモデルAに返し、再反論または修正案を求める
-  ↓
-双方が合意できる方針に収束するまで繰り返す
-  ↓
-収束した方針をAgentに持ち帰り、コードレベルで実現可能性を検証させる
-  ↓
-実現可能であれば、作業を再開する
+Background:       intended outcome
+Current state:    progress and exact blocking point
+Relevant code:    files and locations
+Observed problem: errors, contradictions, or unexpected behavior
+Attempts:         approaches tried and why they failed
+Unfinished work:  acceptance criteria not yet met
+Evidence:         logs, tests, documentation, measurements
 ```
 
-これは、いわばモデル間での**レッドチーム・ブルーチーム演習**である。  
-一方が提案し、もう一方が攻撃する。攻撃を受けた側は防御するか、案を修正する。このサイクルを回すことで、単独のモデルでは見落としがちな弱点が洗い出される。
+### Multi-Model Deliberation
 
-ただし、モデル数を増やすだけで事実性が保証されるわけではない。複数モデルが同じ誤った前提を共有することもある。API仕様、セキュリティ要件、法規制、性能値など検証可能な論点は、最終的に一次資料、実行結果、計測値へ戻して確認する。
+A difficult problem can be presented to more than one reasoning model. One proposes a solution, another critiques its assumptions, and the first revises it. The human moderates the debate and decides when it has converged enough to test.
 
-ここでの人間の役割は、議論の司会者である。  
-どちらの主張が妥当かを判断し、論点がずれたら軌道修正し、収束のタイミングを決める。
+```text
+structured problem report
+  ↓
+model A proposes
+  ↓
+model B attacks assumptions and failure modes
+  ↓
+model A revises
+  ↓
+human selects a testable direction
+  ↓
+working agent validates it against code and evidence
+```
 
-重要なのは、**作業用のAgentと、問題解決のためのモデルを分けている**ことである。
+Agreement between models does not establish truth. Models can share the same mistaken premise. Verify APIs, security requirements, legal claims, and performance assertions against primary documentation, source code, tests, and measurement.
 
-作業用Agentはプロジェクトのコンテキストに最適化されているが、視野が狭くなりやすい。  
-推論型モデルはプロジェクト固有の文脈は持たないが、より広い知識と推論力を持つ。
+## Three Acceptance Questions
 
-この役割分担は、第4章で述べたコンテキスト分離の応用でもある。問題の性質に応じてセッションを分け、それぞれの長所を引き出す。
+1. **Are all predeclared acceptance criteria satisfied with evidence?**
+2. **Did the change remain inside the approved scope?**
+3. **Is enough state recorded for the next phase or future investigation?**
 
-### なぜこの手順が有効か
+Keep the agent’s working state compact, but retain release and audit evidence separately with the relevant version and environment.
 
-単一のAgentに何度も再試行させることは、同一の視点から同一のアプローチを繰り返すことに近い。
+## Summary
 
-モデル同士に相互批評を行わせることで、次の効果が得られる。
+Reliable verification combines:
 
-- **弱点の炙り出し**: 一方の提案に対してもう一方が攻撃することで、見落としや前提の誤りが顕在化する
-- **幻覚の相互検証**: あるモデルが事実と異なる主張をしても、もう一方が指摘できる
-- **方針の堅牢化**: 双方の批評を経て残った案は、単独で考えた案よりも穴が少ない
-- **収束による合意形成**: 「どちらかを選ぶ」のではなく、議論を経て双方が納得した案が得られる
+1. self-checks;
+2. delta review;
+3. independent review context;
+4. automated gates;
+5. staged acceptance;
+6. human ownership of high-risk judgment;
+7. structured escalation.
 
-最終的な判断は人間が行う。モデルは議論の当事者であり、人間はその結論を採用するかどうかを決める立場である。
-
----
-
-## 検収の判断基準
-
-検収時に自問すべき3つの質問：
-
-1. **事前に定義した検収基準を、すべて満たしているか？**  
-   → 検収基準がなければ、そもそも検収できない（Anti-Pattern 2 参照）
-
-2. **指示した範囲外の変更がないか？**  
-   → 変更ファイル一覧を確認（Anti-Pattern 6 対策）
-
-3. **次のフェーズに引き継ぐために十分な情報が記録されているか？**  
-   → ログ、判断根拠、残課題が記録されている（Anti-Pattern 1 対策）
-
----
-
-## まとめ
-
-検収能力は、AI 協業における最も過小評価されたスキルだ。
-
-AI の実行力が上がるほど、タスクの消化速度は検収速度に制約される。
-
-検収を効率化する方法は明確だ。
-
-1. **AI に自己検証させる**（検証対象を減らす）
-2. **差分だけを見る**（確認範囲を圧縮する）
-3. **別の Agent にレビューさせる**（客観性を確保する）
-4. **機械検証を自動化する**（人間は判断だけに集中する）
-5. **段階的に検収する**（手戻りコストを最小化する）
-6. **AI の限界を理解する**（任せるべきでない領域を知る）
-7. **複数モデルにエスカレーションする**（単一視点の限界を超える）
-
-また、検収結果の保持方針は用途別に分ける。Agentが参照する作業用状態は最新結果に絞り、リリース判定や監査に必要な証跡は、対象バージョンと実行環境を紐づけて別途保存する。
+The goal is not to read every generated line. It is to construct an evidence chain strong enough to justify acceptance.
 
 ---
 
-[← README に戻る](../README.ja.md)
+[Appendix A → Failure Patterns](anti-patterns.md) · [Appendix C → Cheat Sheet](cheatsheet.md) · [← English README](../README.md)

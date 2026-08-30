@@ -1,134 +1,100 @@
-# 付録C — 早見表（Cheat Sheet）
+# Appendix C — Cheat Sheet
 
-全章の核心原則を1枚にまとめた早見表。迷ったとき、ここに立ち戻る。
+[日本語](cheatsheet.ja.md) · **English** · [简体中文](cheatsheet.zh-CN.md)
 
----
+## Three Core Principles
 
-## 3つの核心原則
-
-```
-1. AI は実行層に過ぎない。
-2. プロセスこそが生産性である。
-3. 制約こそが安定性の源泉である。
+```text
+1. AI is the execution layer.
+2. Process creates productivity.
+3. Constraints create stability.
 ```
 
----
+## Five Rules for Task Design
 
-## タスク設計の5原則（第2章）
-
-| # | 原則 | 自問 |
+| # | Rule | Question |
 |---|---|---|
-| 1 | 1タスク1目的 | このタスクに目的が2つ以上入っていないか？ |
-| 2 | 完了条件を明示 | 「何ができたら終わり」を定義したか？ |
-| 3 | 境界を明示 | 「何をやらないか」を書いたか？ |
-| 4 | 検証可能にする | AI が自分で出力を検証できる粒度か？ |
-| 5 | 文脈を閉じる | 必要な情報がすべて1箇所に揃っているか？ |
+| 1 | One task, one objective | Are multiple outcomes mixed together? |
+| 2 | Define completion | What observable evidence means done? |
+| 3 | Define boundaries | What must not be changed? |
+| 4 | Make it verifiable | Can the agent test or inspect its result? |
+| 5 | Close the context | Is the necessary information together? |
 
----
+## Minimum Task Contract
 
-## タスク発行の4必須項目（第2・5章）
-
-```
-┌─────────────────────────────────────────────┐
-│  summary          : 何を達成するか          │
-│  currentAction    : 今回具体的に何をするか   │
-│  acceptanceCriteria: 何をもって完了とするか   │
-│  boundaries       : 何をやらないか           │
-└─────────────────────────────────────────────┘
-→ この4つが揃わなければ、タスクを引き継がない。
+```text
+summary:             desired outcome
+currentAction:       work in this execution
+acceptanceCriteria:  observable proof of completion
+boundaries:          prohibited changes and non-goals
 ```
 
----
+Do not hand off the task until all four fields are complete.
 
-## プロンプト品質の4軸（第3章）
+## Four Axes of Prompt Quality
 
-| 軸 | 基準 |
+| Axis | Check |
 |---|---|
-| **情報密度** | 1文あたりの意味量が最大化されているか |
-| **タスク境界** | やること・やらないことが明示されているか |
-| **コンテキスト品質** | 今回のタスクに直接関係する情報だけか |
-| **制約の明確さ** | 暗黙の前提が言語化されているか |
+| Information density | Does every sentence affect execution? |
+| Task boundaries | Are scope and non-goals explicit? |
+| Context quality | Is unrelated history removed? |
+| Constraint clarity | Are implicit expectations stated? |
 
-**自問チェック**:
-1. このプロンプトだけで AI はタスクを開始できるか？
-2. タスクと無関係な情報が含まれていないか？
-3. AI が「解釈の余地」を持つ箇所が残っていないか？
+## Context Isolation
 
----
+Start a new session when responsibility changes, current state becomes hard to restate, old topics repeatedly return, or output quality declines. A handoff contains objective, decisions, specification, constraints, evidence, and acceptance criteria.
 
-## コンテキスト分離のルール（第4章）
+## Six Elements of Multi-Agent Management
 
-| いつ新しいセッションを開くか |
-|---|
-| 責務が変わるとき（要件→実装→テスト→レビュー） |
-| 会話が15-20往復を超えたとき |
-| 「さっきの話に戻るけど」が出たとき |
-| 同じ指示で以前より悪い出力が出たとき |
-
-**会話間ブリッジの必須項目**: 目的・決定事項・技術仕様・制約・検収基準
-
----
-
-## 複数 Agent 管理の6要素（第5章）
-
-```
-1. 役割定義      → 誰が何をやるのか
-2. 制約定義      → やってはいけないこと
-3. 報告形式      → 何を・なぜ・残課題・次のアクション
-4. 検収基準      → 客観的な完了条件
-5. 失敗時の対応    → 問題時の行動ルール
-6. 引き継ぎ定義    → フェーズ間の引き継ぎプロトコル
+```text
+1. Roles            → who owns what
+2. Constraints      → what each role must not do
+3. Reporting        → changes, reasons, evidence, remaining work
+4. Acceptance       → objective completion conditions
+5. Failure handling → stop, record, escalate, recover
+6. Handoffs         → explicit state transfer between phases
 ```
 
----
+## Workflow Design
 
-## ワークフロー設計の原則（第6章）
-
-| 原則 | 内容 |
+| Principle | Meaning |
 |---|---|
-| **テンプレート駆動** | 自由理解ではなく、固定手順に従わせる |
-| **正常パスを圧縮** | ルールは増やすものではなく、研ぎ澄ますもの |
-| **品質ゲート（Gate）** | フェーズ間の品質保証。意志力ではなく構造で防ぐ |
-| **アトミックロールバック** | 理由記録＋状態変更＋引き継ぎ＝同時に完了 |
-| **唯一の情報源（SSOT）** | タスク状態を反映する場所はデータストアの1箇所だけ |
+| Template-driven | Follow a defined path; switch to a defined exception case |
+| Compressed normal path | Replace and refine rules instead of endlessly adding them |
+| Quality gates | Block transitions until evidence exists |
+| Atomic rollback | Record reason, change state, and hand off together |
+| Single source of truth | Keep authoritative state in one structured system |
 
----
+## Verification Checklist
 
-## 検収チェックリスト（付録B）
-
+```text
+□ Agent performed applicable self-checks
+□ Changed files and diff were reviewed
+□ No out-of-scope modification exists
+□ Machine-verifiable checks are automated
+□ Security, architecture, and business logic received human review
+□ Claims are supported by primary sources or runtime evidence
+□ A blocked agent stopped and produced a structured report
 ```
-□ AI に自己検証させたか
-□ 変更差分のみ確認したか（全行読みしていないか）
-□ 指示範囲外の変更がないか
-□ 機械検証可能な項目は自動化したか
-□ セキュリティ・アーキテクチャ・ビジネスロジックは人間が確認したか
-□ Agentが行き詰まった場合、複数モデルへのエスカレーションを行ったか
-```
 
----
+## Failure Patterns
 
-## 失敗パターン早見表（付録A）
-
-| # | パターン | 一言 |
+| # | Pattern | Response |
 |---|---|---|
-| 1 | 先に状態変更、後からログ | アトミックな操作にする |
-| 2 | 不完全なタスク定義で引き継ぐ | 4項目必須 |
-| 3 | 1会話で全部やる | 1セッション1責務 |
-| 4 | 毎回ルールを口頭で教える | 設定ファイルに定義する |
-| 5 | テスト結果を永久保存 | 作業状態と監査証跡を分離 |
-| 6 | Agent の善意の暴走を放置 | 禁止事項を明示する |
+| 1 | State first, log later | Make the transition atomic |
+| 2 | Incomplete task handoff | Require the four fields |
+| 3 | Everything in one session | One responsibility per session |
+| 4 | Repeating rules manually | Version shared instructions |
+| 5 | Working output as archive | Separate state from evidence |
+| 6 | Well-intentioned scope drift | State prohibitions and non-goals |
 
----
+## Final Question
 
-## 最後の自問
+```text
+Can this system reproduce the same quality without me?
 
-```
-「この仕組みは、自分がいなくても、同じ品質を再現できるか？」
-
-→ Yes なら、それはプロセスになっている。
-→ No なら、まだ属人的スキルに依存している。
+Yes → it is a process.
+No  → it still depends on personal skill.
 ```
 
----
-
-[← README に戻る](../README.ja.md)
+[← English README](../README.md)

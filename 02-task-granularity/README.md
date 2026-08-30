@@ -1,104 +1,59 @@
-# 02 — タスク粒度がすべてを決める
+# 02 — Task Granularity Determines Everything
 
-## Agentの性能より、タスク設計のほうが重要
+[日本語](README.ja.md) · **English** · [简体中文](README.zh-CN.md)
 
-最近は、「どのAgentが最強か」「どのツールを導入すべきか」といった議論をよく目にする。
+## Task Design Matters More Than Agent Performance
 
-私の答えは明確だ。
+Discussions about AI development often focus on which agent or tool is strongest. Once the environment is installed and connected, however, the more common limitation is not a lack of model capability.
 
-**どれほど優秀なAgentでも、タスク設計を誤れば、安定した成果は得られない。**
+**Even an excellent agent cannot produce reliable results from a poorly designed task.**
 
-もちろん、インストールや接続が済んでいない段階では、その前提自体が成り立たない。ツールが作業環境に組み込まれていなければ、実務で活用することはできない。
+What is usually missing is a task shape that lets the agent understand, execute, verify, and finish the work without losing focus.
 
-ただ、仮に環境が十分に整っていたとしても、多くの人にとって本当に不足しているのは、さらに強力なAgentではない。
+## When a Task Is Too Large
 
-**不足しているのは、AIを実務に落とし込むためのタスク設計である。**
+“Build the entire administration backend” sounds efficient, but it hides requirements, boundaries, interfaces, screen behavior, constraints, and acceptance decisions.
 
----
+The context needed to make such a task safe can cost more than the implementation itself. As context expands, the agent loses focus, output becomes inconsistent, rework grows, and a human eventually has to reconstruct the whole effort.
 
-## タスクが大きすぎる場合
+## When a Task Is Too Small
 
-たとえば、「AIにバックエンド管理システムを丸ごと作らせる」といった依頼は、理論上は可能に見えるかもしれない。
+Over-fragmentation creates a different problem. Work that could close in one interaction requires three or four handoffs. Communication and decision overhead become larger than the work.
 
-しかし実際には、その前段階として、膨大な設計書、境界定義、インターフェース仕様、画面遷移、制約条件などを整備しなければならない。
+Splitting a task is itself a design activity. If every tiny edit becomes a separate task, the human starts serving the workflow instead of benefiting from it.
 
-**入力を整えるためのコストが、実装そのものを上回ってしまうことさえある。**
+## Finding the Right Granularity
 
-タスクが大きすぎると、AIは焦点を失いやすい。文脈が膨らみすぎて出力の品質が不安定になり、手戻りが増え、最後は人間が全体を立て直すことになる。
+The right task is both:
 
----
+- **Small enough** for the agent to complete independently and self-verify.
+- **Large enough** to close one useful loop in a single session.
 
-## タスクが小さすぎる場合
-
-一方で、タスクを細かく分割しすぎることにも問題がある。
-
-本来なら1回のやり取りで終えられる実装を、3往復、4往復とかけて進めることになる。すると、コミュニケーションの往復コストが大きくなり、全体の効率はかえって落ちる。
-
-タスクを分ける行為そのものにも判断コストがある。分割が過剰になると、自分がAgentを使っているのか、それともAgentに合わせて振り回されているのか、わからなくなる。
-
----
-
-## 最適な粒度はどこにあるのか
-
-AIと協業するうえで、最も重要なスキルの一つは、**タスクを適切な粒度に切り出すこと**だ。
-
-最適な粒度には、次の2つの条件がある。
-
-- **十分に小さいこと**  
-  AIが独立して完了でき、自己検証まで行える単位であること
-
-- **十分に大きいこと**  
-  1回の会話でひとつのループを閉じられる単位であること
-
-この2つを同時に満たす地点を見つける必要がある。
-
-具体例を挙げると、次のようになる。
-
-| 粒度 | 例 | 問題 |
+| Size | Example | Result |
 |---|---|---|
-| **大きすぎる** | 「管理画面を全部作って」 | 文脈が膨張し、暴走や手戻りが起きやすい |
-| **適切** | 「ユーザー一覧画面のテーブルコンポーネントを実装してほしい。ソートとページネーション付き。API仕様は以下のとおり」 | 1回の会話で完結しやすく、検証もしやすい |
-| **小さすぎる** | 「まずヘッダーだけ作って」→「次にボディを」→「次にページネーションを」 | 会話回数が増え、管理コストが上がる |
+| **Too large** | “Build the whole admin screen.” | Context expands; scope drift and rework become likely. |
+| **Appropriate** | “Implement the user-table component with sorting and pagination using the following API contract.” | The task can finish and be verified as one loop. |
+| **Too small** | “Create the header,” then “create the body,” then “add pagination.” | Handoffs dominate execution. |
+
+## The Shift in Question
+
+I used to ask, “Can AI do this task?”
+
+Now I ask, **“How should I design this task so that AI can complete it reliably?”**
+
+The focus moves from judging the model to designing the work. Agent capability matters, but the human controls the objective, boundaries, context, and evidence required for completion.
+
+## Five Practical Rules
+
+1. **One task, one objective** — do not combine unrelated outcomes.
+2. **Define completion** — state what observable evidence means “done.”
+3. **Define boundaries** — state what is out of scope and must not change.
+4. **Make it verifiable** — choose a unit the agent can test or inspect.
+5. **Close the context** — place the required information together.
 
 ---
 
-## 思考の転換点
+> **Practice note**
+> Maestro requires four fields before a task can execute: `summary`, `currentAction`, `acceptanceCriteria`, and `boundaries`. They represent the outcome, this execution, the proof of completion, and the non-goals. An incomplete task contract is rejected before work begins.
 
-この段階で、私の考え方は大きく変わった。
-
-以前は、「AIにこのタスクができるか」を繰り返し考えていた。
-
-今は、**「このタスクを、AIがより安定して完了できるように、どう設計すべきか」** を考えるようになった。
-
-問いの焦点が、AIの性能評価から、タスク設計そのものへ移ったのである。
-
-AIの能力を引き出す鍵は、AIの側だけにあるわけではない。タスクをどう定義し、どう渡すかを決める人間の設計力にかかっている。
-
----
-
-## タスク設計の実践指針
-
-1. **1タスク1目的**  
-   ひとつのタスクに複数の目的を詰め込まない。
-
-2. **完了条件を明示する**  
-   何ができたら完了なのかを最初に定義する。
-
-3. **境界を明示する**  
-   今回扱う範囲と、扱わない範囲を明確にする。
-
-4. **検証可能な単位にする**  
-   AI自身が出力を確認しやすい粒度まで落とし込む。
-
-5. **文脈を閉じる**  
-   そのタスクに必要な情報が、ひとまとまりで揃っている状態をつくる。
-
----
-
-> **実践ノート**  
-> 私が設計しているAgent協業フレームワーク「Maestro」では、タスク発行時に `summary`、`currentAction`、`acceptanceCriteria`、`boundaries` の4項目を必須にしている。  
-> それぞれ、目的、今回の実行内容、検収基準、非目標を表す。  
-> この4項目が揃っていなければ、タスクは実行に進めない。  
-> こうすることで、定義が曖昧なまま実行が始まる失敗パターンを、構造の段階で抑えられるようにしている。
-
-[次章 → 「複雑な極簡」というプロンプト哲学](../03-prompt-philosophy/README.md)
+[Next → The Prompt Philosophy of “Complex Minimalism”](../03-prompt-philosophy/README.md)

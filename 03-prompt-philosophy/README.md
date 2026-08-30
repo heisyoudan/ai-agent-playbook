@@ -1,118 +1,88 @@
-# 03 — 「複雑な極簡」というプロンプト哲学
+# 03 — The Prompt Philosophy of “Complex Minimalism”
 
-## Prompt Engineeringの本質とは何か
+[日本語](README.ja.md) · **English** · [简体中文](README.zh-CN.md)
 
-多くの人が、プロンプトの書き方を研究している。
+## What Prompt Engineering Really Is
 
-テンプレート集を集め、テクニックを覚え、「こう書けばよい出力が得られる」という型を探している。
+Prompt engineering is often treated as a collection of phrases, templates, and tricks that supposedly unlock better output.
 
-私の捉え方は少し違う。
+My view is different.
 
-**プロンプトに必要なのは、複雑さそのものでも、極端な簡潔さでもない。必要なのは「複雑な極簡」である。**
+**A strong prompt is neither complicated for its own sake nor extremely short. It practices “complex minimalism.”**
 
----
+## What “Complex Minimalism” Means
 
-## 「複雑な極簡」とは何か
+A high-quality prompt satisfies two competing conditions at the same time.
 
-一見すると矛盾した表現に聞こえるかもしれない。  
-それでも、高品質なプロンプトには、ひとつのやり取りの中で相反する2つの条件を同時に満たすことが求められる。
+**1. Enough complexity to provide a complete working context**
 
-**1. 十分に完全なコンテキストを与えるための複雑さ**
+The agent needs the project structure, technology choices, conventions, purpose of the change, boundaries, and acceptance criteria. Without them, it produces something generally plausible but locally wrong.
 
-AIはエスパーではない。  
-プロジェクト構成、技術スタック、コーディング規約、今回の修正目的、検収基準。こうした前提が揃っていなければ、出力はどうしても「一般論としては正しいが、このプロジェクトには合わない」ものになりやすい。
+**2. Enough simplicity to remove irrelevant noise**
 
-**2. 無関係なノイズを極力排除するための簡潔さ**
+More information is not automatically better. Old discussions, unrelated design notes, failed attempts, and artifacts from other tasks compete for attention and gradually distort the result.
 
-一方で、情報を詰め込めばよいわけでもない。  
-過去の議論ログ、関係のない設計メモ、別タスクの残りかす。そうした情報が混ざると、モデルの注意が分散し、出力が少しずつずれていく。
+## Four Axes of Prompt Quality
 
----
+### 1. Information Density
 
-## 高品質なプロンプトを支える4つの軸
-
-プロンプトの品質を左右するのは、言い回しのうまさやテンプレートらしさ、表面的なテクニックではない。
-
-重要なのは、次の4つの軸である。
-
-### 1. 情報密度
-
-無駄な言葉を削り、1文あたりの情報量を高める。
+Remove politeness and filler that do not affect execution. Increase the amount of relevant meaning per sentence.
 
 ```text
-❌ 「もしよければ、できればで構わないのですが、このコンポーネントのスタイルを
-    少し変更していただけると嬉しいのですが...」
+Bad:  “If possible, could you perhaps adjust the styling a little?”
 
-✅ 「UserTableコンポーネント。ヘッダー行の背景色を #f5f5f5 に変更。
-    フォントサイズは 14px。他のスタイルは変更しない。」
+Good: “In UserTable, change the header background to #f5f5f5 and the font
+       size to 14px. Do not change other styles.”
 ```
 
-### 2. タスク境界
+### 2. Task Boundaries
 
-「何をするか」とあわせて、「何を扱わないか」も明示する。
+Describe both what to do and what not to do.
 
 ```text
-✅ 「ソート機能を実装する。対象はフロントエンドのみ。
-    サーバーサイドソートは含めない。既存のAPIレスポンス構造は変更しない。」
+Implement client-side sorting only.
+Do not add server-side sorting or change the API response shape.
 ```
 
-### 3. コンテキストの品質
+### 3. Context Quality
 
-渡す情報は、そのタスクに直接関係するものだけで構成されているべきである。
+Provide only information that directly affects the current task. Remove resolved bugs, unrelated features, abandoned proposals, and conversational leftovers.
 
-過去タスクの残骸、別機能の議論、すでに解決済みの不具合報告。  
-こうしたノイズが増えるほど、出力品質は落ちやすくなる。
+### 4. Constraint Clarity
 
-### 4. 制約の明確さ
-
-暗黙の前提を、言葉として明示する。
+Turn implicit expectations into explicit rules.
 
 ```text
-✅ 「既存のテストを壊さないこと。TypeScript strict mode に準拠すること。
-    新しい依存パッケージは追加しないこと。」
+Keep existing tests passing. Follow TypeScript strict mode.
+Do not add dependencies.
 ```
 
----
+## A Prompt Is an Execution Interface
 
-## プロンプトは人間向けのドキュメントではない
+A prompt is not ordinary prose written to impress a human reader. It is an interface through which a model receives a task.
 
-ここには重要な前提がある。
+That makes the following useful:
 
-**プロンプトは、人間の読者に向けたドキュメントではない。相手はAIモデルである。**
+- remove ceremonial introductions;
+- keep background only when it changes execution;
+- use lists and explicit structure;
+- prefer stated constraints to assumed intent.
 
-そのため、次のような考え方が有効になる。
+The most important operation in prompt design is converting implicit expectations into explicit, testable constraints.
 
-- 丁寧すぎる前置きは不要
-- 背景説明は必要最小限でよい
-- 箇条書きや構造化が有効
-- 暗黙より明示のほうが強い
+## A Practical Review
 
-AIは、人間ほど自然に行間を読むことは得意ではない。  
-その一方で、明示された条件に従って処理することには非常に強い。
+Before sending a task, ask:
 
-だからこそ、**暗黙の期待を、明示的な制約へ変換する**ことが、プロンプト設計における最重要作業になる。
+1. **Can the agent begin using only this prompt and the referenced files?** If not, context is missing.
+2. **Does the prompt contain information unrelated to this task?** If so, remove the noise.
+3. **Where can the agent make an interpretation that would materially change the result?** Replace it with a decision, boundary, or question.
 
----
-
-## 実践での判断基準
-
-プロンプトを書き終えたら、私は次の3点を確認する。
-
-1. **このプロンプトだけで、AIはタスクを開始できるか。**  
-   → 開始できないなら、必要な情報が足りていない。
-
-2. **今回のタスクと直接関係のない情報が含まれていないか。**  
-   → 含まれているなら、ノイズとして削るべきである。
-
-3. **AIに解釈を委ねすぎている箇所が残っていないか。**  
-   → 残っているなら、制約をさらに明示する必要がある。
-
-この3つを満たしたとき、プロンプトは「複雑な極簡」に近づいている。
+When these three checks pass, the prompt approaches complex minimalism.
 
 ---
 
-> **実践ノート**  
-> Maestroでは、タスク契約テンプレートによって、タスク発行時の情報構造を一定水準まで揃えるようにしている。`summary`、`currentAction`、`acceptanceCriteria`、`boundaries` の4フィールドは必須であり、プレースホルダ値が残った状態では先に進めない設計にしている。  
-> これは、情報密度やタスク境界の品質を、人間の注意力だけに依存させず、仕組みの側で担保するという考え方に基づいている。
+> **Practice note**
+> Maestro uses a task-contract template to enforce a minimum information structure. Required fields and placeholder checks move prompt quality from personal attention into the workflow itself.
 
-[次章 → コンテキスト分離戦略](../04-context-isolation/README.md)
+[Next → Context Isolation Strategy](../04-context-isolation/README.md)
