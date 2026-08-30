@@ -261,4 +261,4 @@ AI の実行力が上がるほど、タスクの消化速度は検収速度に�
 
 ---
 
-[← README に戻る](../README.md)
+[← README に戻る](../README.ja.md)

@@ -115,4 +115,4 @@ Gateと権限を調整
 
 ---
 
-[付録A → よくある失敗パターン](anti-patterns.md) · [付録B → AI 出力の検収戦略](verification-strategies.md) · [← README に戻る](../README.md)
+[付録A → よくある失敗パターン](anti-patterns.md) · [付録B → AI 出力の検収戦略](verification-strategies.md) · [← README に戻る](../README.ja.md)

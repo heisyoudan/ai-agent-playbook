@@ -1,6 +1,6 @@
 # AI Agent Playbook — 中文概览
 
-[日本語](README.md) · [English](README.en.md) · **简体中文**
+[日本語](README.ja.md) · [English](README.md) · **简体中文**
 
 > 一套面向 AI Agent 协作的实用方法论，来自两年大型支付系统生产实践。
 

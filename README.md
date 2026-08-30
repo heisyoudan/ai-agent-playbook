@@ -1,113 +1,98 @@
-# AI Agent Playbook
+# AI Agent Playbook — English Overview
 
-**日本語** · [English](README.en.md) · [简体中文](README.zh-CN.md)
+[日本語](README.ja.md) · **English** · [简体中文](README.zh-CN.md)
 
-> *A practical methodology for AI-agent collaboration, distilled from 2 years of production use in large-scale payment systems.*
+> A practical methodology for AI-agent collaboration, distilled from two years of production use in large-scale payment systems.
 
-> AIを2年間、大規模決済プロジェクトで本格運用してきた実践知。  
-> ツールの使い方ではなく、**AI と協業するための思考体系**をまとめたもの。
-
----
-
-## これは何か
-
-私はこの2年間、AI を集中的に業務へ投入してきた。
-
-各種 AI Agent のサブスクリプションを試し、最終的には数千人規模の大型決済プロジェクトで、AI を本格的に開発プロセスに組み込む現場にいた。
-
-その中で気づいたことがある。
-
-**AI との協業で差がつくのは、ツールの選択でも Prompt の巧みさでもない。**
-
-差がつくのは、タスクの分解力、コンテキストの設計力、制約の体系化、そしてワークフローを「製品」として設計できるかどうかだ。
-
-この Playbook は、その実践知を体系的にまとめたものである。
+> This is the English overview. The detailed chapters currently remain in Japanese; the operational-readiness appendix is also available in English.
 
 ---
 
-## 対象読者
+## What This Is
 
-- AI を業務で使い始めたが、安定した成果が出せていないエンジニア
-- Agent を導入したが「結局自分で書いた方が早い」と感じている人
-- AI 協業を組織レベルで推進したいリーダー
-- 面接で「AI をどう使っているか」を聞きたい / 答えたい人
+AI collaboration does not become reliable merely because a stronger model or a better prompt is available.
 
----
+The durable advantage comes from designing the work around the model: choosing the right task size, isolating context, making constraints explicit, verifying outputs, and turning a successful workflow into a repeatable system.
 
-## 目次
+This playbook organizes those practices into a platform-independent methodology.
 
-| 章 | タイトル | 概要 |
-|---|---|---|
-| [01](01-ai-redefines-work/README.md) | **AIが仕事の構造を変えた** | コード力の価値は下がり続けている。では何が残るのか。 |
-| [02](02-task-granularity/README.md) | **タスク粒度がすべてを決める** | 大きすぎれば暴走、小さすぎれば非効率。最適な粒度の見つけ方。 |
-| [03](03-prompt-philosophy/README.md) | **「複雑な極簡」というプロンプト哲学** | 情報密度を最大化し、ノイズを最小化する技術。 |
-| [04](04-context-isolation/README.md) | **コンテキスト分離戦略** | 1セッション1責務。なぜ会話を分けるだけで品質が変わるのか。 |
-| [05](05-agent-management/README.md) | **複数 Agent の管理体系** | 役割定義・制約・報告形式・検収基準をどう設計するか。 |
-| [06](06-workflow-as-product/README.md) | **ワークフローを製品として設計する** | 流れを仕組み化し、制約を定着させ、再利用可能な体系にする。 |
-| [07](07-what-really-matters/README.md) | **本当の競争力はどこにあるか** | AI は実行層。プロセスが生産性。制約が安定性。 |
+## Who It Is For
 
-### 付録
+- Engineers using AI at work but not yet getting consistent results
+- Practitioners who feel that managing an agent can cost more than doing the work themselves
+- Technical leaders introducing AI-assisted delivery at team or organization level
+- Interviewers and candidates discussing practical AI collaboration
 
-| 付録 | タイトル | 概要 |
-|---|---|---|
-| [A](appendix/anti-patterns.md) | **よくある失敗パターン** | 実戦で踏んだ地雷と、その対処法。 |
-| [B](appendix/verification-strategies.md) | **AI 出力の検収戦略** | AI の成果物を効率的に検証するための実践手法。 |
-| [C](appendix/cheatsheet.md) | **早見表（Cheat Sheet）** | 全章の核心原則を1枚にまとめた早見表。 |
-| [D](appendix/operational-readiness.md) | **実運用・ガバナンスチェックリスト** | リスク、データ、承認、計測、監査、停止条件を運用に落とす。 |
+## Core Principles
 
----
-
-## 3行で伝える核心
-
-```
-AI は実行層に過ぎない。
-プロセスこそが生産性である。
-制約こそが安定性の源泉である。
+```text
+AI is the execution layer.
+Process creates productivity.
+Constraints create stability.
 ```
 
-コーディング能力は、今でも重要である。  
-それは旧時代における最も鋭い武器であり、エンジニアの土台そのものだった。
+Coding skill still matters: it supports judgment, debugging, design, and verification. What is changing is the scarcity of producing routine code by hand. The goal is not to discard engineering fundamentals, but to combine them with task design, context management, verification, and workflow engineering.
 
-ただ、AIが前提となる新しい時代では、それだけで十分とは言えない。  
-火器の時代に剣だけを握っていては、新しい戦場で優位を取り続けることは難しい。
+## Contents
 
-必要なのは、剣を捨てることではない。  
-これまで磨いてきた基礎能力を保ちながら、AI協業、タスク設計、コンテキスト管理、検証、ワークフロー設計といった新しい武器を身につけることである。
+| Chapter | Topic | Main idea |
+|---|---|---|
+| [01](01-ai-redefines-work/README.md) | AI Redefines Work *(Japanese)* | AI changes where engineering value and bottlenecks sit. |
+| [02](02-task-granularity/README.md) | Task Granularity *(Japanese)* | A task must be small enough to finish independently and large enough to close one useful loop. |
+| [03](03-prompt-philosophy/README.md) | “Complex Minimalism” *(Japanese)* | Maximize relevant information while minimizing noise. |
+| [04](04-context-isolation/README.md) | Context Isolation *(Japanese)* | One session, one responsibility; bridge sessions with structured handoffs. |
+| [05](05-agent-management/README.md) | Multi-Agent Management *(Japanese)* | Define roles, constraints, reporting, acceptance, failure handling, and handoffs. |
+| [06](06-workflow-as-product/README.md) | Workflow as a Product *(Japanese)* | Encode repeatable procedures, gates, rollback, and a single source of truth. |
+| [07](07-what-really-matters/README.md) | What Really Matters *(Japanese)* | The long-term advantage is system design, not attachment to one tool. |
 
-古い武器を持ち続けながら、新しい武器も使えること。  
-その両方を備えてこそ、これからの時代をより強く生き抜けると私は考えている。
+### Appendices
 
----
-
-## 読み方ガイド
-
-| あなたの状況 | おすすめ |
+| Appendix | Topic |
 |---|---|
-| 時間がない | [01](01-ai-redefines-work/README.md) → [07](07-what-really-matters/README.md) だけ読む |
-| 実践を始めたい | [02](02-task-granularity/README.md) → [04](04-context-isolation/README.md) の順で |
-| 体系を掴みたい | 01 から通して読む |
-| 組織導入を考えている | [05](05-agent-management/README.md) → [06](06-workflow-as-product/README.md) を重点的に |
+| [A](appendix/anti-patterns.md) | Common failure patterns *(Japanese)* |
+| [B](appendix/verification-strategies.md) | Verification strategies *(Japanese)* |
+| [C](appendix/cheatsheet.md) | Cheat sheet *(Japanese)* |
+| [D](appendix/operational-readiness.en.md) | Operational readiness and governance *(English)* |
 
----
+## The Method in One Loop
 
-## 背景
+1. **Classify risk.** Decide what the agent may do, what requires approval, and what must remain human-owned.
+2. **Define one objective.** State the intended outcome, current action, acceptance criteria, and boundaries.
+3. **Provide a closed context.** Include only the files, facts, decisions, and constraints needed for the task.
+4. **Let the agent execute and self-check.** Require builds, tests, linting, or other applicable evidence.
+5. **Review the delta.** Inspect changed files, unintended scope, high-risk logic, and the evidence behind claims.
+6. **Record and hand off.** Persist decisions and evidence in a structured source of truth, then start a clean context for the next responsibility.
+7. **Measure and improve.** Track rework, escaped defects, review time, cost, and exceptions—not output volume alone.
 
-この Playbook の内容は、単なる理論ではない。
+## Minimum Task Contract
 
-私は実際にこれらの原則に基づいて、Agent 協業フレームワークを設計・実装し、本番環境で検証してきた。この Playbook に書かれているタスク粒度設計、コンテキスト分離、品質ゲート、ワークフロー体系化など、すべての手法はコードレベルで実装・検証済みである。
+```text
+summary:             What outcome should be achieved?
+currentAction:       What should be done in this execution?
+acceptanceCriteria:  What observable checks define completion?
+boundaries:          What must not be changed or attempted?
+```
 
-これらの原則は、特定のプラットフォームやツールに依存しない、普遍的な方法論である。
+If one of these fields is missing, the task is not ready to delegate.
 
----
+## Scope and Responsibility
 
-## 今後の方向性
+An agent proposes and executes; it does not remove human accountability. Security, authorization, payment behavior, privacy, compliance, production release, destructive operations, and irreversible external actions need explicit owners and approval rules.
 
-- 主要 Agent プラットフォームのワークフロー比較分析（定期更新）
-- プラットフォーム非依存のワークフロー母体設計の知見共有
-- 実戦で検証された新しいパターンの追加
-- 大手テック企業の最新 AI ワークフロー事例の分析と、本 Playbook への反映
+Model agreement is not evidence. Verify factual claims against primary documentation, source code, tests, runtime output, or measurements. Keep short-lived working state separate from audit and release evidence that must be retained.
 
----
+## Reading Paths
+
+| Situation | Suggested path |
+|---|---|
+| Limited time | Chapters 01 and 07, then Appendix D |
+| Starting in practice | Chapters 02–04, then the minimum task contract above |
+| Managing several agents | Chapters 05–06 and Appendix B |
+| Organization rollout | Chapter 06 and [Appendix D](appendix/operational-readiness.en.md) |
+
+## Background
+
+The methods in this playbook were shaped through production and personal-development use, including an agent-collaboration framework that encodes task contracts, context isolation, quality gates, and structured handoffs. The aim is to describe the underlying method without binding it to one model or platform.
 
 ## License
 
