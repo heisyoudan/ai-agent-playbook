@@ -4,6 +4,28 @@
 
 ---
 
+## v1.4.0 — 2026-09-19
+
+### 追加
+
+- **情報アーキテクチャの再編** — リポジトリを三層構造（Part I 基盤 / Part II 統治された Agentic Engineering / Part III スケーリング）として整理
+- **ルートREADMEの全面改訂（英・日・簡体字中国語）** — 三言語を意味的に対等な構成へ揃え、研究課題の提示、Research Maturity、The Engineering Loop、Truth / Verification / Authority、Global and Local Reasoning、Closing Thought を追加
+- **第08〜13章の骨格**（英・日・簡体字中国語）— 問い、存在理由、想定される概念、成熟度のみを記載し、本文は執筆しない
+- **第14〜17章の骨格**（英・日・簡体字中国語）— 研究段階の仮説として `Working Hypothesis` を明示
+- **`research/`（リサーチ・インキュベーター）** — 観察 → 調査ノート → 反証 → 導出原則 → 再利用可能なパターン → Playbook 昇格、というライフサイクルと三つの成熟度ラベルを定義
+- **`templates/chapter-template.md`** — 研究に基づく章のための軽量テンプレート
+- **第08章（簡体字中国語版）の本文** — Truth Drift、Reality / Evidence / Truth の区別、Truth Candidate と Current Authorized Truth、Authority モデル、Truth Rot、3つの Failure Pattern。`Status: Evolving` として公開し、未解決課題（Truth Versioning / Truth Change Propagation / Truth Rot Detection / Human Authority Scaling）を Open Questions に分離
+
+### 改善
+
+- **章構成**: 第13章を **Global Truth, Local Truth & Truth Projection** とし、**Workflow Runtime & Recovery** を第14章（Part III の研究層）へ移動。全体の章番号を README の構造と一致させた
+- **README（位置づけ）**: 「AI Agent 協業」から「AI Agent を前提とした信頼できるソフトウェアエンジニアリング」へ表現を調整
+- **README / 第07章**: Playbook を方法論、Maestro をその派生実装として関係を再整理
+
+### 変更なし
+
+- 第01〜07章および付録A〜Dの本文は意味的に変更していない（第07章末尾の次章リンクのみ追加）
+
 ## v1.3.0 — 2026-08-31
 
 ### 追加

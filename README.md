@@ -2,32 +2,76 @@
 
 [日本語](README.ja.md) · **English** · [简体中文](README.zh-CN.md)
 
-> A practical methodology for AI-agent collaboration, distilled from two years of production use in large-scale payment systems.
+> A practical methodology for designing reliable software engineering workflows around AI agents.
+
+This repository explores a simple question:
+
+> **As AI becomes the execution layer of software development, how should engineering itself be redesigned so that the result remains reliable, verifiable, bounded, and governable?**
 
 ---
 
 ## What This Is
 
-AI collaboration does not become reliable merely because a stronger model or a better prompt is available.
+Stronger models and better prompts can improve execution, but they do not automatically create reliable engineering.
 
-The durable advantage comes from designing the work around the model: choosing the right task size, isolating context, making constraints explicit, verifying outputs, and turning a successful workflow into a repeatable system.
+Reliable AI-assisted development depends on the system around the agent:
 
-This playbook organizes those practices into a platform-independent methodology.
+- what is treated as project truth;
+- how work is decomposed;
+- what context an agent is allowed to see;
+- what an agent is allowed to change;
+- how boundaries and contracts are defined;
+- how results are verified;
+- what evidence is retained;
+- who has authority to approve important changes;
+- how failures, retries, and handoffs are managed.
+
+This playbook organizes those concerns into a platform-independent methodology for **Agentic Software Engineering**.
+
+The goal is to design an engineering environment in which increasingly capable agents can move quickly without losing truth, boundaries, traceability, or human control.
+
+---
 
 ## What Problem This Solves
 
-AI agents often fail for predictable reasons: oversized tasks, noisy context, unclear ownership, weak acceptance criteria, and missing handoff state.
+Many AI failures that appear to be model failures are actually engineering-system failures.
 
-These are not isolated model failures. They are workflow failures. This playbook provides a repeatable way to control them before they turn into scope drift, rework, or unverifiable output.
+At the execution level, common problems include:
+
+- tasks that are too large;
+- noisy or incomplete context;
+- unclear ownership;
+- weak acceptance criteria;
+- uncontrolled scope expansion;
+- missing handoff state.
+
+At the system level, deeper problems appear:
+
+- Truth Drift;
+- unbounded agent authority;
+- stale or incomplete evidence;
+- shared blind spots across multiple models;
+- cross-boundary inconsistency;
+- human approval overload;
+- workflow state that cannot be reconstructed after interruption.
+
+This playbook studies both levels.
+
+---
 
 ## Who It Is For
 
-- Engineers using AI at work but not yet getting consistent results
-- Practitioners who feel that managing an agent can cost more than doing the work themselves
-- Technical leaders introducing AI-assisted delivery at team or organization level
-- Interviewers and candidates discussing practical AI collaboration
+- Engineers already using AI but struggling to achieve consistent results
+- Developers building with coding agents across multiple sessions or roles
+- Technical leads designing AI-assisted engineering workflows
+- Teams introducing Agentic Software Engineering into real delivery
+- Practitioners researching how truth, verification, authority, and workflow should change in the AI era
 
-## Core Principles
+---
+
+# Core Principles
+
+The original foundation of this playbook can be summarized in three lines:
 
 ```text
 AI is the execution layer.
@@ -35,19 +79,89 @@ Process creates productivity.
 Constraints create stability.
 ```
 
-Coding skill still matters: it supports judgment, debugging, design, and verification. What is changing is the scarcity of producing routine code by hand. The goal is not to discard engineering fundamentals, but to combine them with task design, context management, verification, and workflow engineering.
+As the methodology evolved, a second layer became equally important:
 
-## Contents
+```text
+Truth must have authority.
+Implementation must have boundaries.
+Completion must have evidence.
+```
 
-| Chapter | Topic | Main idea |
+Coding skill still matters. It supports architecture, debugging, judgment, verification, and risk analysis.
+
+What is becoming less scarce is routine code production itself.
+
+As execution becomes cheaper, engineering value increasingly moves toward:
+
+- Truth Governance
+- Reasoning Scope
+- Architecture and Decomposition
+- Verification
+- Evidence
+- Decision Authority
+- Workflow Design
+
+---
+
+# Repository Structure
+
+The playbook is organized into three layers.
+
+## Part I — Agent Collaboration Foundations
+
+These chapters describe the practical foundations required to make individual agents and multi-agent workflows reliable.
+
+| Chapter | Topic | Main Idea |
 |---|---|---|
 | [01](01-ai-redefines-work/README.md) | AI Redefines Work | AI changes where engineering value and bottlenecks sit. |
-| [02](02-task-granularity/README.md) | Task Granularity | A task must be small enough to finish independently and large enough to close one useful loop. |
-| [03](03-prompt-philosophy/README.md) | “Complex Minimalism” | Maximize relevant information while minimizing noise. |
-| [04](04-context-isolation/README.md) | Context Isolation | One session, one responsibility; bridge sessions with structured handoffs. |
-| [05](05-agent-management/README.md) | Multi-Agent Management | Define roles, constraints, reporting, acceptance, failure handling, and handoffs. |
-| [06](06-workflow-as-product/README.md) | Workflow as a Product | Encode repeatable procedures, gates, rollback, and a single source of truth. |
-| [07](07-what-really-matters/README.md) | What Really Matters | The long-term advantage is system design, not attachment to one tool. |
+| [02](02-task-granularity/README.md) | Task Granularity | A task must fit the agent's reasoning capability while still closing a useful loop. |
+| [03](03-prompt-philosophy/README.md) | Complex Minimalism | Maximize relevant information while minimizing noise. |
+| [04](04-context-isolation/README.md) | Context Isolation | One responsibility per context; transfer state through structured handoffs. |
+| [05](05-agent-management/README.md) | Multi-Agent Management | Define roles, constraints, acceptance, failure handling, and handoffs. |
+| [06](06-workflow-as-product/README.md) | Workflow as a Product | Encode reusable procedures, gates, rollback, and authoritative state. |
+| [07](07-what-really-matters/README.md) | What Really Matters | Durable advantage comes from engineering the system around the agent. |
+
+---
+
+## Part II — Governed Agentic Engineering
+
+These chapters move from effective agent collaboration toward reliable engineering governance.
+
+| Chapter | Topic | Main Question |
+|---|---|---|
+| [08](08-truth-governance/README.md) | Truth Governance | What can an agent safely treat as true, and who may change it? |
+| [09](09-effective-reasoning-scope/README.md) | Effective Reasoning Scope | How large a problem can an agent reliably understand at once? |
+| [10](10-boundaries-contracts-artifacts/README.md) | Decomposition, Boundaries & Contracts | How should complex work be divided without creating excessive coordination cost? |
+| [11](11-verification-evidence/README.md) | Verification & Evidence | What makes a completion claim trustworthy? |
+| [12](12-authority-human-gates/README.md) | Authority, Human Gates & Decision Compression | Which decisions require human authority, and how can human attention scale? |
+| [13](13-global-local-truth/README.md) | Global Truth, Local Truth & Truth Projection | How can local agents remain consistent with a system they cannot read in full? |
+
+---
+
+## Part III — Scaling Agentic Engineering
+
+This layer is still under active research.
+
+Current research directions include:
+
+- Workflow Runtime
+- Retry, Resume, and Re-execution
+- Persistent Execution State
+- Boundary Tax
+- Optimal Reasoning Boundaries
+- Scalable Governance
+- Decision Compression
+- Capability Boundaries
+- Runtime Verification
+- Truth Change Propagation
+
+Draft chapter shells for part of this layer are being written, and are labelled as research rather than as stable methodology: [14](14-workflow-runtime-recovery/README.md) Workflow Runtime & Recovery, [15](15-boundary-tax/README.md) Boundary Tax & Optimal Reasoning Boundary, [16](16-scalable-governance/README.md) Scalable Governance & Decision Compression, and [17](17-capability-boundaries/README.md) Capability Boundaries.
+
+These topics will be promoted into stable chapters only after the underlying observations and principles become sufficiently mature.
+
+See the [Research Incubator](research/README.md).
+
+---
 
 ### Appendices
 
@@ -58,17 +172,82 @@ Coding skill still matters: it supports judgment, debugging, design, and verific
 | [C](appendix/cheatsheet.md) | Cheat sheet |
 | [D](appendix/operational-readiness.md) | Operational readiness and governance |
 
-## The Method in One Loop
+# Research Maturity
 
-1. **Classify risk.** Decide what the agent may do, what requires approval, and what must remain human-owned.
+Not every idea in this repository has the same maturity level.
+
+The playbook distinguishes three levels:
+
+### Observed Pattern
+
+A behavior repeatedly observed in real workflows or engineering practice.
+
+### Derived Principle
+
+A more general principle extracted from one or more observed patterns.
+
+### Working Hypothesis
+
+A theoretical model that appears useful but still requires more evidence, challenge, or practical validation.
+
+This distinction matters.
+
+The repository should not present every new idea as established engineering truth.
+
+---
+
+# The Engineering Loop
+
+The broader methodology can be represented as:
+
+```text
+Reality
+↓
+Evidence
+↓
+Truth Candidate
+↓
+Authorization
+↓
+Current Authorized Truth
+↓
+Scope / Boundary
+↓
+Agent Execution
+↓
+Verification
+↓
+Evidence
+↓
+Decision
+├── Continue
+├── Rework
+└── Truth Challenge
+```
+
+The loop is intentionally recursive.
+
+New evidence may validate the current truth, reveal an implementation defect, or challenge the assumptions on which the work was based.
+
+---
+
+# Practical Execution Loop
+
+For day-to-day work, the process can be reduced to seven steps.
+
+1. **Classify risk.** Decide what the agent may execute, what requires approval, and what must remain human-owned.
 2. **Define one objective.** State the intended outcome, current action, acceptance criteria, and boundaries.
-3. **Provide a closed context.** Include only the files, facts, decisions, and constraints needed for the task.
-4. **Let the agent execute and self-check.** Require builds, tests, linting, or other applicable evidence.
-5. **Review the delta.** Inspect changed files, unintended scope, high-risk logic, and the evidence behind claims.
-6. **Record and hand off.** Persist decisions and evidence in a structured source of truth, then start a clean context for the next responsibility.
-7. **Measure and improve.** Track rework, escaped defects, review time, cost, and exceptions—not output volume alone.
+3. **Provide a bounded context.** Include the files, facts, decisions, contracts, and constraints required for the task.
+4. **Execute and self-check.** Require builds, tests, linting, static analysis, or other applicable checks.
+5. **Verify independently.** Review the delta, relevant behavior, unintended scope, and evidence supporting important claims.
+6. **Record and hand off.** Persist decisions, artifacts, evidence, and remaining risks in an authoritative system.
+7. **Measure and improve.** Track rework, escaped defects, review effort, exceptions, and workflow cost.
 
-## Minimum Task Contract
+---
+
+# Minimum Task Contract
+
+A local execution task should at least define:
 
 ```text
 summary:             What outcome should be achieved?
@@ -77,15 +256,39 @@ acceptanceCriteria:  What observable checks define completion?
 boundaries:          What must not be changed or attempted?
 ```
 
-If one of these fields is missing, the task is not ready to delegate.
+If one of these fields is missing, the task may not yet be ready for reliable delegation.
 
-### From a Vague Request to an Executable Task
+This contract represents the **local execution boundary**.
+
+It does not replace project truth, architecture, system invariants, or higher-level authority.
+
+Conceptually:
+
+```text
+Project Truth
+↓
+Architecture / Boundary
+↓
+Task Contract
+↓
+Agent Execution
+↓
+Verification
+↓
+Evidence
+```
+
+---
+
+## Example: From a Vague Request to an Executable Task
 
 ```text
 Bad:
+
 Fix the authentication system.
 
 Better:
+
 summary:
 Fix the refresh-token failure after access-token expiration.
 
@@ -102,29 +305,178 @@ boundaries:
 - do not modify OAuth provider configuration
 ```
 
-The second task is smaller, bounded, and independently verifiable. The agent can begin without inventing product decisions.
+The second task creates a smaller and more inspectable reasoning world.
 
-## Scope and Responsibility
+The agent can execute without inventing unrelated product or architecture decisions.
 
-An agent proposes and executes; it does not remove human accountability. Security, authorization, payment behavior, privacy, compliance, production release, destructive operations, and irreversible external actions need explicit owners and approval rules.
+---
 
-Model agreement is not evidence. Verify factual claims against primary documentation, source code, tests, runtime output, or measurements. Keep short-lived working state separate from audit and release evidence that must be retained.
+# Truth, Verification, and Authority
 
-## Reading Paths
+Several rules apply across the entire playbook.
 
-| Situation | Suggested path |
+### Model agreement is not proof
+
+Multiple agents can reduce single-model error, but they cannot automatically eliminate shared blind spots.
+
+AI consensus should be treated as evidence, not as truth by itself.
+
+### Evidence must remain connected to reality
+
+Important claims should be grounded in sources such as:
+
+- repository state;
+- primary documentation;
+- tests;
+- runtime behavior;
+- measurements;
+- production evidence;
+- explicit human decisions.
+
+### Authority should not exceed verification capability
+
+A person or agent should only authorize decisions they are capable of meaningfully evaluating.
+
+High-risk architecture, payment behavior, authentication, security, privacy, compliance, data migration, destructive operations, and irreversible actions require stronger ownership and verification.
+
+### State, evidence, and truth are different concepts
+
+```text
+State
+= where execution currently is
+
+Evidence
+= what supports a claim about what happened
+
+Truth
+= what the project is currently authorized to rely on
+```
+
+Confusing these concepts creates fragile workflows.
+
+---
+
+# Global and Local Reasoning
+
+Large systems introduce a special problem.
+
+An agent may be unable to reliably reason over the entire repository, all design documents, all dependencies, and all historical decisions at once.
+
+The goal therefore is not to give every worker the entire world.
+
+The goal is to provide the **complete relevant world for the current decision**.
+
+Conceptually:
+
+```text
+Global Truth
+├── System Invariants
+├── Architecture Boundaries
+├── Critical Contracts
+└── Dependency Relationships
+        ↓
+Current Task
+        ↓
+Truth Projection
+        ↓
+Local Truth
++
+Relevant Global Constraints
++
+Relevant Dependencies
+        ↓
+Agent Reasoning
+```
+
+This is one of the central directions of the evolving methodology.
+
+---
+
+# Reading Paths
+
+| Situation | Suggested Path |
 |---|---|
-| Limited time | Chapters 01 and 07, then Appendix D |
-| Starting in practice | Chapters 02–04, then the minimum task contract above |
-| Managing several agents | Chapters 05–06 and Appendix B |
-| Organization rollout | Chapter 06 and [Appendix D](appendix/operational-readiness.md) |
+| Limited time | 01 → 07 → 08 |
+| Starting with AI-assisted development | 02 → 03 → 04 |
+| Managing several agents | 05 → 06 → 11 |
+| Designing reliable agent workflows | 06 → 08 → 11 → 12 |
+| Understanding task decomposition deeply | 02 → 09 → 10 |
+| Working on large systems | 09 → 10 → 13 |
+| Interested in governance and verification | 08 → 11 → 12 |
+| Following active research | [Research Incubator](research/README.md) |
 
-## Background
+---
 
-The methods in this playbook were shaped through production and personal-development use. The methodology is also exercised through **Maestro**, a workflow framework that encodes task contracts, context isolation, quality gates, and structured handoffs.
+# Relationship with Maestro
 
-The relationship is deliberate: **the Playbook defines the methodology; Maestro makes it executable.** The method remains independent of any single model or agent platform.
+The methodology in this repository is platform-independent.
+
+**Maestro** is one executable framework used to operationalize and test parts of the methodology.
+
+The relationship is:
+
+```text
+Agentic Engineering Principles
+↓
+AI Agent Playbook
+↓
+Reference Patterns
+↓
+Maestro
+```
+
+The Playbook defines and evolves the methodology.
+
+Maestro explores how parts of that methodology can be encoded into task contracts, role boundaries, gates, state transitions, structured handoffs, and workflow execution.
+
+The Playbook should remain useful even if the implementation framework, model provider, or agent platform changes.
+
+---
+
+# Background
+
+This playbook grew from sustained AI-assisted engineering practice across large-scale payment-system work, personal software development, multi-agent workflows, and real delivery environments.
+
+Some concepts come directly from repeated production practice.
+
+Some are abstractions derived from observing larger engineering systems.
+
+Some are still active research hypotheses.
+
+The repository intentionally keeps those maturity levels separate.
+
+The long-term goal is to build a methodology that survives changes in models, tools, and platforms.
+
+---
+
+# Closing Thought
+
+As AI becomes increasingly capable of producing implementation, engineering does not disappear.
+
+Its center of gravity changes.
+
+The difficult questions become:
+
+```text
+What is true?
+
+What is the boundary?
+
+What can this worker safely change?
+
+What evidence is required?
+
+Who has authority to decide?
+
+How do we know the system still agrees with itself?
+```
+
+The strongest Agentic Engineering system is not the one that delegates the most work.
+
+It is the one that allows powerful workers to move quickly inside a world that remains understandable, verifiable, bounded, recoverable, and governed.
+
+---
 
 ## License
 
-[MIT](LICENSE)
+`MIT`

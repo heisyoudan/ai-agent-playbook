@@ -1,0 +1,74 @@
+# Research Incubator
+
+[日本語](README.ja.md) · **English** · [简体中文](README.zh-CN.md)
+
+This directory is for ideas that are still being investigated — before they are promoted into a playbook chapter.
+
+## Why It Exists
+
+Chapters 01–07 are stable. Chapters 08–17 are still being written. This directory exists for what comes before both: an observation that has not yet earned a place in either.
+
+Recording an idea here is deliberately cheaper than changing a chapter. A note may be wrong, incomplete, or abandoned later. What matters is that the evidence behind it stays attached to it.
+
+## Lifecycle
+
+```text
+Observation
+↓
+Research Note
+↓
+Challenge / Additional Evidence
+↓
+Derived Principle
+↓
+Reusable Pattern
+↓
+Promote into Playbook
+```
+
+A note moves down this list only when the evidence justifies it — not when it becomes convenient.
+
+## Maturity Labels
+
+| Label | Meaning |
+|---|---|
+| `Working Hypothesis` | A plausible explanation with limited evidence. Read it as a question, not a rule. |
+| `Observed Pattern` | Seen repeatedly in real work, but the cause is not yet fully understood. |
+| `Derived Principle` | Supported by repeated observation and by attempts to falsify it. May become a chapter once its practical implications are clear. |
+
+The order above is a promotion path, never an assumption. Nothing skips a step because it feels convincing.
+
+## What a Research Note May Contain
+
+- observations from real work
+- working hypotheses
+- unresolved questions
+- counterexamples and failed attempts
+- practical evidence (logs, measurements, incident notes)
+- derived principles
+- reusable patterns
+
+## What a Research Note Is Not
+
+Research notes are not stable methodology. Nothing here should be cited as established practice, applied as a mandatory rule, or described as production-proven.
+
+When a research note and a chapter disagree, the chapter still governs — until evidence says otherwise. That is the point of keeping the two places separate.
+
+## When to Promote
+
+A note is ready to be promoted when:
+
+- the observation has been seen in more than one context;
+- attempts to falsify it have failed or have been answered;
+- the practical pattern is specific enough to reuse;
+- its limits and open questions are written down.
+
+Promotion means the material moves into a chapter, the chapter is marked `Evolving` or `Stable`, and the research note is reduced to a pointer to that chapter.
+
+## Status
+
+No research notes are published yet. Observations from ongoing work are being collected while they are still too thin to survive review.
+
+---
+
+[← Playbook README](../README.md) · [Chapter template](../templates/chapter-template.md)

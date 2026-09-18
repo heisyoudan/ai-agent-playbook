@@ -80,4 +80,4 @@ The strongest practitioner is not the person who delegates the most. It is the p
 > **Practice note**
 > Maestro is the executable counterpart to this methodology: a platform-independent workflow core from which agent-specific instructions can be derived. The playbook explains the principles; Maestro tests whether those principles can operate as a system.
 
-[Appendix A → Common Failure Patterns](../appendix/anti-patterns.md) · [Appendix B → Verification Strategies](../appendix/verification-strategies.md) · [Appendix C → Cheat Sheet](../appendix/cheatsheet.md)
+[Next → Truth Governance](../08-truth-governance/README.md) · [Appendix A → Common Failure Patterns](../appendix/anti-patterns.md) · [Appendix B → Verification Strategies](../appendix/verification-strategies.md) · [Appendix C → Cheat Sheet](../appendix/cheatsheet.md)

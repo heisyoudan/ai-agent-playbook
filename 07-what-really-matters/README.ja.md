@@ -124,4 +124,4 @@ AIは実行層である。
 > **実践ノート**  
 > 私はこの認識を土台として、Maestroというワークフロー基盤を設計している。現在は2.0に向けた整理を進めており、中心にあるのは「プラットフォームに依存しないワークフロー母体」という考え方である。ひとつの核心テンプレートから、複数のAgentプラットフォーム向け設定を導出できる形を目指している。利用するプラットフォームが変わっても、方法論そのものは揺らがない。その前提を、仕組みとして成立させることが私の現在地である。
 
-[付録A → よくある失敗パターン](../appendix/anti-patterns.ja.md) · [付録B → AI出力の検収戦略](../appendix/verification-strategies.ja.md) · [付録C → 早見表](../appendix/cheatsheet.ja.md)
+[次章 → 真実のガバナンス](../08-truth-governance/README.ja.md) · [付録A → よくある失敗パターン](../appendix/anti-patterns.ja.md) · [付録B → AI出力の検収戦略](../appendix/verification-strategies.ja.md) · [付録C → 早見表](../appendix/cheatsheet.ja.md)
