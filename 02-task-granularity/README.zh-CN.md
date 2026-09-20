@@ -41,7 +41,7 @@
 
 现在我会问：**“应该怎样设计这个任务，才能让 AI 稳定完成？”**
 
-关注点从评价模型转向设计工作。Agent 的能力固然重要，但目标、边界、上下文和完成证据仍由人来设计。
+关注点从评价模型转向设计工作。Agent 的能力固然重要，但目标、边界、上下文和可观察的完成条件仍由人来设计。
 
 ## 五条实践规则
 
@@ -54,6 +54,6 @@
 ---
 
 > **实践笔记**
-> Maestro 要求任务执行前具备四个字段：`summary`、`currentAction`、`acceptanceCriteria` 和 `boundaries`。它们分别代表结果、本次执行、完成证据和非目标。任务契约不完整时，工作不会开始。
+> Maestro 要求任务执行前具备四个字段：`summary`、`currentAction`、`acceptanceCriteria` 和 `boundaries`。它们分别代表结果、本次执行、可观察的完成条件和非目标。任务契约不完整时，工作不会开始。
 
 [下一章 → “复杂的极简”提示词哲学](../03-prompt-philosophy/README.zh-CN.md)

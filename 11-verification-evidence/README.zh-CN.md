@@ -260,7 +260,9 @@ Agent 可能回复：
 - 官方文档。
 - 外部系统实际契约。
 - 客户确认。
-- 具备对应能力的 Human 判断。
+- 具备对应能力的 Human 判断（作为专家测量或评估）。
+
+Human 判断在这里有两种身份：作为专家测量或评估时，它是证据；作为放行、批准或授权决定时，它是 Verdict / Authorization，不是证据。
 
 证据越接近真实运行环境，对现实行为的解释能力通常越强。
 
@@ -604,6 +606,57 @@ Agent 可能回复：
 - 高风险声明只能依赖自我申报。
 
 就不能认为已经形成完整证据闭环。
+
+但**证据闭环不等于完成，也不等于授权放行**。
+
+证据闭环之后，仍然可能需要：
+
+- 风险接受；
+- Human 授权；
+- 经过 Gate 的状态转换。
+
+证据充分回答的是「事实是否成立」，完成与授权回答的是「是否允许继续」，两者是不同的问题。
+
+---
+
+# 从要求到状态转换
+
+整套 Playbook 围绕同一条链展开：
+
+```text
+Requirement
+↓
+Acceptance Criteria
+↓
+Execution
+↓
+Verification
+↓
+Evidence
+↓
+Verdict
+↓
+Evidence Closure
+↓
+Authorization / Risk Acceptance
+↓
+Gate
+↓
+State Transition
+```
+
+每个环节的权威章节：
+
+```text
+Requirement / Acceptance Criteria   第 02 章
+Verification / Evidence / Verdict   第 11 章
+Evidence Closure                    第 11 章
+Authorization / Risk Acceptance     第 12 章
+Gate                                第 12 章
+State Transition                    第 14 章
+```
+
+这条链一旦冻结，各章只需引用同一顺序，不再各自描述。
 
 ---
 
@@ -999,7 +1052,7 @@ Agent 修复以后最终通过。
 - 运行时验证。
 - 独立推理。
 - 强证据留存。
-- 具备相应能力的 Human 判断。
+- 具备相应能力的 Human 判断（作为专家评估，而非最终授权）。
 - 必要时进行受控环境测试。
 
 因此：

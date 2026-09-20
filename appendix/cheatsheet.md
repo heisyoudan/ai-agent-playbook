@@ -27,7 +27,7 @@
 ```text
 summary:             desired outcome
 currentAction:       work in this execution
-acceptanceCriteria:  observable proof of completion
+acceptanceCriteria:  observable completion conditions
 boundaries:          prohibited changes and non-goals
 ```
 

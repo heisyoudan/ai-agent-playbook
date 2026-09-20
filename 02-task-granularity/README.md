@@ -54,6 +54,6 @@ The focus moves from judging the model to designing the work. Agent capability m
 ---
 
 > **Practice note**
-> Maestro requires four fields before a task can execute: `summary`, `currentAction`, `acceptanceCriteria`, and `boundaries`. They represent the outcome, this execution, the proof of completion, and the non-goals. An incomplete task contract is rejected before work begins.
+> Maestro requires four fields before a task can execute: `summary`, `currentAction`, `acceptanceCriteria`, and `boundaries`. They represent the outcome, this execution, the observable completion conditions, and the non-goals. An incomplete task contract is rejected before work begins.
 
 [Next → The Prompt Philosophy of “Complex Minimalism”](../03-prompt-philosophy/README.md)

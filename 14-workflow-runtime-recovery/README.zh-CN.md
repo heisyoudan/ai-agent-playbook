@@ -518,8 +518,9 @@ Agent 工作流中的失败非常正常。
 例如：
 
 ```text
-状态：
-QA Failed
+execState：dev
+previousState：qa
+latestVerdict：FAIL
 
 失败类型：
 Missing Boundary Test

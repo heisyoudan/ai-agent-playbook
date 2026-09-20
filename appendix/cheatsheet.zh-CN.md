@@ -37,7 +37,7 @@
 ```text
 summary:             预期结果
 currentAction:       本次执行内容
-acceptanceCriteria:  可观察的完成证据
+acceptanceCriteria:  可观察的完成条件
 boundaries:          禁止修改和非目标
 ```
 

@@ -1056,7 +1056,7 @@ Project truth persists across all of them.
 
 > **Workers are replaceable. Project truth persists.**
 
-> **Agents execute. Gates verify. Human authority remains final.**
+> **Workers execute. Verifiers judge. Gates control transitions. Human authority remains final.**
 
 ---
 
