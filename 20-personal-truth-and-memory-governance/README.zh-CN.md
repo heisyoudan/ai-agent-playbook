@@ -191,6 +191,19 @@ AI 就会在一个错误的人物模型上持续优化。
 
 长期上下文中的内容至少可以区分为几种类型。
 
+可以固定成六类，并按认识论地位区分：
+
+```text
+Observed Fact                 已发生、可追溯的历史事实
+Self-Declared State           Human 明确表达的当前目标 / 偏好 / 状态
+Evidence-Based Assessment     基于现实证据形成的能力等判断
+Constraint                    现实客观限制
+Collaboration Rule            长期协作约定
+Inference                     AI 推断，不能静默升级成事实
+```
+
+下面小节分别展开。「当前目标 / 偏好 / 当前状态」都属于 Self-Declared State。
+
 ## 历史事实
 
 描述已经真实发生过的事情。
@@ -1184,6 +1197,21 @@ Human 自我评价
 并不自动意味着
 应该长期保存
 ```
+
+## 隐私边界
+
+长期个人上下文的每个条目，在保存之前都应通过同一组检查：
+
+```text
+Purpose Limitation    为什么保存
+Data Minimization     最少保存什么
+Scope                 谁可以看
+Retention             保存多久
+Correction / Deletion 怎样修正、归档、删除
+Projection            当前 Agent 实际获得哪些
+```
+
+前两项对应「最小必要个人上下文」；Scope / Projection 对应「不同 Agent 不需要看到全部个人信息」与「个人真相投影」；Retention / Correction / Deletion 对应后面的「遗忘也是治理能力」与「Human 应该拥有个人真相控制权」。
 
 ## 最小必要个人上下文
 
