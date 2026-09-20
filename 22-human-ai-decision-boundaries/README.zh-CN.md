@@ -683,6 +683,60 @@ Human 到底要不要换工作
 
 ---
 
+# 授权与契约的五个层级
+
+Human × AI 协作中的「授权」可以分解成五个层级：
+
+```text
+Collaboration Protocol
+长期 Human × AI 协作默认规则
+（第 18 章 · 长期协作协议）
+
+Authorization Policy
+Human 对某一领域长期授予 AI 的权限
+（第 22 章 · 个人决策契约 / 策略授权）
+
+Decision Record
+这一次现实决定是什么、为什么
+（第 23 章 · 决策记录）
+
+Execution Mandate
+这个决定允许执行系统做什么
+（第 23 章 · 执行授权）
+
+Task Contract
+某一个 Worker 当前具体负责什么
+（第 02 / 10 章 · 最小任务契约 / 契约）
+```
+
+这是完整的**授权分解模型**，不是固定执行流水线。
+
+中间层级可以压缩：
+
+```text
+稳定长期授权
++
+低风险常规任务
+↓
+直接 Task Contract
+```
+
+或者：
+
+```text
+Human 临时明确决定
+↓
+Execution Mandate
+↓
+Task Contract
+```
+
+真正不能省略的不是某一种文件，而是：
+
+> **当前行动必须能够追溯到有效授权。**
+
+---
+
 # AI 的建议也可能产生依赖
 
 长期 AI 越了解 Human：

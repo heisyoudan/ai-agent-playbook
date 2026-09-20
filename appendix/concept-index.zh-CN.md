@@ -257,8 +257,12 @@ Goal Completion  = Human 做这个决定想实现的现实结果已经发生
 | 概念 | 首次出现 | 权威章节 | 被引用 / 扩展 |
 |---|---|---|---|
 | 任务粒度 | 02 | 02 | 15（成本模型） |
-| 最小任务契约 | 02 | 02 | 05 / 06 / Maestro |
+| 最小任务契约（Task Contract） | 02 | 02 | 05 / 06 / 10 / 23 / Maestro |
 | 质量门 / Gate | 06 | 14 | 06 / 12 / 16 / Maestro |
+| 长期协作协议（Collaboration Protocol） | 18 | 18 | 22 / 23 |
+| 个人决策契约（Authorization Policy） | 22 | 22 | 23 |
+| 决策记录（Decision Record） | 23 | 23 | — |
+| 执行授权（Execution Mandate） | 23 | 23 | Maestro |
 | 上下文树 | 19 | 19 | 24 |
 | 决策压缩 | 12 | 12 | 16 / 21 / 22 |
 | 决策投影 | 23 | 23 | 13（真相投影同族） |
