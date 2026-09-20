@@ -67,13 +67,18 @@ Promotion means the material moves into a chapter, the chapter is marked `Evolvi
 
 ## Status
 
-One note is open, at the earliest stage:
+Two notes are open, both at the earliest stage:
 
-| Note | Topic | Maturity |
-|---|---|---|
-| [Parallel execution, joins and dependency-driven orchestration](parallel-execution-and-dependency-orchestration.zh-CN.md) | Joins, dependency satisfaction and state conflicts when several agents run in parallel | Working Hypothesis |
+| Note | Topic | Maturity | Language |
+|---|---|---|---|
+| [Parallel execution, joins and dependency-driven orchestration](parallel-execution-and-dependency-orchestration.zh-CN.md) | Joins, dependency satisfaction and state conflicts when several agents run in parallel | Working Hypothesis | Chinese only |
+| [Ownership, portability and platform independence of personal context](personal-context-ownership-and-portability.zh-CN.md) | Once personal context becomes a cross-project, cross-agent and cross-model collaboration asset, who owns it, how it moves and how it is authorised | Working Hypothesis | Chinese only |
 
-It came out of open questions in Chapters 14 and 16. It is currently written in Simplified Chinese only, and has not yet produced a reusable pattern.
+The first came out of open questions left over from Chapters 14 and 16.
+
+The second came out of Chapter 24, where it no longer belonged to the reality feedback main line and was therefore split out as an independent research thread.
+
+Neither has a version outside Simplified Chinese yet, and neither has produced a reusable pattern.
 
 ---
 

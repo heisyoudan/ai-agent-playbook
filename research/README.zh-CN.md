@@ -67,13 +67,18 @@ Promote into Playbook（提升进 Playbook）
 
 ## 当前状态
 
-目前只有一条研究笔记，处于最早期阶段：
+目前有两条研究笔记，都处于最早期阶段：
 
-| 笔记 | 主题 | 成熟度 |
-|---|---|---|
-| [并行执行、汇合与依赖驱动编排](parallel-execution-and-dependency-orchestration.zh-CN.md) | 多 Agent 并行执行时的汇合、依赖判定与状态冲突 | Working Hypothesis |
+| 笔记 | 主题 | 成熟度 | 语言 |
+|---|---|---|---|
+| [并行执行、汇合与依赖驱动编排](parallel-execution-and-dependency-orchestration.zh-CN.md) | 多 Agent 并行执行时的汇合、依赖判定与状态冲突 | Working Hypothesis | 简体中文 |
+| [个人上下文的所有权、可迁移性与平台独立](personal-context-ownership-and-portability.zh-CN.md) | 个人上下文成为跨项目、跨 Agent、跨模型的协作资产以后，它属于谁、怎样迁移、怎样授权、怎样保护 | Working Hypothesis | 简体中文 |
 
-它来自第 14 章与第 16 章遗留的开放问题，目前尚无中文以外的版本，也还没有形成可复用模式。
+第一条来自第 14 章与第 16 章遗留的开放问题。
+
+第二条来自第 24 章。它原本属于该章正文，但已经明显脱离「现实反馈与长期演化」的主轴，因此抽为独立研究线。
+
+两条目前都尚无中文以外的版本，也还没有形成可复用模式。
 
 ---
 
