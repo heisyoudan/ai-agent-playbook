@@ -10,4 +10,4 @@
 
 ---
 
-[← 16 — スケールするガバナンスと意思決定圧縮](../16-scalable-governance/README.ja.md) · [リサーチ・インキュベーター →](../research/README.ja.md)
+[← 16 — スケールするガバナンスとガバナンス圧縮](../16-scalable-governance/README.ja.md) · [リサーチ・インキュベーター →](../research/README.ja.md)

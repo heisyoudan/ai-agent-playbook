@@ -1,4 +1,4 @@
-# 16 — Scalable Governance & Decision Compression
+# 16 — Scalable Governance & Governance Compression
 
 **English** · [日本語](README.ja.md) · [简体中文](README.zh-CN.md)
 

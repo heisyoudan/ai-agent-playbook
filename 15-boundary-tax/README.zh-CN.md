@@ -1592,4 +1592,4 @@ AI 看得清。
 
 ---
 
-[← 14 — 工作流运行时与恢复](../14-workflow-runtime-recovery/README.zh-CN.md) · [下一章 → 16 — 规模化治理与决策压缩](../16-scalable-governance/README.zh-CN.md)
+[← 14 — 工作流运行时与恢复](../14-workflow-runtime-recovery/README.zh-CN.md) · [下一章 → 16 — 规模化治理与治理压缩](../16-scalable-governance/README.zh-CN.md)

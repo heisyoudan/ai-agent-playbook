@@ -10,4 +10,4 @@ This page is not a translation of the current chapter. English and Japanese vers
 
 ---
 
-[← 16 — Scalable Governance & Decision Compression](../16-scalable-governance/README.md) · [Research Incubator →](../research/README.md)
+[← 16 — Scalable Governance & Governance Compression](../16-scalable-governance/README.md) · [Research Incubator →](../research/README.md)

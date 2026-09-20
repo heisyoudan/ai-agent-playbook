@@ -473,7 +473,7 @@ Human 的注意力是有限资源。如果所有结果都需要人工审批，�
 
 ---
 
-### [16 — 规模化治理与决策压缩](16-scalable-governance/README.zh-CN.md)
+### [16 — 规模化治理与治理压缩](16-scalable-governance/README.zh-CN.md)
 
 **状态：持续研究（Research）** · **成熟度：工作假设（Working Hypothesis）**
 

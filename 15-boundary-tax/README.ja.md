@@ -10,4 +10,4 @@
 
 ---
 
-[← 14 — ワークフロー実行時状態と復旧](../14-workflow-runtime-recovery/README.ja.md) · [次章 → 16 — スケールするガバナンスと意思決定圧縮](../16-scalable-governance/README.ja.md)
+[← 14 — ワークフロー実行時状態と復旧](../14-workflow-runtime-recovery/README.ja.md) · [次章 → 16 — スケールするガバナンスとガバナンス圧縮](../16-scalable-governance/README.ja.md)
