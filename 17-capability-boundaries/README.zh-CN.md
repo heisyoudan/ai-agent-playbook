@@ -2373,4 +2373,4 @@ Agent 才开始从一个拥有强大潜力的执行者，变成一个拥有明�
 
 ---
 
-[← 16 — 规模化治理与决策压缩](../16-scalable-governance/README.zh-CN.md) · [研究孵化器 →](../research/README.zh-CN.md)
+[← 16 — 规模化治理与决策压缩](../16-scalable-governance/README.zh-CN.md) · [下一章 → 18 — 从工具到长期协作者](../18-from-tool-to-long-term-collaborator/README.zh-CN.md) · [研究孵化器 →](../research/README.zh-CN.md)
