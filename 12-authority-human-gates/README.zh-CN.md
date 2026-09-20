@@ -1,4 +1,4 @@
-# 12 — 权限与人类门禁
+# 12 — 决策权、人类质量门与决策压缩
 
 [日本語](README.ja.md) · [English](README.md) · **简体中文**
 
@@ -33,4 +33,4 @@
 
 ---
 
-[← 11 — 验证与证据](../11-verification-evidence/README.zh-CN.md) · [下一章 → 13 — 全局真值、局部真值与真值投影](../13-global-local-truth/README.zh-CN.md)
+[← 11 — 验证与证据](../11-verification-evidence/README.zh-CN.md) · [下一章 → 13 — 全局真相、局部真相与真相投影](../13-global-local-truth/README.zh-CN.md)

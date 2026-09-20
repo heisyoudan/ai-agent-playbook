@@ -80,4 +80,4 @@ AI 是执行层。
 > **实践笔记**
 > Maestro 是这套方法论的可执行对应物：一个平台无关的工作流核心，可以从中派生不同 Agent 的指令。Playbook 解释原则，Maestro 检验这些原则能否作为系统运行。
 
-[下一章 → 真值治理](../08-truth-governance/README.zh-CN.md) · [附录A → 常见失败模式](../appendix/anti-patterns.zh-CN.md) · [附录B → 验证策略](../appendix/verification-strategies.zh-CN.md) · [附录C → 速查表](../appendix/cheatsheet.zh-CN.md)
+[下一章 → 真相治理](../08-truth-governance/README.zh-CN.md) · [附录A → 常见失败模式](../appendix/anti-patterns.zh-CN.md) · [附录B → 验证策略](../appendix/verification-strategies.zh-CN.md) · [附录C → 速查表](../appendix/cheatsheet.zh-CN.md)

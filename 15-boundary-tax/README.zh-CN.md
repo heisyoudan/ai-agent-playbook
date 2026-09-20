@@ -1,4 +1,4 @@
-# 15 — 边界税与最优推理边界
+# 15 — 边界协调成本与最佳推理边界
 
 [日本語](README.ja.md) · [English](README.md) · **简体中文**
 
@@ -35,4 +35,4 @@
 
 ---
 
-[← 14 — 工作流运行时与恢复](../14-workflow-runtime-recovery/README.zh-CN.md) · [下一章 → 16 — 可扩展治理与决策压缩](../16-scalable-governance/README.zh-CN.md)
+[← 14 — 工作流运行时与恢复](../14-workflow-runtime-recovery/README.zh-CN.md) · [下一章 → 16 — 规模化治理与决策压缩](../16-scalable-governance/README.zh-CN.md)

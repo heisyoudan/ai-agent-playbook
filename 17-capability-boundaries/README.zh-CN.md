@@ -35,4 +35,4 @@
 
 ---
 
-[← 16 — 可扩展治理与决策压缩](../16-scalable-governance/README.zh-CN.md) · [研究孵化器 →](../research/README.zh-CN.md)
+[← 16 — 规模化治理与决策压缩](../16-scalable-governance/README.zh-CN.md) · [研究孵化器 →](../research/README.zh-CN.md)

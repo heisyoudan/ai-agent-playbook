@@ -32,4 +32,4 @@
 
 ---
 
-[← 13 — 全局真值、局部真值与真值投影](../13-global-local-truth/README.zh-CN.md) · [下一章 → 15 — 边界税与最优推理边界](../15-boundary-tax/README.zh-CN.md)
+[← 13 — 全局真相、局部真相与真相投影](../13-global-local-truth/README.zh-CN.md) · [下一章 → 15 — 边界协调成本与最佳推理边界](../15-boundary-tax/README.zh-CN.md)
