@@ -125,4 +125,4 @@ Agent 使用的工作上下文应保持精简。发布、审计或事故调查�
 
 ---
 
-[附录E → 核心概念索引](concept-index.zh-CN.md) · [← 中文README](../README.md) · [日文附录](operational-readiness.ja.md) · [英文附录](operational-readiness.md)
+[附录E → 概念权威地图](concept-index.zh-CN.md) · [← 中文README](../README.md) · [日文附录](operational-readiness.ja.md) · [英文附录](operational-readiness.md)

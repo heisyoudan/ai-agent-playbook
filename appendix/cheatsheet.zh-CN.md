@@ -6,7 +6,7 @@
 
 > **我正在设计任务、运行 Agent Workflow、验证结果或做 Human × AI 决策时，应该检查什么？**
 
-它覆盖 Part I / II / III，但不承担概念定义职责。想知道某个概念是什么意思、由哪一章定义，请查阅[附录E — 核心概念索引](concept-index.zh-CN.md)。
+它覆盖 Part I / II / III，但不承担概念定义职责。想知道某个概念是什么意思、由哪一章定义，请查阅[附录E — 概念权威地图](concept-index.zh-CN.md)。
 
 ---
 
@@ -178,7 +178,7 @@ Feedback 反馈
 → 24
 ```
 
-概念定义与权威章节请查阅[附录E — 核心概念索引](concept-index.zh-CN.md)。
+概念定义与权威章节请查阅[附录E — 概念权威地图](concept-index.zh-CN.md)。
 
 ---
 
@@ -215,7 +215,7 @@ Feedback 反馈
 
 本表只回答「怎么用」。
 
-概念的定义、首次出现、权威章节，以及容易混淆的概念对照（State / Evidence / Truth、Gate / Verdict、Retry / Reexecution / Recovery / Rollback、Capability / Authority、三种投影），统一在[附录E — 核心概念索引](concept-index.zh-CN.md)。
+概念的定义、首次出现、权威章节，以及容易混淆的概念对照（State / Evidence / Truth、Gate / Verdict、Retry / Reexecution / Recovery / Rollback、Capability / Authority、三种投影），统一在[附录E — 概念权威地图](concept-index.zh-CN.md)。
 
 ---
 
@@ -228,4 +228,4 @@ Feedback 反馈
 不能 → 它仍然依赖个人能力。
 ```
 
-[附录A → 失败模式](anti-patterns.zh-CN.md) · [附录E → 核心概念索引](concept-index.zh-CN.md) · [← 中文README](../README.md)
+[附录A → 失败模式](anti-patterns.zh-CN.md) · [附录E → 概念权威地图](concept-index.zh-CN.md) · [← 中文README](../README.md)

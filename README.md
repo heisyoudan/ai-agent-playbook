@@ -728,7 +728,7 @@ Research 允许存在：
 | [B](appendix/verification-strategies.zh-CN.md) | AI 产出验证策略 |
 | [C](appendix/cheatsheet.zh-CN.md) | 实战速查表（覆盖 Part I / II / III） |
 | [D](appendix/operational-readiness.zh-CN.md) | 生产就绪与治理检查 |
-| [E](appendix/concept-index.zh-CN.md) | 核心概念索引：定义、首次出现与权威章节 |
+| [E](appendix/concept-index.zh-CN.md) | 概念权威地图：定义、首次出现、权威章节与引用关系 |
 
 附录不承担主方法论叙事。
 
