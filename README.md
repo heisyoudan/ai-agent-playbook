@@ -189,6 +189,46 @@ AI 的价值从单纯扩大执行能力，进一步进入可靠工程交付。
 
 ---
 
+# 方法论与实践
+
+这个仓库记录的是方法论。
+
+与之对应的实践系统是 **Maestro**：一个我长期设计并实际使用的 Agent-first 工作流控制器。
+
+Maestro 不绑定特定模型或 Agent。
+
+它把任务契约、项目真相、角色边界、状态、Gate、Evidence 和 Transition 保存在 Worker 之外，使不同 Agent 可以在隔离上下文中参与同一个持续工程流程。
+
+可以简单理解成：
+
+```text
+AI Agent Playbook
+        ↓
+定义原则
+
+Maestro
+        ↓
+把其中一部分原则编码成可运行系统
+
+真实项目
+        ↓
+持续产生新的证据、问题和方法论修正
+```
+
+因此，两者并不是「理论仓库」和「附属工具」的关系。
+
+更接近：
+
+> **Playbook 解释为什么。**
+>
+> **Maestro 验证这些原则能不能真的运行。**
+
+需要说明的是：Playbook 是平台无关的方法论，Maestro 只是其中一种长期实践实现，不是方法论的前提。
+
+→ [查看 Maestro 真实工程案例](case-studies/maestro-real-world-workflow/README.zh-CN.md)
+
+---
+
 # 仓库结构
 
 这个仓库目前由四个部分组成：
@@ -587,7 +627,7 @@ Case Studies 不定义新的方法论。
 
 **状态：真实工程实践记录**（不属于正式编号章节，也不属于 Research）
 
-Maestro 是我长期使用的 Agent-first 工作流控制器。
+Maestro 是我长期设计和使用的 Agent-first 工作流控制器。
 
 它不绑定特定 Agent 或模型，而是通过 CLI、持久化任务状态、独立 QA、Gate、Evidence 和结构化 Transition，让可替换的 Agent 在彼此独立的上下文中持续参与同一个项目。
 
@@ -994,7 +1034,13 @@ Agent 推理与执行
 
 这个 Playbook 的方法论保持平台无关。
 
-**Maestro** 是用于实践和验证其中一部分方法的工作流框架。
+**Maestro** 是我长期设计和使用的 Agent-first 工作流控制器，也是这套 Playbook 的主要实践环境之一。
+
+它不是方法论的前提，也不定义方法论本身。它的价值在于把任务契约、上下文隔离、Shared Truth、Quality Gate、Evidence、状态转换和可替换 Worker 等原则真正编码进持续运行的软件工程流程。
+
+用一句话概括两者的关系：
+
+> **Maestro 是这套方法论的可执行注脚，也是长期现实验证环境。**
 
 两者可以理解成：
 
@@ -1045,7 +1091,9 @@ Sage 负责理解需求、整理业务上下文、切分任务和建立可执行
 
 → [Maestro 实践案例：真实商业项目中的 Agent 工程工作流](case-studies/maestro-real-world-workflow/README.zh-CN.md)
 
-案例展示了正常的 Dev → QA 交接，以及 QA Reject 后携带 Evidence 返回 Dev、修复并重新进入验证流程的真实执行记录。
+案例展示了正常态（Dev → QA、QA PASS → closing）与异常态（Sage 收口并继续编排、Dev 只执行到任务边界、QA FAIL 返回 Dev）。
+
+其中异常态部分来自同一个 Task 的连续执行记录。
 
 ---
 
