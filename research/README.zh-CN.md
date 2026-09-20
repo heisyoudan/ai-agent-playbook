@@ -67,7 +67,13 @@ Promote into Playbook（提升进 Playbook）
 
 ## 当前状态
 
-尚未发布任何研究笔记。来自进行中工作的观察仍在收集，目前还不足以经受评审。
+目前只有一条研究笔记，处于最早期阶段：
+
+| 笔记 | 主题 | 成熟度 |
+|---|---|---|
+| [并行执行、汇合与依赖驱动编排](parallel-execution-and-dependency-orchestration.zh-CN.md) | 多 Agent 并行执行时的汇合、依赖判定与状态冲突 | Working Hypothesis |
+
+它来自第 14 章与第 16 章遗留的开放问题，目前尚无中文以外的版本，也还没有形成可复用模式。
 
 ---
 

@@ -67,7 +67,13 @@ Promotion means the material moves into a chapter, the chapter is marked `Evolvi
 
 ## Status
 
-No research notes are published yet. Observations from ongoing work are being collected while they are still too thin to survive review.
+One note is open, at the earliest stage:
+
+| Note | Topic | Maturity |
+|---|---|---|
+| [Parallel execution, joins and dependency-driven orchestration](parallel-execution-and-dependency-orchestration.zh-CN.md) | Joins, dependency satisfaction and state conflicts when several agents run in parallel | Working Hypothesis |
+
+It came out of open questions in Chapters 14 and 16. It is currently written in Simplified Chinese only, and has not yet produced a reusable pattern.
 
 ---
 
