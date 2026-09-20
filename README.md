@@ -235,7 +235,7 @@ AI 正在改变软件工程中价值和瓶颈所在的位置。
 
 ---
 
-### [02 — 任务粒度决定一切](02-task-granularity/README.zh-CN.md)
+### [02 — 任务粒度与可执行性](02-task-granularity/README.zh-CN.md)
 
 任务过大会让 Agent 失去焦点；任务过小又会产生大量交接和协调成本。
 
@@ -553,7 +553,7 @@ Human 的注意力是有限资源。如果所有结果都需要人工审批，�
 
 ### [24 — 现实反馈与长期协作演化](24-reality-feedback-and-long-term-evolution/README.zh-CN.md)
 
-**状态：持续研究（Research）** · **成熟度：观察模式（Observed Pattern）**
+**状态：持续研究（Research）** · **成熟度：工作假设（Working Hypothesis）**
 
 正式章节的最后一章。
 
@@ -868,7 +868,7 @@ Agent 推理与执行
 如果刚开始使用 AI 开发（Part I）：
 
 ```text
-02 任务粒度决定一切
+02 任务粒度与可执行性
 ↓
 03 “复杂的极简”提示词哲学
 ↓

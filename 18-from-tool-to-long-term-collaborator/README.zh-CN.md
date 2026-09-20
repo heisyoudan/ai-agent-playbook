@@ -475,9 +475,9 @@ Human 获得新的经验
 
 ---
 
-# 从 Tool 到 Collaborator
+# AI 角色演化路径
 
-可以把整个过程粗略表示为：
+可以把 AI 在 Human 工作系统中承担角色的变化，粗略表示为一条演化路径：
 
 ```text
 Tool
@@ -498,6 +498,10 @@ Long-term Collaborator
 它们代表的是：
 
 > AI 在 Human 工作系统中的责任范围逐渐扩大。
+
+这套模型描述的是 **AI 在 Human 工作系统中角色的变化**。
+
+它不是整个 Playbook 的章节阶段模型，也不是严格的成熟度等级。
 
 ## Tool
 
