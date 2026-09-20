@@ -80,6 +80,8 @@ The bar for opening a new note out of a chapter open question is higher: it beco
 
 An unresolved question inside a chapter already belongs to that chapter. Not every open question needs a file.
 
+Before writing a new note, check the [concept index](../appendix/concept-index.zh-CN.md) (Chinese only at present): is the idea an alias of an existing concept, does it belong to an existing chapter, or is it genuinely a new problem?
+
 ## Status
 
 Two notes are open, both at the earliest stage:

@@ -200,4 +200,4 @@ Agent 的工作状态应保持精简，但发布和审计证据需要按相关�
 
 ---
 
-[附录A → 失败模式](anti-patterns.zh-CN.md) · [附录C → 速查表](cheatsheet.zh-CN.md) · [← 中文README](../README.md)
+[附录A → 失败模式](anti-patterns.zh-CN.md) · [附录C → 实战速查表](cheatsheet.zh-CN.md) · [附录E → 核心概念索引](concept-index.zh-CN.md) · [← 中文README](../README.md)

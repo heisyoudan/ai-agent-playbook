@@ -618,12 +618,13 @@ Research 允许存在：
 |---|---|
 | [A](appendix/anti-patterns.zh-CN.md) | 基础失败模式与跳章节失败模式导航 |
 | [B](appendix/verification-strategies.zh-CN.md) | AI 产出验证策略 |
-| [C](appendix/cheatsheet.zh-CN.md) | 核心概念速查（覆盖 Part I / II / III） |
+| [C](appendix/cheatsheet.zh-CN.md) | 实战速查表（覆盖 Part I / II / III） |
 | [D](appendix/operational-readiness.zh-CN.md) | 生产就绪与治理检查 |
+| [E](appendix/concept-index.zh-CN.md) | 核心概念索引：定义、首次出现与权威章节 |
 
 附录不承担主方法论叙事。
 
-附录也不承担定义的权威职责：失败模式、原则和机制的定义在对应章节，附录只做导航和速查。
+附录也不承担定义的权威职责：概念、失败模式和机制的定义在对应章节。附录 E 是他们的索引，附录 A 是失败模式导航。
 
 它更像实际工作时可以快速查阅的工具区。
 
