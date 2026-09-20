@@ -591,17 +591,35 @@ Maestro 是我长期使用的 Agent-first 工作流控制器。
 
 它不绑定特定 Agent 或模型，而是通过 CLI、持久化任务状态、独立 QA、Gate、Evidence 和结构化 Transition，让可替换的 Agent 在彼此独立的上下文中持续参与同一个项目。
 
-该案例展示正常路径：
+案例的整体结构是：
+
+```text
+Human ↔ Sage
+↓
+Task Contract / Task Map
+↓
+Dev / Design
+↓
+QA
+↓
+Sage → Close
+```
+
+截图实际展示的是其中两条具体路径。
+
+正常路径：
 
 ```text
 Dev → QA
 ```
 
-以及异常路径：
+异常路径：
 
 ```text
 QA FAIL → Dev remediation → QA
 ```
+
+需求澄清和任务切分这一段目前没有公开截图。
 
 截图均来自真实商业软件开发流程，并进行了必要脱敏。
 
@@ -994,12 +1012,32 @@ Playbook 负责定义和持续演化方法论。
 
 Maestro 负责探索怎样把其中的一部分原则落实为：
 
-- 任务契约；
+- 需求澄清与业务上下文整理；
+- 任务切分与 Task Contract；
 - 角色边界；
-- 质量门；
+- 独立 QA 与质量门；
 - 状态变化；
 - 结构化交接；
-- 工作流执行。
+- 持久化项目 Truth；
+- 工作流执行与收口。
+
+其中 Sage 位于 Human Intent 与执行 Worker 之间：
+
+```text
+Human Intent
+↓
+Sage
+↓
+Task Map / Task Contract
+↓
+Dev / Design
+↓
+QA
+↓
+Sage / Close
+```
+
+Sage 负责理解需求、整理业务上下文、切分任务和建立可执行契约，但不替代 Human 对重大 Scope、业务目标和高影响决策的最终授权。
 
 未来即使模型、平台和具体实现发生变化，这套方法论仍然应该能够继续存在。
 

@@ -78,6 +78,160 @@ Maestro 的目标，就是把这部分状态从 Human 和聊天历史中移出�
 
 ---
 
+# Sage：从需求到可执行任务
+
+Maestro 中，Sage 是工作流最上游的协调角色。
+
+Dev 和 QA 接收到的通常已经是一个具有明确目标、边界和验收条件的局部任务。
+
+但现实中的需求一开始往往不是这样。
+
+它可能只是：
+
+- 一段客户描述；
+- 一个业务问题；
+- 一个需要调查的异常；
+- 一个尚未明确边界的功能方向；
+- 多个彼此存在依赖的目标。
+
+Sage 负责在执行开始之前，把这些信息整理成 Agent 可以可靠处理的问题世界。
+
+一个典型过程是：
+
+```text
+Human / Customer Requirement
+↓
+Sage 与 Human 讨论并澄清需求
+↓
+理解业务背景和真实目标
+↓
+确认当前项目现实与约束
+↓
+识别依赖、风险和未知项
+↓
+任务切分
+↓
+形成 Task Contract / Task Map
+↓
+发布任务卡
+↓
+Dev / Design / QA
+```
+
+因此，Sage 并不只是「创建任务」。
+
+它需要先理解：
+
+> 为什么要做这件事？
+
+然后才决定：
+
+> 应该把它切成哪些可执行、可验证、边界明确的任务？
+
+较大的现实需求最终可能被拆成：
+
+```text
+Requirement
+↓
+Investigation
+↓
+Truth / Architecture Confirmation
+↓
+Implementation Task
+↓
+Verification
+↓
+Delivery / Close
+```
+
+每张任务卡只携带当前执行真正需要的上下文。
+
+这样 Dev 不需要重新理解整个业务世界，也不需要自行补全产品或 Scope 决策。
+
+QA 同样不需要重新猜测：
+
+> 客户真正想要什么？
+
+它面对的是已经被整理并冻结到当前任务中的：
+
+```text
+Task Contract
++
+Acceptance Criteria
++
+Boundary
++
+Artifact
++
+Evidence
++
+当前现实
+```
+
+Sage 因此承担的是：
+
+> **Human Intent 与 Agent Execution 之间的编排层。**
+
+## Sage 不替代 Human
+
+Sage 可以：
+
+- 帮助澄清需求；
+- 理解业务上下文；
+- 调查当前项目现实；
+- 提出任务切分方案；
+- 建立任务依赖；
+- 生成并发布 Task Contract；
+- 管理普通工作流流转；
+- 汇总 Dev / QA 的结果；
+- 在满足关闭条件以后完成收口。
+
+但 Sage 不因此拥有 Human 的最终业务决策权。
+
+例如：
+
+- 是否改变项目 Scope；
+- 是否接受新的客户承诺；
+- 是否改变重大业务目标；
+- 是否接受高风险例外；
+- 是否改变重要项目真相。
+
+这些问题仍然需要 Human 授权。
+
+因此 Maestro 中的基本关系可以理解成：
+
+```text
+Human
+↓
+决定目标 / 价值 / 高影响选择
+↓
+Sage
+↓
+理解 / 切分 / 契约化 / 编排
+↓
+Dev / Design
+↓
+执行
+↓
+QA
+↓
+独立验证
+↓
+Sage
+↓
+收口
+```
+
+Human 决定：
+
+> 什么值得做。
+
+Sage 负责把这个决定转换成：
+
+> Agent 可以可靠执行和验证的任务结构。
+
+---
+
 # Agent 无关的工作流核心
 
 Maestro 的一个重要设计前提是：
@@ -514,6 +668,36 @@ Human 可以观察：
 
 Maestro 目前围绕几个核心原则工作。
 
+## Sage Orchestration
+
+Sage 位于 Human Intent 和执行 Worker 之间。
+
+它负责：
+
+- 澄清需求；
+- 理解业务与项目现实；
+- 识别依赖和未知项；
+- 切分任务；
+- 生成 Task Contract；
+- 发布任务；
+- 汇总验证结果；
+- 处理普通例外；
+- 完成工作流收口。
+
+Sage 的职责不是替 Human 做最终价值判断，而是把 Human 已经授权的目标转换成可执行工作。
+
+可以压缩为：
+
+```text
+Human Intent
+↓
+Sage
+↓
+Task Map / Task Contract
+↓
+Workers
+```
+
 ## Task Contract
 
 任务必须拥有明确的：
@@ -685,6 +869,16 @@ Human 不读取全部聊天
 ---
 
 # 核心原则
+
+```text
+Human defines intent.
+Sage turns intent into executable tasks.
+Workers execute in isolated contexts.
+QA verifies independently.
+Project truth persists across all of them.
+```
+
+> Human 定义目标，Sage 将目标转化为可执行任务，Worker 在隔离上下文中执行，QA 独立验证，而项目真相持续存在于所有 Worker 之外。
 
 > **Separate conversations. Shared truth.**
 
