@@ -310,6 +310,27 @@ Human 应该保留几个核心权力。
 
 ---
 
+# 能力、工具访问与授权的区别
+
+在讨论「AI 能不能做什么」时，有六个不同的问题：
+
+```text
+Technical Capability    能不能做
+Tool Access             技术上能不能操作
+Analysis Authority      能不能分析
+Advice Authority        能不能建议
+Decision Authority      能不能选择
+Execution Authority     能不能改变现实
+```
+
+前两个是能力问题，后四个是授权问题。
+
+> **能调用工具 ≠ 被授权行动。**
+
+例如，AI 可以调用数据库写入接口，也可能具备写出正确 SQL 的能力，但这并不等于它已经被授权写入生产数据。授权由 Human 决定，不由能力自动产生（见第 17 章「能力不等于权限」）。
+
+---
+
 # AI 的决策权可以分层
 
 AI 并不需要在所有事情上都请求 Human。

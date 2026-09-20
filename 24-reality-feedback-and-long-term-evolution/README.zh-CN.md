@@ -341,6 +341,10 @@ Human 认为某项能力很弱
 需要保持区分
 ```
 
+更精确地说：
+
+> **结果可以更新证据权重，但单次结果不能单独证明因果归因。**
+
 ---
 
 # 成功也可能被错误归因
@@ -673,8 +677,10 @@ QA
 可以开始讨论：
 
 ```text
-Human + AI Capability
+Collaborative System Capability（协作系统能力）
 ```
+
+平时也称作 `Human + AI Capability`。它目前仍然是工作假设，不是已经成立的结论。
 
 ## Human + AI 能力边界
 
