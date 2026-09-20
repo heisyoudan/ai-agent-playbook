@@ -62,7 +62,7 @@ Start a new session when responsibility changes, current state becomes hard to r
 | Template-driven | Follow a defined path; switch to a defined exception case |
 | Compressed normal path | Replace and refine rules instead of endlessly adding them |
 | Quality gates | Block transitions until evidence exists |
-| Atomic rollback | Record reason, change state, and hand off together |
+| Atomic transition | Record reason, change state, and hand off together |
 | Single source of truth | Keep authoritative state in one structured system |
 
 ## Verification Checklist

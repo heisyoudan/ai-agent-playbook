@@ -602,6 +602,12 @@ Research 允许存在：
 
 这样可以避免仓库为了追求完整，过早把新的想法写成工程事实。
 
+但 Research 与正文之间不是等权的：
+
+> **Research 可以挑战 Playbook，但不能静默改写 Playbook。**
+
+研究笔记与正式章节冲突时，冲突必须被显式记录，并在正文完成修订之前仍以正文为准。详见 [Research](research/README.zh-CN.md)。
+
 ---
 
 # 三、Appendix
@@ -610,12 +616,14 @@ Research 允许存在：
 
 | 附录 | 内容 |
 |---|---|
-| [A](appendix/anti-patterns.zh-CN.md) | 常见失败模式 |
+| [A](appendix/anti-patterns.zh-CN.md) | 基础失败模式与跳章节失败模式导航 |
 | [B](appendix/verification-strategies.zh-CN.md) | AI 产出验证策略 |
-| [C](appendix/cheatsheet.zh-CN.md) | 核心原则速查 |
+| [C](appendix/cheatsheet.zh-CN.md) | 核心概念速查（覆盖 Part I / II / III） |
 | [D](appendix/operational-readiness.zh-CN.md) | 生产就绪与治理检查 |
 
 附录不承担主方法论叙事。
+
+附录也不承担定义的权威职责：失败模式、原则和机制的定义在对应章节，附录只做导航和速查。
 
 它更像实际工作时可以快速查阅的工具区。
 

@@ -4,6 +4,13 @@
 
 以下是实际 Agent 工作流中反复出现的失败，以及怎样从结构上预防它们。
 
+本附录是这个 Playbook 的**失败模式导航**，由两部分组成：
+
+- 六个高频基础失败模式，来自较早期实践，至今仍然成立；
+- 一个按 Part 组织的跳章节失败模式索引。
+
+每个章节正文中的失败模式是**权威定义位置**。本附录不复制它们。
+
 ---
 
 ## 反模式1：先改状态，之后再写日志
@@ -18,7 +25,7 @@
 
 ### 对策
 
-**让状态转换成为原子操作。** 记录原因和证据、修改状态、生成下一步交接必须作为一次操作完成，不允许只成功其中一部分。
+**让状态变更成为一次原子状态转换（Atomic Transition）。** 记录原因和证据、修改状态、生成下一步交接必须作为一次操作完成，不允许只成功其中一部分。
 
 ## 反模式2：任务定义不完整就交接
 
@@ -96,6 +103,30 @@ Agent 修改无关文件、增加未要求的文档，或执行不属于任务�
 ### 对策
 
 明确禁止事项和非目标。可预测的边界，通常比“自由改进所有相关内容”更有价值。
+
+## 失败模式索引
+
+各章节是失败模式的权威定义位置。下面是按 Part 的导航。
+
+### Part I — 个人 AI 工程（01–07）
+
+任务粒度失衡、上下文污染、角色与职责混淆、工作流过度依赖人工纪律等。
+
+→ [02](../02-task-granularity/README.zh-CN.md) · [03](../03-prompt-philosophy/README.zh-CN.md) · [04](../04-context-isolation/README.zh-CN.md) · [05](../05-agent-management/README.zh-CN.md) · [06](../06-workflow-as-product/README.zh-CN.md) · [07](../07-what-really-matters/README.zh-CN.md)
+
+### Part II — 可靠 Agent 软件工程（08–17）
+
+真相漂移、错误前提、证据不足、共享盲区、权限越界、投影陈旧、错误重试、恢复失败、边界协调成本、治理膨胀、能力误判等。
+
+→ [08](../08-truth-governance/README.zh-CN.md) · [09](../09-effective-reasoning-scope/README.zh-CN.md) · [10](../10-boundaries-contracts-artifacts/README.zh-CN.md) · [11](../11-verification-evidence/README.zh-CN.md) · [12](../12-authority-human-gates/README.zh-CN.md) · [13](../13-global-local-truth/README.zh-CN.md) · [14](../14-workflow-runtime-recovery/README.zh-CN.md) · [15](../15-boundary-tax/README.zh-CN.md) · [16](../16-scalable-governance/README.zh-CN.md) · [17](../17-capability-boundaries/README.zh-CN.md)
+
+### Part III — Human × AI 长期协作（18–24）
+
+长期上下文污染、推断升级为事实、陈旧目标、过度个性化、决策替代、授权越界、错误归因、负复利等。
+
+→ [18](../18-from-tool-to-long-term-collaborator/README.zh-CN.md) · [19](../19-persistent-personal-context/README.zh-CN.md) · [20](../20-personal-truth-and-memory-governance/README.zh-CN.md) · [21](../21-contextual-decision-support/README.zh-CN.md) · [22](../22-human-ai-decision-boundaries/README.zh-CN.md) · [23](../23-from-decision-to-agent-execution/README.zh-CN.md) · [24](../24-reality-feedback-and-long-term-evolution/README.zh-CN.md)
+
+---
 
 ## 总结
 
