@@ -329,7 +329,7 @@ Human 不需要打开每一个 Dev 或 QA 会话重新拼接项目状态。
 
 ---
 
-# 真实工程中的正常态与异常态
+# 真实工程中的三种状态
 
 在下面的真实流程中，Human 没有通过长对话重新向每个 Agent 解释需求。
 
@@ -337,9 +337,9 @@ Human 不需要打开每一个 Dev 或 QA 会话重新拼接项目状态。
 
 任务目标、上下文、边界、已有证据和允许的下一步，由工作流重新投影给当前 Worker。
 
-这里展示两类路径。
+这里展示三种情况：条件满足时推进，验证失败时返工，条件不足时停止。
 
-正常态：
+正常路径：
 
 ```text
 Dev
@@ -353,7 +353,7 @@ closing
 Sage
 ```
 
-异常态：
+异常路径：
 
 ```text
 Sage
@@ -369,26 +369,41 @@ FAIL
 返回 Dev
 ```
 
+受控停止：
+
+```text
+Dev
+↓
+读取前置条件
+↓
+条件不足
+↓
+不开始
+```
+
 下面的截图来自同一个真实商业软件项目。
 
 为保护客户信息，项目标识已经脱敏。
 
-六张截图的顺序对应上面的结构：
+七张截图按照 01 到 07 的顺序编号。
 
 ```text
-01  任务看板     Human 视角 · Shared Project Truth
-02  正常态       正常任务 · Dev → QA
-03  正常态       正常任务 · QA PASS → closing
-04  异常态       Sage 收口并继续编排
-05  异常态       Dev 只执行到任务边界
-06  异常态       QA FAIL → 返回 Dev
+01  正常路径     Human 视角 · Shared Project Truth（已在前一节展示）
+02  正常路径     Dev → QA
+03  正常路径     QA PASS → closing
+04  异常路径     Sage 收口并继续编排
+05  异常路径     Dev 只执行到任务边界
+06  异常路径     QA FAIL → 返回 Dev
+07  受控停止     前置条件不足 · Dev 不开始
 ```
 
 其中 04 / 05 / 06 是同一个 Task（M3-01）的连续上下文。
 
+07 是同一项目线程里的下一项任务 M3-02，它等待的正是 M3-01 的调查结果。
+
 ---
 
-## 01 · 正常执行：Dev → QA
+## 02 · 正常执行：Dev → QA
 
 ![Normal Dev → QA Handoff](images/02-normal-dev-handoff.png)
 
@@ -418,7 +433,7 @@ Dev 也不会因为完成了实现就自行宣布整个 Task 完成。
 
 ---
 
-## 02 · 正常完成：QA PASS → Closing
+## 03 · 正常完成：QA PASS → Closing
 
 ![Normal QA PASS → Closing](images/03-normal-qa-pass-closing.png)
 
@@ -456,7 +471,7 @@ Human 不需要在每个角色之间重新组织上下文。
 
 ---
 
-## 03 · Sage 收口并继续编排
+## 04 · Sage 收口并继续编排
 
 ![Sage Orchestration](images/04-sage-orchestration.png)
 
@@ -494,7 +509,7 @@ Task State 持续存在
 
 ---
 
-## 04 · Dev 只执行到自己的任务边界
+## 05 · Dev 只执行到自己的任务边界
 
 ![Bounded Dev Execution](images/05-bounded-dev-execution.png)
 
@@ -530,7 +545,7 @@ qa
 
 ---
 
-## 05 · QA FAIL：异常路径返回 Dev
+## 06 · QA FAIL：异常路径返回 Dev
 
 ![QA FAIL → Return to Dev](images/06-qa-fail-return-to-dev.png)
 
@@ -583,6 +598,58 @@ maestro task context M3-01 --role dev --json
 > **异常并不会让工作流失去结构。**
 >
 > **失败会成为下一轮执行的输入。**
+
+---
+
+## 07 · 前置条件不足：不开始
+
+![Pre-execution Stop](images/07-pre-execution-stop.png)
+
+同一项目线程里的下一项任务 M3-02 被交给 Dev 之后，Dev 读取当前上下文，给出的结论是：
+
+> 目前不应开始 M3-02 的合同冻结或实现工作。
+
+原因是它依赖的前置条件还没有到位：
+
+```text
+等待 OA-06 source/identity truth
+等待 M3-01 调查完成
+```
+
+Dev 没有用推测填补这个空缺，而是把「现在不该开始」本身作为结论记录下来。
+
+同一份 Task Context 里同时带着当前边界：
+
+```text
+只定义合同
+不实现 Import / Validate / Preview
+不写生产数据
+不冻结未经支持的 schema / staging 细节
+```
+
+以及 QA 已经预先登记的要求：
+
+> 先判断测试入口是否足够；不足时提交 `type=test_entry_requirement` 备注。
+
+要注意 `execState` 此时是 `in_progress`，负责人是 `dev`。
+
+也就是说：**任务处于进行中，并不等于它必须往前推进。**
+
+因此：
+
+```text
+Dev
+↓
+读取前置条件
+↓
+条件不足
+↓
+不开始
+```
+
+> **Worker 拿到任务，不代表它必须开始执行。**
+>
+> **依赖和不确定性会停在工作流里，而不是被猜掉。**
 
 ---
 
@@ -832,6 +899,14 @@ QA 负责独立验证。
 
 实现结果不会自动成为 QA Verdict。
 
+## 前置条件检查与安全停止
+
+Worker 在执行前检查当前任务依赖的 Truth、上游状态和任务边界。
+
+如果关键前置条件仍然缺失，正确结果可以是「不开始」，而不是依靠推测继续执行。
+
+这让未知信息停留在工作流中，直到现实条件满足。
+
 ## Evidence-driven Transition
 
 状态转换需要理由和证据。
@@ -927,6 +1002,10 @@ Agent 可以替换
 Dev 可以完成当前边界内的工作
 ↓
 QA 仍然拥有独立拒绝权
+
+前置条件不足
+↓
+Worker 可以停止，而不是自行补全未知信息
 
 任务可以失败
 ↓

@@ -645,18 +645,24 @@ QA
 Sage → Close
 ```
 
-截图实际展示的是其中两条具体路径。
+截图实际展示的是三类情况。
 
 正常路径：
 
 ```text
-Dev → QA
+Dev → QA → PASS → closing
 ```
 
 异常路径：
 
 ```text
-QA FAIL → Dev remediation → QA
+QA FAIL → 返回 Dev
+```
+
+受控停止：
+
+```text
+前置条件不足 → Dev 不开始
 ```
 
 需求澄清和任务切分这一段目前没有公开截图。
