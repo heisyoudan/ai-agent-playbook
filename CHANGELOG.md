@@ -4,6 +4,39 @@
 
 ---
 
+## v1.12.0 — 2026-09-21
+
+### 追加
+
+- **第23章（簡体字中国語版）の本文を執筆** — 「意思決定から Agent 実行へ」。18〜22 章で扱った個人の決策を、はじめて 01〜17 章の工程システムへ接続する橋の章
+- **決定は任務ではない** — 「これをやると決めた」と「Agent が今具体的に何をするか」の間に長い工程距離があること
+- **意図から実行へ** — Human Intent → Human Decision → Execution Mandate → Plan → Task Map → Agent Execution → Verification → Reality Result。もっとも壊れやすいのは意図の変換過程であること
+- **意図保持と執行授権** — 目標／範囲／制約／成功条件／禁止事項／決策境界／執行権限／昇格条件／停止条件を含む執行授権。例として「履歴書と求職信の準備」を完全な形で提示
+- **決策凍結と Decision Record** — 執行 Worker は高層決定を静かに変える権限を持たない。決策記録は短くてよく、重要なのは「何を変えてはいけないか」が分かること
+- **決策コンテキストと執行コンテキストの分離** — Coding Agent に Human の全職歴や私的生活目標は不要。**決策投影**（真実投影との対比：真実投影は「何を信じてよいか」、決策投影は「何を実現する権限があるか」）
+- **Goal / Truth / Task / Boundary / Evidence の分離**
+- **決定から Task Map を生成** — 決策層が Task Map を通って工程層に接続する
+- **Execution Mandate** — Agent が自主決定できる範囲と、Human に保留される決定の明示。**Agent は商業決策をやり直さない**（「簡単にできる」≠「無償でやってよい」）、技術判断と現実判断の分離
+- **執行層は現実変化を暴露する** — Decision Challenge（実行 → 新現実 → 原決策の前提を否定 → 高影響実行を停止 → 証拠整理 → 決策層へ → 再分析）。**執行は決策を人質にできない**、停止も有効な実行結果であること、Outcome は SUCCESS / FAIL だけではないこと
+- **局部自主と授権範囲の明確さ** — Human は「何をするか」、Agent は「どうやるか」。範囲が明確なほど自主空間は大きい
+- **執行契約**（summary / objective / scope / boundaries / acceptanceCriteria / authority / escalation / evidence）
+- **決策から任務への可追跡性** — Human Decision → Objective → Mandate → Task → Artifact → Evidence → Outcome。**任務漂移**と局所最適化の危険、任務優先度は高層決策から来ること
+- **検証は依然として独立** — 決策意願が工程事実を污染しないこと、決策権と検証権の分離、Override は明示的な授権事象であること
+- **現実実行** — 準備段階と真実実行段階の区別、**現実コミット点**、Prepare → Preview → Authorize → Execute
+- **実行証拠** — Intent Evidence と Outcome Evidence の対比
+- **執行結果は決策層に戻る** — Task Completion と Goal Completion の区別、結果の閉ループがコードリポジトリ内で閉じないこと、Reality まで戻ること
+- **完全な循環**（現実機会 → 長期個人コンテキスト → AI 分析 → Human 決策 → 執行授権 → Task Map → Agent Workflow → 検証 → 現実操作 → 現実結果 → 証拠 → 個人コンテキストへ）
+- **執行層と決策層の関係** — 単方向授権 + 反方向挑戦。下へは目標・授権・境界、上へは証拠・リスク・衝突・現実変化。全コンテキストを伝播しないこと
+- 最小の決策→実行フロー（24ステップ）、最小執行授権構造（13項目）、三層モデル（Decision / Orchestration / Execution）
+- 12の失敗モード、2つの作業仮説、12の未解決課題、14の核心原則
+
+### 変更
+
+- **第24章のディレクトリ名を変更** — `24-reality-feedback-and-long-term-collaboration-evolution` → `24-reality-feedback-and-long-term-evolution`
+- **README の Part IV を更新** — 23 の状態を実際の状態に更新し概要を追加、24 の項目を追加
+
+---
+
 ## v1.11.0 — 2026-09-21
 
 ### 追加
@@ -45,7 +78,7 @@
 - **`個人コンテキスト投影` との接続** — 投影はフラットなキーワードフィルタではなく「関係をたどって部分木を取る操作」であることを明示（第13章の投影メカニズムと接続）
 - **「剪定」の位置づけ** — 記憶治理における失效・アーカイブ・忘却を剪定として位置づけ、第20章への橋渡しにした
 - **理解モデルであることを明記** — 「これは理解モデルであり実装規格ではない」とし、本編では提出に留め、第24章で完全に展開・回収することを記録
-- **`24-reality-feedback-and-long-term-collaboration-evolution/`** — 第24章の骨格を配置（本文は未執筆、23 は未命名）
+- **`24-reality-feedback-and-long-term-evolution/`** — 第24章の骨格を配置（本文は未執筆、23 は未命名）
 
 ### 改善
 

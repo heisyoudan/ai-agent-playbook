@@ -695,15 +695,29 @@ Human 决策
 
 ### [23 — 从决策到 Agent 执行](23-from-decision-to-agent-execution/README.zh-CN.md)
 
-**状态：待撰写（Planned）**
+**状态：持续研究（Research）** · **成熟度：观察模式（Observed Pattern）**
 
-把 Human 的决定重新落回 Part II–III 的工程系统。
+这是把 Part IV 重新接回 Part I–III 的桥。
+
+> **Human 已经做出决定以后，怎样把这个决定可靠地交给 Agent 系统执行？**
+
+核心区分包括：
+
+```text
+决定 ≠ 任务
+决策上下文 ≠ 执行上下文
+Task Completion ≠ Goal Completion
+```
+
+并提出执行授权、决策冻结、决策投影、任务地图、现实提交点，以及向下传播目标和边界、向上传播证据和现实的「单向授权 + 反向挑战」结构。
 
 ---
 
-### 24
+### [24 — 现实反馈与长期协作演化](24-reality-feedback-and-long-term-evolution/README.zh-CN.md)
 
-24 已经确定主题：「现实反馈与长期协作演化」，它会收束整个 Human × AI 部分，并完整展开第 19 章提出的 `上下文树模型`。
+**状态：待撰写（Planned）**
+
+24 会收束整个 Human × AI 部分，并完整展开第 19 章提出的 `上下文树模型`。
 
 ---
 
