@@ -2,6 +2,8 @@
 
 [日本語](anti-patterns.ja.md) · **English** · [简体中文](anti-patterns.zh-CN.md)
 
+> **Translation status:** the Simplified Chinese version is canonical. The Chinese methodology was updated after this page was written, so this translation may lag behind it.
+
 Failures seen in real agent workflows, and how to prevent them structurally.
 
 ---

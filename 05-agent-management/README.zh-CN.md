@@ -106,4 +106,4 @@ Next：下一步交接或动作
 > **实践笔记**
 > Maestro 将这些角色和状态转换规则写入框架，操作者不必在每次会话中重新构建。Playbook 定义行为，框架让行为可以执行。
 
-[下一章 → 把工作流当作产品](../06-workflow-as-product/README.zh-CN.md)
+[下一章 → 把工作流当作产品来设计](../06-workflow-as-product/README.zh-CN.md)

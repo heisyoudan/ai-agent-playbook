@@ -814,4 +814,4 @@ AI Agent 的执行能力正在快速提高。
 
 ---
 
-[← 07 — 真正重要的竞争力](../07-what-really-matters/README.zh-CN.md) · [下一章 → 09 — 有效推理范围](../09-effective-reasoning-scope/README.zh-CN.md)
+[← 07 — 真正的竞争优势在哪里](../07-what-really-matters/README.zh-CN.md) · [下一章 → 09 — 有效推理范围](../09-effective-reasoning-scope/README.zh-CN.md)

@@ -1,35 +1,12 @@
 # 12 — Authority & Human Gates
 
-[日本語](README.ja.md) · **English** · [简体中文](README.zh-CN.md)
+**English** · [日本語](README.ja.md) · [简体中文](README.zh-CN.md)
 
-**Status: Draft (chapter shell).** Maturity: **Observed Pattern** — the failure modes are well observed; the design rules are not yet settled. Ongoing evidence is tracked in the [Research Incubator](../research/README.md).
+**Status: Evolving**
 
-## The Question This Chapter Will Address
+**Translation pending.** The [Simplified Chinese version](README.zh-CN.md) is the authoritative text of this chapter, including its current status and maturity.
 
-Which decisions must a human own, and how is that ownership enforced rather than merely stated?
-
-## Why This Chapter Exists
-
-A gate that exists only in documentation is a preference, not a control. Two symmetric failures appear in practice:
-
-- **Under-gating:** autonomy without authority boundaries turns speed into risk. The agent did exactly what it was permitted to do.
-- **Over-gating:** approval for everything turns capacity back into a bottleneck, and reviewers stop reading carefully.
-
-The productive design question is therefore not "how much approval is needed". It is: which decisions are irreversible, novel, or value-laden — and therefore require a named owner?
-
-## Concepts Expected to Belong Here
-
-- Decision classes: reversible vs. irreversible, routine vs. novel, technical vs. value-laden
-- Gate placement in a workflow, and what a gate must be able to see
-- Delegated authority and its explicit limits
-- Escalation, refusal, and safe stop conditions
-- Gates that block vs. gates that record and continue
-- Approvals as evidence: who approved, on what basis
-- Failure modes of over-gating and under-gating
-
-## Current Maturity
-
-Failure modes are observed clearly. Gate design guidance is still qualitative and is being tested against real workflows.
+This page is not a translation of the current chapter. English and Japanese versions will be updated after the methodology structure stabilizes.
 
 ---
 

@@ -2,6 +2,8 @@
 
 [日本語](verification-strategies.ja.md) · **English** · [简体中文](verification-strategies.zh-CN.md)
 
+> **Translation status:** the Simplified Chinese version is canonical. The Chinese methodology was updated after this page was written, so this translation may lag behind it.
+
 ## Why Verification Matters
 
 AI can generate thousands of lines faster than a human can review them. Verification therefore becomes the bottleneck and the control surface of AI-assisted delivery.

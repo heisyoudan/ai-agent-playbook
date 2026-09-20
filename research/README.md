@@ -38,7 +38,11 @@ A note moves down this list only when the evidence justifies it — not when it 
 | `Observed Pattern` | Seen repeatedly in real work, but the cause is not yet fully understood. |
 | `Derived Principle` | Supported by repeated observation and by attempts to falsify it. May become a chapter once its practical implications are clear. |
 
-The order above is a promotion path, never an assumption. Nothing skips a step because it feels convincing.
+These labels describe the current **evidence state** of a piece of research. They do not require every note to pass through all of them in a fixed order.
+
+What actually drives promotion is still real observation, falsification attempts and reusable evidence.
+
+Nothing skips a step because it feels convincing.
 
 ## What a Research Note May Contain
 

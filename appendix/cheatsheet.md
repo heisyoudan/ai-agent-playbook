@@ -2,6 +2,8 @@
 
 [日本語](cheatsheet.ja.md) · **English** · [简体中文](cheatsheet.zh-CN.md)
 
+> **Translation status:** the Simplified Chinese version is canonical. The Chinese methodology was updated after this page was written, so this translation may lag behind it.
+
 ## Three Core Principles
 
 ```text

@@ -2,6 +2,8 @@
 
 [日本語](operational-readiness.ja.md) · **English** · [简体中文](operational-readiness.zh-CN.md)
 
+> **Translation status:** the Simplified Chinese version is canonical. The Chinese methodology was updated after this page was written, so this translation may lag behind it.
+
 Good task design is not enough for production. Permissions, data handling, accountability, evaluation, and stop conditions must also be explicit. This checklist extends the playbook from individual practice to team and organizational use.
 
 ---

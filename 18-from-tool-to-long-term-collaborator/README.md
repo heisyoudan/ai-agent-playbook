@@ -6,7 +6,7 @@
 
 The authoritative text of this chapter is currently the [Simplified Chinese version](README.zh-CN.md).
 
-English and Japanese versions will be aligned once Chapters 18–24 are complete.
+This page is not a translation of the current chapter. English and Japanese versions will be updated after the methodology structure stabilizes.
 
 ---
 

@@ -8,6 +8,14 @@
 
 ---
 
+## 语言状态
+
+当前**简体中文版本是本仓库的权威工作版本**。
+
+English / 日本語：部分早期章节已有完整翻译；其余翻译将在方法论结构稳定后逐步同步。未明确标记为已同步的翻译，不应被视为当前中文版本的完整对应。
+
+---
+
 ## 这是什么
 
 过去几年，我一直在尝试回答一个问题：
@@ -616,7 +624,7 @@ Research 允许存在：
 
 | 附录 | 内容 |
 |---|---|
-| [A](appendix/anti-patterns.zh-CN.md) | 基础失败模式与跳章节失败模式导航 |
+| [A](appendix/anti-patterns.zh-CN.md) | 基础失败模式与跨章节失败模式导航 |
 | [B](appendix/verification-strategies.zh-CN.md) | AI 产出验证策略 |
 | [C](appendix/cheatsheet.zh-CN.md) | 实战速查表（覆盖 Part I / II / III） |
 | [D](appendix/operational-readiness.zh-CN.md) | 生产就绪与治理检查 |
