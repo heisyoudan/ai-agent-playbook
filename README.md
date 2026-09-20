@@ -715,9 +715,24 @@ Task Completion ≠ Goal Completion
 
 ### [24 — 现实反馈与长期协作演化](24-reality-feedback-and-long-term-evolution/README.zh-CN.md)
 
-**状态：待撰写（Planned）**
+**状态：持续研究（Research）** · **成熟度：观察模式（Observed Pattern）**
 
-24 会收束整个 Human × AI 部分，并完整展开第 19 章提出的 `上下文树模型`。
+正式章节的最后一章。
+
+它同时完成两件事：
+
+1. 把 18〜23 的 Human × AI 循环真正闭合；
+2. 完整收回第 19 章提出的 `上下文树模型`，作为本阶段整个 Playbook 的结尾。
+
+核心区分包括：
+
+```text
+结果 ≠ 结果原因
+Task Completion ≠ Goal Completion
+复利也可能是负的
+```
+
+并提出 `Human + AI Capability`：能力单位开始从个人转向协作系统。
 
 ---
 
