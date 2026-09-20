@@ -191,12 +191,16 @@ AI 的价值从单纯扩大执行能力，进一步进入可靠工程交付。
 
 # 仓库结构
 
-这个仓库目前由三个部分组成：
+这个仓库目前由四个部分组成：
 
 ```text
 正式方法论
     ↓
 三个 Part，记录方法论本身怎样从执行能力扩展到长期协作
+
+Case Studies
+    ↓
+用真实工程案例和现实证据展示方法论怎样运行
 
 Research
     ↓
@@ -571,7 +575,39 @@ Human 的注意力是有限资源。如果所有结果都需要人工审批，�
 
 ---
 
-# 二、Research
+# 二、Case Studies
+
+Case Studies 不定义新的方法论。
+
+它们用于展示 Playbook 中的原则怎样在真实工程环境中运行，并保留可以公开的现实证据。
+
+---
+
+## [Maestro 实践案例：真实商业项目中的 Agent 工程工作流](case-studies/maestro-real-world-workflow/README.zh-CN.md)
+
+**状态：真实工程实践记录**（不属于正式编号章节，也不属于 Research）
+
+Maestro 是我长期使用的 Agent-first 工作流控制器。
+
+它不绑定特定 Agent 或模型，而是通过 CLI、持久化任务状态、独立 QA、Gate、Evidence 和结构化 Transition，让可替换的 Agent 在彼此独立的上下文中持续参与同一个项目。
+
+该案例展示正常路径：
+
+```text
+Dev → QA
+```
+
+以及异常路径：
+
+```text
+QA FAIL → Dev remediation → QA
+```
+
+截图均来自真实商业软件开发流程，并进行了必要脱敏。
+
+---
+
+# 三、Research
 
 [Research](research/README.zh-CN.md) 用于保存仍然没有完全成熟的新发现。
 
@@ -618,7 +654,7 @@ Research 允许存在：
 
 ---
 
-# 三、Appendix
+# 四、Appendix
 
 附录负责保存实际工作中方便查阅的内容。
 
@@ -966,6 +1002,12 @@ Maestro 负责探索怎样把其中的一部分原则落实为：
 - 工作流执行。
 
 未来即使模型、平台和具体实现发生变化，这套方法论仍然应该能够继续存在。
+
+真实运行示例：
+
+→ [Maestro 实践案例：真实商业项目中的 Agent 工程工作流](case-studies/maestro-real-world-workflow/README.zh-CN.md)
+
+案例展示了正常的 Dev → QA 交接，以及 QA Reject 后携带 Evidence 返回 Dev、修复并重新进入验证流程的真实执行记录。
 
 ---
 

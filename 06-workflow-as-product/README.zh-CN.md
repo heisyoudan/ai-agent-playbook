@@ -21,6 +21,10 @@ Maestro  = 可执行的工作流框架
 
 框架不是方法论的来源，而是方法论得以实践、验证和持续改进的环境。
 
+这一关系在真实项目中的运行方式，可以参考：
+
+→ [Maestro 实践案例：真实商业项目中的 Agent 工程工作流](../case-studies/maestro-real-world-workflow/README.zh-CN.md)
+
 ## 模板驱动执行
 
 ### 自由理解与模板驱动
