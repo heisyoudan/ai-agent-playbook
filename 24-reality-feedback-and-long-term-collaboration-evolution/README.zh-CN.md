@@ -22,4 +22,4 @@
 
 ---
 
-[← 22 — Human 与 AI 的决策边界](../22-human-ai-decision-boundaries/README.zh-CN.md)
+[← 23 — 从决策到 Agent 执行](../23-from-decision-to-agent-execution/README.zh-CN.md)
