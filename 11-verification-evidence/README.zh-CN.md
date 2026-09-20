@@ -260,9 +260,9 @@ Agent 可能回复：
 - 官方文档。
 - 外部系统实际契约。
 - 客户确认。
-- 具备对应能力的 Human 判断（作为专家测量或评估）。
+- 具备对应能力的 Human 判断（作为专家观察、测量或评估的记录）。
 
-Human 判断在这里有两种身份：作为专家测量或评估时，它是证据；作为放行、批准或授权决定时，它是 Verdict / Authorization，不是证据。
+Human 判断在这里有两种身份：作为专家观察、测量或评估形成的记录，可以成为证据；作为批准、放行或授权行为时，则属于 Verdict / Authorization。
 
 证据越接近真实运行环境，对现实行为的解释能力通常越强。
 
@@ -615,7 +615,7 @@ Human 判断在这里有两种身份：作为专家测量或评估时，它是�
 - Human 授权；
 - 经过 Gate 的状态转换。
 
-证据充分回答的是「事实是否成立」，完成与授权回答的是「是否允许继续」，两者是不同的问题。
+证据闭环回答的是「现有证据是否足以支持当前声明」，完成与授权回答的是「是否允许继续」，两者是不同的问题。
 
 ---
 
@@ -638,7 +638,7 @@ Verdict
 ↓
 Evidence Closure
 ↓
-Authorization / Risk Acceptance
+Authorization / Risk Acceptance（必要时）
 ↓
 Gate
 ↓
@@ -649,11 +649,49 @@ State Transition
 
 ```text
 Requirement / Acceptance Criteria   第 02 章
-Verification / Evidence / Verdict   第 11 章
+
+Verification / Evidence             第 11 章
 Evidence Closure                    第 11 章
+
 Authorization / Risk Acceptance     第 12 章
-Gate                                第 12 章
+Human Gate                          第 12 章
+
+Verdict                             第 14 章
+Gate                                第 14 章
 State Transition                    第 14 章
+```
+
+这里需要区分两种 Gate：
+
+- **Human Gate（第 12 章）**：需要 Human 判断、授权或风险接受的决策点。
+- **Runtime Gate（第 14 章）**：是否允许生命周期发生状态转换的运行时机制。
+
+Human Gate 不是所有 Runtime Gate 的必经前置步骤。
+
+低风险任务可能：
+
+```text
+Verdict = PASS
+↓
+Evidence Closure
+↓
+Automated Gate
+↓
+Transition
+```
+
+高风险任务才可能：
+
+```text
+Verdict = PASS
+↓
+Evidence Closure
+↓
+Human Gate / Risk Acceptance
+↓
+Runtime Gate
+↓
+Transition
 ```
 
 这条链一旦冻结，各章只需引用同一顺序，不再各自描述。
@@ -1052,7 +1090,7 @@ Agent 修复以后最终通过。
 - 运行时验证。
 - 独立推理。
 - 强证据留存。
-- 具备相应能力的 Human 判断（作为专家评估，而非最终授权）。
+- 具备相应能力的 Human 判断（作为专家评估形成的记录，而非最终授权）。
 - 必要时进行受控环境测试。
 
 因此：
