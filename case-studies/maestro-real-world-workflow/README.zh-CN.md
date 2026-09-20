@@ -287,9 +287,11 @@ maestro task context <task-id> --role dev
 
 # Human 和 Agent 看见的是同一个项目状态
 
-Agent 主要通过 CLI、结构化任务数据和项目文件读取 Maestro。
+Agent 通过 CLI 读取执行世界。
 
-Human 则可以通过任务看板快速理解项目当前状态。
+Human 通过 Task Board 观察项目世界。
+
+两者依赖同一套持久化 Project Truth。
 
 ![Maestro Task Board](images/01-task-board.jpg)
 
@@ -327,58 +329,80 @@ Human 不需要打开每一个 Dev 或 QA 会话重新拼接项目状态。
 
 ---
 
-# 一个真实项目中的两条工作流路径
+# 真实工程中的正常态与异常态
+
+在下面的真实流程中，Human 没有通过长对话重新向每个 Agent 解释需求。
+
+主要输入只是 Maestro CLI。
+
+任务目标、上下文、边界、已有证据和允许的下一步，由工作流重新投影给当前 Worker。
+
+这里展示两类路径。
+
+正常态：
+
+```text
+Dev
+↓
+QA
+↓
+PASS
+↓
+closing
+↓
+Sage
+```
+
+异常态：
+
+```text
+Sage
+↓
+Dev
+↓
+执行到任务边界
+↓
+QA
+↓
+FAIL
+↓
+返回 Dev
+```
 
 下面的截图来自同一个真实商业软件项目。
 
 为保护客户信息，项目标识已经脱敏。
 
-这里展示的是两条不同的真实任务路径：
+六张截图的顺序对应上面的结构：
 
 ```text
-正常路径
-Dev → QA
-
-异常路径
-QA FAIL → Dev 修复 → 再次进入 QA
+01  任务看板     Human 视角 · Shared Project Truth
+02  正常态       正常任务 · Dev → QA
+03  正常态       正常任务 · QA PASS → closing
+04  异常态       Sage 收口并继续编排
+05  异常态       Dev 只执行到任务边界
+06  异常态       QA FAIL → 返回 Dev
 ```
 
-它们不是被拼接成同一个 Task 的演示流程，而是同一个项目中真实发生的不同任务。
-
-四张截图与 Task 的对应关系：
-
-```text
-01  任务看板        Shared Project Truth 面向 Human 的投影
-02  正常路径        OA-08 · Dev → QA 交接
-03  异常路径        OA-07 · QA FAIL
-04  正常路径完成     OA-08 · QA PASS → closing
-```
-
-其中 02 与 04 是同一个 Task（OA-08）的交接与关闭两端；03 是另一个 Task（OA-07）的独立 QA 否决记录。
-
-这正好展示 Maestro 在正常状态和异常状态下分别怎样工作。
+其中 04 / 05 / 06 是同一个 Task（M3-01）的连续上下文。
 
 ---
 
-## 01 · 正常交接：Dev → QA
+## 01 · 正常执行：Dev → QA
 
-![Dev to QA Handoff](images/02-dev-handoff.png)
+![Normal Dev → QA Handoff](images/02-normal-dev-handoff.png)
 
-在这个任务中，Dev Agent 从 Maestro 获取当前 Task Context 后完成本阶段工作。
+Human 给当前 Worker 的入口只是一个 Maestro Task Context。
 
-交付结果中明确记录：
+Dev 从持久化任务状态中读取目标、范围、验收标准和已有上下文，完成当前职责以后记录：
 
-- 当前交付状态；
-- 已完成验证；
-- 生成的工程产物；
-- 内部验证证据；
+- 工程产物；
+- 验证结果；
 - Journal；
-- Dev Gate；
+- Gate；
 - 下一步 Transition。
 
-Dev 完成自己的职责以后，并不会直接宣布整个 Task 完成。
-
-它请求状态转换：
+随后请求：
 
 ```text
 in_progress
@@ -386,112 +410,21 @@ in_progress
 qa
 ```
 
-任务随后由独立 QA Agent 接手。
+Human 不需要重新输入上一阶段的业务背景和完整任务说明。
 
-这一点很重要：
+Dev 也不会因为完成了实现就自行宣布整个 Task 完成。
 
-> **Dev 的工作结果是 QA 的输入，不是最终结论。**
-
-开发 Agent 可以证明自己做了什么。
-
-是否满足任务契约，则由下一阶段重新验证。
+> **实现完成以后，控制权进入独立 QA。**
 
 ---
 
-## 02 · Independent QA：内容基本正确，仍然 FAIL
+## 02 · 正常完成：QA PASS → Closing
 
-![Independent QA Failure](images/03-qa-fail.png)
+![Normal QA PASS → Closing](images/03-normal-qa-pass-closing.png)
 
-异常路径来自另一个真实 Task。
+QA 根据当前 Task Contract、Artifact 和 Evidence 重新执行验证。
 
-QA 重新执行验证以后发现：
-
-大部分工作簿内容本身都正确。
-
-包括：
-
-- 工作范围正确；
-- 已有内容存在；
-- Source Mapping 正确；
-- 页面内容符合当前范围；
-- 现有交付内容基本一致。
-
-但 QA 发现了一个仍然影响交付的问题：
-
-> 正式生成入口无法按照交付文档描述的方式独立执行。
-
-这意味着：
-
-```text
-主要实现正确
-≠
-完整交付成立
-```
-
-因此 QA 没有因为「绝大多数内容已经正确」而放行。
-
-最终 Verdict：
-
-```text
-FAIL
-```
-
-同时记录：
-
-- Failure Reason；
-- QA Verdict；
-- Evidence；
-- Journal；
-- Gate；
-- 当前状态；
-- 下一负责人。
-
-任务重新进入：
-
-```text
-qa
-↓
-in_progress / dev
-```
-
-这不是形式上的 QA。
-
-QA 拥有真实的拒绝权。
-
----
-
-## 03 · 基于证据的返工流转
-
-![QA PASS → closing](images/04-remediation.png)
-
-下面这张截图记录的是返工循环的**结果侧**：QA 基于修复后的新现实重新执行验证，给出 PASS，任务随后进入 closing，并由 Sage 收口。
-
-任务回到 Dev 以后，Dev 不需要重新猜测：
-
-> QA 为什么拒绝？
-
-因为失败原因已经作为项目状态的一部分被保留下来。
-
-Dev 根据 QA 留下的 Failure Reason 和 Evidence 进行修复：
-
-- 增加可以直接执行的 wrapper；
-- 更新生成说明；
-- 实际执行新的生成入口；
-- 两次独立生成并比较结果；
-- 确认输出保持一致；
-- 重新运行 Dev Gate。
-
-修复完成后：
-
-```text
-Dev Gate = PASS
-```
-
-任务重新进入 QA。
-
-QA 可以基于新的现实重新执行验证，而不是继续依赖旧结论。
-
-最终通过验证以后：
+满足条件以后：
 
 ```text
 QA PASS
@@ -503,7 +436,153 @@ Sage
 done
 ```
 
-完整过程仍然被记录在 Maestro 中。
+正常任务因此形成完整闭环：
+
+```text
+Task Context
+↓
+Dev
+↓
+Gate
+↓
+QA
+↓
+Verdict
+↓
+Sage Close
+```
+
+Human 不需要在每个角色之间重新组织上下文。
+
+---
+
+## 03 · Sage 收口并继续编排
+
+![Sage Orchestration](images/04-sage-orchestration.png)
+
+上一任务通过 QA 后，Sage 完成收口，并立即进入下一项已经规划好的工作。
+
+Human 不需要重新输入上一阶段的业务背景和完整任务说明。
+
+新的入口仍然只是：
+
+```bash
+maestro task context M3-01 --role dev
+```
+
+Sage 已经把 Human 的目标、项目现实和任务规划转换成 M3-01 的 Task Context。
+
+因此这张截图展示的是：
+
+```text
+上一任务关闭
+↓
+Task State 持续存在
+↓
+下一位执行者读取当前任务
+↓
+继续执行
+```
+
+这也是 Maestro 支持 Worker 替换的设计方式：
+
+> **Workers are replaceable. Project truth persists.**
+
+不过要注意：**这张截图本身不能证明执行者一定已经换成了另一个 Agent。**
+
+它能证明的是：Human 的显式输入可以只是一条 CLI，而结构化任务上下文由 Maestro 提供。
+
+---
+
+## 04 · Dev 只执行到自己的任务边界
+
+![Bounded Dev Execution](images/05-bounded-dev-execution.png)
+
+当前 Dev Worker 通过 Maestro Task Context 获得完成 M3-01 所需要的结构化执行上下文，然后直接开始执行。
+
+Human 没有再提供额外业务说明。
+
+当前 Task 已经限定这是一个只读调查，因此 Dev：
+
+- 检查 Backend、数据库结构和 migration；
+- 区分 CONFIRMED / INFERRED / UNKNOWN / CONFLICTING；
+- 记录调查结论和工程证据；
+- 明确没有进行生产访问、数据库写入、migration、restore、部署或发布；
+- 在达到当前任务边界以后停止继续扩展。
+
+随后：
+
+```text
+Dev Gate = PASS
+↓
+qa
+```
+
+这展示了 Maestro 一个非常重要的目标：
+
+> **Agent 不只需要知道该做什么，也需要知道什么时候已经做到当前边界。**
+
+正常执行并不意味着「尽可能多做」。
+
+它意味着：
+
+> 在授权世界内完成当前任务，然后停止并交接。
+
+---
+
+## 05 · QA FAIL：异常路径返回 Dev
+
+![QA FAIL → Return to Dev](images/06-qa-fail-return-to-dev.png)
+
+QA 在独立上下文中重新检查 M3-01。
+
+大量调查结果已经得到确认。
+
+但 QA 发现报告中仍然存在两处超出证据范围的确定性表述。
+
+因此最终裁定：
+
+```text
+Verdict = FAIL
+```
+
+而不是因为「大部分内容正确」就继续放行。
+
+失败同时留下：
+
+- Verdict；
+- Journal；
+- QA Gate；
+- Failure Reason；
+- 当前 State；
+- 下一 Owner；
+- 下一步 CLI。
+
+任务因此回到：
+
+```text
+qa
+↓
+in_progress / dev
+```
+
+Human 不需要重新解释：
+
+> QA 为什么失败？
+
+失败本身已经被转换成新的执行上下文。
+
+下一位执行者可以直接从 Maestro 读取：
+
+```bash
+maestro task context M3-01 --role dev --json
+```
+
+然后处理已经被明确限定的返工内容。
+
+> **异常并不会让工作流失去结构。**
+>
+> **失败会成为下一轮执行的输入。**
 
 ---
 
@@ -565,6 +644,20 @@ Maestro 把关键状态保存在工作流本身。
 ```
 
 然后继续工作。
+
+可以把这个逻辑压缩成：
+
+```text
+Task / State / Boundary / Artifact / Evidence
+        ↓
+存在于 Maestro
+        ↓
+不依赖某一个聊天会话
+        ↓
+Worker 可以替换
+```
+
+这是工作流的**设计能力**，不是某一张截图单独证明的结论。
 
 目标不是让新的 Worker 拥有旧 Worker 的全部记忆。
 
@@ -831,7 +924,7 @@ Agent 可以替换
 ↓
 工程上下文仍然可以重建
 
-Dev 可以完成实现
+Dev 可以完成当前边界内的工作
 ↓
 QA 仍然拥有独立拒绝权
 
