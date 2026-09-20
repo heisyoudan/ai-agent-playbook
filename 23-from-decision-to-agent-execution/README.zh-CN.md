@@ -1374,15 +1374,15 @@ Agent 承担绝大部分工作，
 执行证据
 ```
 
-## 意图证据和结果证据
+## 授权记录和结果证据
 
 可以区分：
 
 ```text
-Intent Evidence
+Authorization Record（授权记录）
 Human 确实授权了什么
 
-Outcome Evidence
+Outcome Evidence（结果证据）
 现实最后发生了什么
 ```
 
@@ -1701,7 +1701,7 @@ Reality Commit
 ↓
 Outcome Evidence
 ↓
-Goal Closure
+Goal Completion
 ↓
 Reality Feedback
 ```
