@@ -133,4 +133,4 @@
 
 ---
 
-[← README に戻る](../README.ja.md)
+[← README に戻る](../README.zh-CN.md)

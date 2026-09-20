@@ -71,4 +71,4 @@ Promote into Playbook（Playbook へ昇格）
 
 ---
 
-[← Playbook README](../README.ja.md) · [章テンプレート](../templates/chapter-template.md)
+[← Playbook README](../README.zh-CN.md) · [章テンプレート](../templates/chapter-template.md)

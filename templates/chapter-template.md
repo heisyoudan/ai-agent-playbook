@@ -15,7 +15,9 @@ A live example of a research-stage chapter shell is
 - The `Status:` line is mandatory. Use `Stable`, `Evolving`, or `Research`.
 - State the maturity label from the Research Incubator (`Working Hypothesis`, `Observed Pattern`,
   `Derived Principle`) when the chapter is not yet stable.
-- Write the chapter in English (`README.md`), then provide `README.ja.md` and `README.zh-CN.md`.
+- Language: the repository README is Simplified Chinese first. Chapters currently exist as
+  `README.md` (English), `README.ja.md`, and `README.zh-CN.md`; keep the versions that exist
+  semantically aligned, and do not add a new language version unless it can be maintained.
   Keep placeholder or unstable content short so translation drift stays small.
 - Copy the language switch line from any existing chapter, and end with the Previous / Next
   navigation line used by the other chapters, written in the chapter's own language.

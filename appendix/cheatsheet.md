@@ -97,4 +97,4 @@ Yes → it is a process.
 No  → it still depends on personal skill.
 ```
 
-[← English README](../README.md)
+[← README](../README.zh-CN.md)

@@ -1,77 +1,87 @@
-# AI Agent Playbook — 中文版
+# AI Agent Playbook
 
-[日本語](README.ja.md) · [English](README.md) · **简体中文**
+> **AI 是执行层。**  
+> **流程创造生产力。**  
+> **约束带来稳定性。**
 
-> 一套围绕 AI Agent 设计可靠软件工程流程的实践方法论。
-
-这个仓库持续研究一个问题：
-
-> **当 AI 逐渐成为软件开发的主要执行层以后，工程体系应该怎样重新设计，才能让结果依然可信、可验证、有边界、可恢复，并且始终处于可治理状态？**
+一套围绕 AI Agent 构建可靠软件工程流程，并持续研究人与 AI 协作方式的实践方法论。
 
 ---
 
 ## 这是什么
 
-更强的模型和更好的 Prompt 可以提升执行能力，但它们不会自动形成可靠的软件工程体系。
+过去几年，我一直在尝试回答一个问题：
 
-稳定的 AI 开发依赖 Agent 周围的整个工程系统：
+> **当 AI 越来越擅长执行以后，软件工程应该怎样重新设计？**
 
-- 什么可以被当作 Project Truth；
-- 工作应该如何切分；
-- Agent 应该看到哪些 Context；
-- Agent 被允许修改什么；
-- Boundary 和 Contract 如何定义；
-- 结果如何 Verification；
-- 哪些 Evidence 必须保留；
-- 谁拥有重要决策的 Authority；
-- Failure、Retry 和 Handoff 如何管理。
+最开始，AI 只是帮忙修改一段代码。
 
-本 Playbook 将这些问题整理成一套平台无关的 **Agentic Software Engineering** 方法论。
+后来，它开始进入代码仓库，完成文件、功能和完整产品。
 
-目标是建立一个工程环境，让越来越强的 Agent 可以高速执行，同时不丢失 Truth、Boundary、Traceability 和 Human Control。
+再后来，多个 Agent 开始承担开发、测试、审查、设计和管理等不同职责。
 
----
+当 AI 真正进入大型商业项目以后，问题又发生了变化。
 
-## 它解决什么问题
+我们开始需要考虑：
 
-很多看起来像模型能力不足的问题，实际上来自工程系统本身。
+- 什么可以被视为项目当前可信的真相；
+- 工作应该怎样切分；
+- Agent 应该看到哪些上下文；
+- Agent 可以修改什么；
+- 边界和契约应该怎样定义；
+- 结果怎样验证；
+- 哪些证据需要保留；
+- 谁拥有重要决策的权限；
+- 失败以后怎样恢复；
+- 多个 Agent 怎样协作而不逐渐偏离目标；
+- 大型系统怎样保持局部执行与整体一致；
+- 怎样避免人类自己成为整个工作流的瓶颈。
 
-在局部执行层面，常见问题包括：
+而当 AI 与一个人长期协作以后，还会出现另一个新的问题：
 
-- Task 过大；
-- Context 噪声过多或信息不足；
-- Ownership 不清；
-- Acceptance Criteria 太弱；
-- Scope 无限制扩张；
-- Handoff 缺失关键状态。
+> **如果 AI 开始长期理解一个人的经历、能力、偏好、限制和目标，它是否还能进一步参与现实世界中的判断和决策？**
 
-当系统规模扩大以后，还会出现更深的问题：
-
-- Truth Drift；
-- Agent Authority 失控；
-- Evidence 过期或不完整；
-- 多模型共享同一个 Blind Spot；
-- Cross-boundary 不一致；
-- Human Gate 认知过载；
-- Workflow 中断以后无法可靠恢复状态。
-
-本 Playbook 同时研究这两个层级。
+这个仓库持续记录、整理和验证这些问题。
 
 ---
 
-## 适合谁
+# 为什么需要这样的体系
 
-- 已经在工作中使用 AI，但结果仍然不够稳定的工程师
-- 使用 Coding Agent，并在多个会话或多个角色之间协作的开发者
-- 设计 AI Engineering Workflow 的技术负责人
-- 准备在真实交付中引入 Agentic Software Engineering 的团队
-- 研究 AI 时代 Truth、Verification、Authority 和 Workflow 应该如何变化的实践者
+很多看起来像 AI 能力不足的问题，实际来自工作方式本身。
+
+例如：
+
+- 任务过大，Agent 无法稳定理解完整问题；
+- 上下文中混入大量无关信息和历史噪声；
+- Agent 在缺少关键事实时自行补全假设；
+- 需求、开发、测试和审查长期混在同一个会话；
+- 不同 Agent 对同一个目标形成不同理解；
+- 局部修改没有问题，却破坏了全局约束；
+- 测试全部通过，但测试本身建立在错误前提上；
+- 任务被标记完成，却没有足够证据解释为什么可以完成；
+- 所有问题都交给 Human 审批，最终人类成为唯一瓶颈。
+
+更强的模型可以缓解其中一部分问题。
+
+但无法替代工程结构。
+
+AI 越强，越需要清楚定义：
+
+> 它在什么世界里工作。
+
+> 它可以改变什么。
+
+> 它必须遵守什么。
+
+> 什么情况下需要停止。
+
+> 怎样证明它做对了。
 
 ---
 
 # 核心原则
 
-这个 Playbook 最初可以用三句话概括：
+这个 Playbook 最初形成了三条非常简单的原则：
 
 ```text
 AI 是执行层。
@@ -79,401 +89,929 @@ AI 是执行层。
 约束带来稳定性。
 ```
 
-随着方法论继续演化，又形成了第二层原则：
+随着实践和研究继续深入，又逐渐形成了第二层原则：
 
 ```text
-Truth 必须有 Authority。
-Implementation 必须有 Boundary。
-Completion 必须有 Evidence。
+真相必须有明确的授权。
+实现必须受到边界约束。
+完成必须有证据支撑。
 ```
 
 编码能力依然重要。
 
-它支撑 Architecture、Debugging、Judgment、Verification 和 Risk Analysis。
+它支撑架构设计、调试、判断、验证和风险分析。
 
 正在快速降低稀缺性的，是常规代码生产本身。
 
-随着执行越来越便宜，工程价值逐渐向这些区域移动：
+随着执行成本持续下降，工程价值会越来越多地转移到：
 
-- Truth Governance
-- Reasoning Scope
-- Architecture 与 Decomposition
-- Verification
-- Evidence
-- Decision Authority
-- Workflow Design
+- 真相治理；
+- 有效推理范围；
+- 架构与任务切分；
+- 上下文管理；
+- 边界与契约；
+- 验证与证据；
+- 决策权；
+- 工作流设计；
+- 风险治理。
 
 ---
 
 # 仓库结构
 
-整个 Playbook 分为三个层级。
+这个仓库目前由四个部分组成：
 
-## Part I — Agent Collaboration Foundations
+```text
+正式方法论
+    ↓
+已经相对成熟，可以复用的工程原则
 
-这一部分描述让单个 Agent 与 Multi-Agent Workflow 稳定工作的基础能力。
+人与 AI 协作演化
+    ↓
+记录 Human + AI 的协作单位怎样逐渐上移
 
-| 章节 | 主题 | 核心观点 |
-|---|---|---|
-| [01](01-ai-redefines-work/README.zh-CN.md) | AI 重新定义工作 | AI 改变工程价值与瓶颈所在的位置。 |
-| [02](02-task-granularity/README.zh-CN.md) | Task Granularity | Task 需要落在 Agent 能可靠理解的范围内，同时闭合一个有价值的工作循环。 |
-| [03](03-prompt-philosophy/README.zh-CN.md) | 复杂的极简 | 最大化相关信息，最小化噪声。 |
-| [04](04-context-isolation/README.zh-CN.md) | Context Isolation | 一个 Context 承担一个主要职责，通过结构化 Handoff 传递状态。 |
-| [05](05-agent-management/README.zh-CN.md) | Multi-Agent Management | 定义 Role、Constraint、Acceptance、Failure Handling 与 Handoff。 |
-| [06](06-workflow-as-product/README.zh-CN.md) | Workflow as a Product | 把可重复流程、Gate、Rollback 与 Authoritative State 固化成系统。 |
-| [07](07-what-really-matters/README.zh-CN.md) | 真正重要的竞争力 | 长期优势来自围绕 Agent 设计工程系统的能力。 |
+Research
+    ↓
+仍在持续调查、挑战和验证的新发现
 
----
-
-## Part II — Governed Agentic Engineering
-
-这一部分开始从“怎样高效使用 Agent”进入“怎样构建可靠的 Agentic Engineering System”。
-
-| 章节 | 主题 | 核心问题 |
-|---|---|---|
-| [08](08-truth-governance/README.zh-CN.md) | Truth Governance | Agent 可以依赖什么作为 Truth，谁有权限改变它？ |
-| [09](09-effective-reasoning-scope/README.zh-CN.md) | Effective Reasoning Scope | AI 在一次有效推理中究竟能可靠理解多大的问题？ |
-| [10](10-boundaries-contracts-artifacts/README.zh-CN.md) | Decomposition、Boundary 与 Contract | 如何切分复杂系统，同时控制边界协调成本？ |
-| [11](11-verification-evidence/README.zh-CN.md) | Verification 与 Evidence | 什么样的证据足以让一个 Completion Claim 获得可信度？ |
-| [12](12-authority-human-gates/README.zh-CN.md) | Authority、Human Gate 与 Decision Compression | 哪些决策必须交给 Human，以及如何避免 Human 成为系统瓶颈？ |
-| [13](13-global-local-truth/README.zh-CN.md) | Global Truth、Local Truth 与 Truth Projection | 当 Agent 无法读取整个系统时，如何保持局部执行与全局一致？ |
+Appendix
+    ↓
+实际使用中可以直接查阅的参考资料
+```
 
 ---
 
-## Part III — Scaling Agentic Engineering
+# 一、正式方法论
 
-这一层目前仍处于持续研究阶段。
+## Part I — Agent 协作基础
 
-当前研究方向包括：
+这一部分回答：
 
-- Workflow Runtime
-- Retry、Resume 与 Re-execution
-- Persistent Execution State
-- Boundary Tax
-- Optimal Reasoning Boundary
-- Scalable Governance
-- Decision Compression
-- Capability Boundaries
-- Runtime Verification
-- Truth Change Propagation
+> **怎样让单个 Agent 和多个 Agent 稳定工作？**
 
-这一层中的一部分内容已经以草稿章节的形式存在，并被标注为研究，而不是稳定方法论：[14](14-workflow-runtime-recovery/README.zh-CN.md) Workflow Runtime 与 Recovery、[15](15-boundary-tax/README.zh-CN.md) Boundary Tax 与 Optimal Reasoning Boundary、[16](16-scalable-governance/README.zh-CN.md) Scalable Governance 与 Decision Compression、[17](17-capability-boundaries/README.zh-CN.md) Capability Boundaries。
+### [01 — AI 重新定义工作](01-ai-redefines-work/README.zh-CN.md)
 
-这些内容会先进入 Research 阶段。
+AI 正在改变软件工程中价值和瓶颈所在的位置。
 
-当 Observation、Evidence 和 Principle 足够成熟以后，再提升为正式章节。
-
-详见 [Research Incubator](research/README.zh-CN.md)。
+当代码生产成本持续下降以后，任务定义、判断、上下文控制和验证的重要性会不断上升。
 
 ---
 
-### 附录
+### [02 — 任务粒度](02-task-granularity/README.zh-CN.md)
 
-| 附录 | 主题 |
+任务过大会让 Agent 失去焦点。
+
+任务过小又会产生大量交接和协调成本。
+
+这一章讨论怎样找到适合 Agent 独立理解、执行和验证的任务范围。
+
+---
+
+### [03 — 复杂的极简](03-prompt-philosophy/README.zh-CN.md)
+
+好的 Prompt 需要提供足够完整的信息，同时尽量减少无关噪声。
+
+重点并不在于 Prompt 有多长。
+
+真正重要的是：
+
+- 目标；
+- 上下文；
+- 约束；
+- 边界；
+- 验收条件。
+
+---
+
+### [04 — 上下文隔离](04-context-isolation/README.zh-CN.md)
+
+需求、开发、测试和审查承担不同职责。
+
+把所有内容长期堆积在同一个会话中，会让旧假设、失败方案和当前事实相互污染。
+
+一个主要职责使用一个独立上下文，再通过结构化交接传递真正需要的信息。
+
+---
+
+### [05 — 多 Agent 管理](05-agent-management/README.zh-CN.md)
+
+当系统中出现多个 Agent 后，需要明确：
+
+- 谁负责什么；
+- 谁不能做什么；
+- 怎样汇报；
+- 怎样失败；
+- 怎样交接；
+- 什么可以自行决定；
+- 什么必须升级。
+
+Agent 的数量增加以后，问题逐渐从 Prompt 设计变成团队设计。
+
+---
+
+### [06 — 把工作流当作产品](06-workflow-as-product/README.zh-CN.md)
+
+如果每次协作都依赖 Human 重新组织上下文和规则，质量会长期依赖个人注意力。
+
+这一章讨论怎样把：
+
+- 任务契约；
+- 角色规则；
+- 质量门；
+- 状态变化；
+- 回滚；
+- 交接；
+- 权威状态
+
+固化成可以重复执行的工作流。
+
+---
+
+### [07 — 真正重要的竞争力](07-what-really-matters/README.zh-CN.md)
+
+长期优势不会来自绑定某一个模型或工具。
+
+真正重要的是：
+
+> **能否围绕 AI 构建一个稳定、可验证、可恢复的工作系统。**
+
+---
+
+## Part II — Agent 软件工程治理
+
+这一部分开始回答：
+
+> **怎样让 Agent 在一个可信的工程世界中工作？**
+
+---
+
+### [08 — 真相治理](08-truth-governance/README.zh-CN.md)
+
+Agent 到底应该相信什么？
+
+项目中的哪些内容可以被视为当前可信事实？
+
+新的证据出现以后，旧的事实怎样被挑战和更新？
+
+谁有权限改变高影响决策？
+
+这一章研究：
+
+- 项目真相；
+- 真相漂移；
+- 真相版本；
+- 授权；
+- 真相挑战；
+- 多 AI 审核的边界。
+
+---
+
+### [09 — 有效推理范围](09-effective-reasoning-scope/README.zh-CN.md)
+
+AI 能读取多少信息，和 AI 能可靠理解多少信息，是两个不同的问题。
+
+这一章研究：
+
+> **一个 Agent 在一次有效推理中，到底能够可靠理解多大的问题？**
+
+AI 不需要读取整个世界。
+
+它需要看清完成当前决策所需要的完整相关世界。
+
+---
+
+### [10 — 任务切分、边界与契约](10-boundaries-contracts-artifacts/README.zh-CN.md)
+
+当问题超过 AI 的有效推理范围，就需要继续切分。
+
+但切分越细：
+
+- 边界越多；
+- 契约越多；
+- 交接越多；
+- 协调成本越高；
+- 集成风险越大。
+
+因此：
+
+> **切分不会消灭复杂度，它只会把复杂度从局部推理转移到边界协调。**
+
+这一章研究怎样寻找合适的任务边界。
+
+---
+
+### [11 — 验证与证据](11-verification-evidence/README.zh-CN.md)
+
+测试通过不等于工程正确。
+
+多个 Agent 达成一致，也不等于事实成立。
+
+这一章研究：
+
+- 什么样的证据可以支持一个完成结论；
+- 证据来自哪里；
+- 证据是否仍然有效；
+- 证据覆盖了什么；
+- 怎样降低多个 Agent 共享同一错误前提的风险；
+- 一个任务什么时候真正形成证据闭环。
+
+---
+
+### [12 — 决策权、人类质量门与决策压缩](12-authority-human-gates/README.zh-CN.md)
+
+Human 的注意力是有限资源。
+
+如果所有 Agent 的所有结果都需要人工审批，人很快会成为整个系统的瓶颈。
+
+因此需要区分：
+
+```text
+局部低风险决策
+→ Agent 自行处理
+
+契约级问题
+→ 独立验证或高级 Agent 处理
+
+跨边界问题
+→ 架构层处理
+
+高风险或全局决策
+→ 具备相应能力的 Human 处理
+```
+
+这一章研究怎样让人的认知资源集中在真正重要的决策上。
+
+---
+
+### [13 — 全局真相、局部真相与真相投影](13-global-local-truth/README.zh-CN.md)
+
+大型系统中，一个 Agent 很难一次读取并理解：
+
+- 全部代码；
+- 全部设计文档；
+- 全部依赖；
+- 全部历史决策。
+
+因此大型系统需要把全局约束投影到当前局部任务。
+
+Agent 不需要理解整个系统。
+
+它需要知道：
+
+- 当前局部真相；
+- 相关全局约束；
+- 相关契约；
+- 相关依赖。
+
+这样局部执行才能尽量保持与整体一致。
+
+---
+
+## Part III — 规模化 Agent 工程
+
+这一部分仍然处于持续研究阶段。
+
+部分内容已经存在草稿章节，但暂时不视为稳定方法论。
+
+---
+
+### [14 — 工作流运行时与恢复](14-workflow-runtime-recovery/README.zh-CN.md)
+
+当前研究重点包括：
+
+- 执行状态；
+- 持久状态；
+- 中断；
+- 恢复；
+- 重试；
+- 重新执行；
+- 完成判定。
+
+其中一个重要观察是：
+
+```text
+重新执行 ≠ 从断点继续
+证据 ≠ 恢复游标
+会话恢复 ≠ 工作流恢复
+```
+
+---
+
+### [15 — 边界协调成本与最佳推理边界](15-boundary-tax/README.zh-CN.md)
+
+任务过大时，AI 推理可靠性下降。
+
+任务过小时，边界协调成本快速增加。
+
+因此真正需要寻找的是：
+
+> **AI 看得清，同时系统也付得起协调成本的最小完整世界。**
+
+---
+
+### [16 — 规模化治理与决策压缩](16-scalable-governance/README.zh-CN.md)
+
+治理本身也有成本。
+
+如果每一个局部变化都需要最高强度的审核，整个工作流会被治理流程拖垮。
+
+这一章研究：
+
+- 风险分级；
+- 真相治理强度；
+- 决策压缩；
+- Human 注意力分配；
+- 分层决策权。
+
+---
+
+### [17 — 能力边界](17-capability-boundaries/README.zh-CN.md)
+
+能够实现，不代表能够可靠交付。
+
+一个项目是否适合 Human + AI，需要同时考虑：
+
+- 是否能够获取相关现实；
+- 是否能够定义验收结果；
+- 是否能够验证；
+- 是否存在可靠的判断者；
+- 是否依赖强烈主观标准；
+- 是否存在领域知识盲区。
+
+这一章研究 AI 工程能力真正的边界在哪里。
+
+---
+
+# 二、人与 AI 协作演化
+
+除了正式的软件工程方法论，这个仓库还保留另一条重要主线：
+
+> **人与 AI 的协作关系本身，是怎样一步一步变化的？**
+
+这条线更接近真实实践和阶段性总结。
+
+目前可以大致分为三个阶段。
+
+---
+
+## Stage 1 — 单人开发
+
+最早使用 AI 时，工作单位可能只是一段代码。
+
+```text
+代码片段
+↓
+文件
+↓
+功能
+↓
+完整产品
+```
+
+随着 Coding Agent 可以直接进入代码仓库，Human 不再需要手动复制每一段代码。
+
+AI 开始参与：
+
+- 产品设计；
+- 架构；
+- 实现；
+- 测试；
+- 调试；
+- 发布；
+- 文档。
+
+这一阶段最明显的变化是：
+
+> **AI 扩大了一个人的开发能力边界。**
+
+过去需要多个人完成的部分工作，一个人开始可以借助 AI 完成。
+
+---
+
+## Stage 2 — 企业开发
+
+进入大型商业项目以后，问题发生变化。
+
+目标已经不只是：
+
+> 能不能做出来？
+
+更重要的是：
+
+> 能不能稳定做出来？
+
+> 能不能重复做出来？
+
+> 能不能验证？
+
+> 能不能恢复？
+
+> 能不能审计？
+
+于是：
+
+- 任务切分；
+- 上下文控制；
+- 角色分离；
+- 真相治理；
+- 边界；
+- 契约；
+- 验证；
+- 证据；
+- 质量门；
+- 状态管理
+
+开始成为核心问题。
+
+AI 的价值从单纯扩大执行能力，进一步进入：
+
+> **可靠工程交付。**
+
+---
+
+## Stage 3 — AI 开始长期理解一个人
+
+当 AI 与一个人长期协作以后，它理解的内容已经不只包括代码和项目。
+
+它还可能逐渐了解：
+
+- 能力；
+- 经历；
+- 作品；
+- 失败经验；
+- 风险偏好；
+- 工作习惯；
+- 时间条件；
+- 语言条件；
+- 沟通方式；
+- 职业目标；
+- 历史决策。
+
+这时候 AI 开始能够参与一些无法脱离“这个具体的人”来回答的问题。
+
+例如：
+
+> 这个机会适不适合他？
+
+> 这个项目值得投入多少时间？
+
+> 哪些经历能够证明他的能力？
+
+> 哪些风险是可以接受的？
+
+> 哪些能力可以由 Agent 放大？
+
+> 什么合作方式并不适合他？
+
+这意味着 AI 的角色开始从单纯的执行工具，逐渐进入：
+
+> **长期决策辅助者。**
+
+---
+
+## 长期个人上下文
+
+这里会继续研究一个问题：
+
+> **当 AI 长期理解一个人以后，这种理解本身是否会成为一种生产资产？**
+
+可以形成一个循环：
+
+```text
+真实经历
+↓
+长期个人上下文
+↓
+AI 辅助判断
+↓
+Human 决策
+↓
+Agent 执行
+↓
+现实结果
+↓
+新的经验重新进入长期上下文
+```
+
+真正积累的已经不只是单条记忆。
+
+还包括长期形成的：
+
+> **协作方式。**
+
+这也是 Human + AI 关系中非常值得继续研究的一条方向。
+
+---
+
+# 三、Research
+
+[Research](research/README.zh-CN.md) 用于保存仍然没有完全成熟的新发现。
+
+新的想法不会因为被记录下来，就自动成为正式方法论。
+
+研究通常会经历：
+
+```text
+现实观察
+↓
+提出问题
+↓
+形成解释
+↓
+提炼原则
+↓
+寻找反例
+↓
+独立挑战
+↓
+补充证据
+↓
+形成可复用模式
+↓
+成熟以后进入正式 Playbook
+```
+
+Research 允许存在：
+
+- 未解决的问题；
+- 工作假设；
+- 相互冲突的观点；
+- 失败经验；
+- 反例；
+- 尚未得到充分验证的理论。
+
+这样可以避免仓库为了追求完整，过早把新的想法写成工程事实。
+
+---
+
+# 四、Appendix
+
+附录负责保存实际工作中方便查阅的内容。
+
+| 附录 | 内容 |
 |---|---|
 | [A](appendix/anti-patterns.zh-CN.md) | 常见失败模式 |
-| [B](appendix/verification-strategies.zh-CN.md) | AI 产出验收策略 |
-| [C](appendix/cheatsheet.zh-CN.md) | 速查表 |
-| [D](appendix/operational-readiness.zh-CN.md) | 生产就绪与治理检查表 |
+| [B](appendix/verification-strategies.zh-CN.md) | AI 产出验证策略 |
+| [C](appendix/cheatsheet.zh-CN.md) | 核心原则速查 |
+| [D](appendix/operational-readiness.zh-CN.md) | 生产就绪与治理检查 |
+
+附录不承担主方法论叙事。
+
+它更像实际工作时可以快速查阅的工具区。
+
+---
 
 # 研究成熟度
 
-仓库中的内容并不处于同一个成熟阶段。
+这个仓库中的内容不会被默认视为同等成熟。
 
-当前使用三种状态：
+目前区分三个阶段。
 
-### Observed Pattern
+## 观察模式
 
-在真实 Workflow 或工程实践中反复观察到的现象。
-
-### Derived Principle
-
-从多个 Observation 中抽象出的更一般化原则。
-
-### Working Hypothesis
-
-目前看来有解释力，但仍然需要更多 Evidence、Challenge 或实践验证的理论模型。
-
-这个区分非常重要。
-
-新的想法不会因为被写进仓库就自动成为工程 Truth。
+在真实工程或工作流中反复观察到的现象。
 
 ---
 
-# Engineering Loop
+## 推导原则
 
-当前方法论可以抽象成：
+从一个或多个观察中进一步抽象出的通用原则。
+
+---
+
+## 工作假设
+
+目前具有解释力，但仍然需要更多实践、反例、挑战和证据支持的理论。
+
+新的观点不会因为被写进仓库，就自动成为工程事实。
+
+---
+
+# 一个完整的工程循环
+
+当前的方法论可以简化为：
 
 ```text
-Reality
+现实
 ↓
-Evidence
+证据
 ↓
-Truth Candidate
+真相候选
 ↓
-Authorization
+验证
 ↓
-Current Authorized Truth
+授权
 ↓
-Scope / Boundary
+当前可信真相
 ↓
-Agent Execution
+范围与边界
 ↓
-Verification
+Agent 执行
 ↓
-Evidence
+验证
 ↓
-Decision
-├── Continue
-├── Rework
-└── Truth Challenge
+证据
+↓
+决策
+├── 继续
+├── 返工
+└── 挑战当前真相
 ```
 
-这个循环具有递归性。
+这里最重要的一点是：
 
-新的 Evidence 可能证明当前 Truth 仍然成立，也可能发现 Implementation Defect，还可能直接挑战当前 Truth。
+> **真相并非一次确定以后永远不变。**
 
----
-
-# Practical Execution Loop
-
-日常工作中，可以缩减为七个步骤。
-
-1. **划分风险。** 明确 Agent 可以直接执行什么，什么需要审批，什么必须由 Human 负责。
-2. **定义单一 Objective。** 写清预期结果、本次 Action、Acceptance Criteria 与 Boundary。
-3. **提供 Bounded Context。** 只提供完成当前 Task 所需要的文件、事实、决策、Contract 与 Constraint。
-4. **执行并自检。** 要求 Build、Test、Lint、Static Analysis 或其他适用检查。
-5. **独立 Verification。** 检查 Delta、Relevant Behavior、越界修改，以及重要 Claim 背后的 Evidence。
-6. **记录并 Handoff。** 将 Decision、Artifact、Evidence 与 Remaining Risk 写入 Authoritative System。
-7. **度量并改进。** 关注 Rework、Escaped Defect、Review Cost、Exception 与 Workflow Cost。
+新的测试、运行结果、客户反馈和工程证据，都可能重新挑战过去的判断。
 
 ---
 
-# Minimum Task Contract
+# 最小任务契约
 
-一个 Local Execution Task 至少应该包含：
+一个适合交给 Agent 的局部任务，至少应该包含四项：
 
 ```text
-summary:             要达成什么结果？
-currentAction:       本次具体执行什么？
-acceptanceCriteria:  哪些可观察检查代表完成？
-boundaries:          哪些内容不得修改或尝试？
+summary
+要达成什么结果？
+
+currentAction
+本次具体执行什么？
+
+acceptanceCriteria
+哪些可观察结果代表任务完成？
+
+boundaries
+哪些内容不允许修改或尝试？
 ```
 
-任何一项缺失，都说明这个 Task 可能还没有进入可以可靠委托的状态。
+缺少其中任何一项，都说明任务可能还没有准备好稳定地交给 Agent。
 
-需要注意：
+这四项描述的是局部执行契约。
 
-这个 Contract 代表的是 **Local Execution Boundary**。
+它们不能替代：
 
-它不能替代 Project Truth、Architecture、System Invariant 与更高层 Authority。
-
-整体关系更接近：
-
-```text
-Project Truth
-↓
-Architecture / Boundary
-↓
-Task Contract
-↓
-Agent Execution
-↓
-Verification
-↓
-Evidence
-```
+- 项目真相；
+- 系统架构；
+- 全局约束；
+- 更高层级的工程决策。
 
 ---
 
-## 从模糊请求到可执行 Task
+# 从模糊请求到可执行任务
+
+较差的任务：
 
 ```text
-差：
-
 修复认证系统。
-
-更好：
-
-summary:
-修复 Access Token 过期以后 Refresh Token 失败的问题。
-
-currentAction:
-追踪 Refresh Flow，只修改 Token Renewal Path。
-
-acceptanceCriteria:
-- 过期的 Access Token 可以成功续期
-- 原有 Login Flow 继续通过
-- 测试覆盖 Refresh Success 与 Failure
-
-boundaries:
-- 不修改 User Schema
-- 不修改 OAuth Provider Configuration
 ```
 
-第二个 Task 创建了一个更小、边界清晰、可以独立观察的 Reasoning World。
-
-Agent 可以执行当前工作，同时不需要自行发明额外的 Product Decision 或 Architecture Decision。
-
----
-
-# Truth、Verification 与 Authority
-
-整个 Playbook 都遵循几个基础规则。
-
-### Model Agreement 不代表 Proof
-
-多个 Agent 可以降低 Single Model Error。
-
-它们无法自动消除 Shared Blind Spot。
-
-AI Consensus 可以成为 Evidence，但它本身不能自动升级为 Truth。
-
-### Evidence 必须连接 Reality
-
-重要 Claim 应该尽量回到这些来源：
-
-- Repository State
-- Primary Documentation
-- Test
-- Runtime Behavior
-- Measurement
-- Production Evidence
-- Explicit Human Decision
-
-### Authority 不应超过 Verification Capability
-
-Human 或 Agent 能够拥有多大 Authority，取决于它是否拥有足够能力验证这个 Decision。
-
-Architecture、Payment Behavior、Authentication、Security、Privacy、Compliance、Data Migration、Destructive Operation 和 Irreversible Action 等高风险区域，需要更强的 Ownership 和 Verification。
-
-### State、Evidence 与 Truth 应保持分离
+更好的任务：
 
 ```text
-State
-= 当前 Execution 位于哪里
+summary
 
-Evidence
-= 什么信息支持“发生了什么”的 Claim
+修复访问 Token 过期以后刷新失败的问题。
 
-Truth
-= 当前 Project 被授权继续依赖什么
+currentAction
+
+追踪刷新流程，只修改 Token 续期路径。
+
+acceptanceCriteria
+
+- 过期的访问 Token 可以成功续期
+- 现有登录流程继续通过
+- 测试覆盖刷新成功和失败两种情况
+
+boundaries
+
+- 不修改用户数据结构
+- 不修改 OAuth 服务配置
 ```
 
-把这三者混在一起，会让 Workflow 逐渐失去可靠性。
+第二个任务创建了一个更小、边界更清晰、可以独立验证的问题世界。
+
+Agent 可以直接开始执行，而无需自行补充额外的产品和架构决策。
 
 ---
 
-# Global 与 Local Reasoning
+# 关于真相、验证与决策权
 
-大型系统会出现一个特殊问题。
+整个 Playbook 当前遵循几个基础原则。
 
-Agent 可能无法在一次推理中可靠理解：
+## 模型一致不代表事实成立
 
-- 整个 Repository
-- 所有 Design Document
-- 所有 Dependency
-- 所有 Historical Decision
+多个 AI 可以降低单个模型犯错的概率。
 
-因此目标不应该是让每个 Worker 阅读整个世界。
+但多个模型仍然可能拥有相同的知识盲区。
+
+因此：
+
+> **多模型一致可以作为证据的一部分，但不能单独成为真相。**
+
+---
+
+## 证据必须连接现实
+
+重要结论应该尽量回到真实来源：
+
+- 代码仓库；
+- 官方文档；
+- 测试结果；
+- 运行时行为；
+- 测量数据；
+- 生产环境证据；
+- 客户确认；
+- 明确的人类决策。
+
+---
+
+## 决策权不能超过验证能力
+
+一个人或一个 Agent 能拥有多大的决策权，取决于它是否有能力真正验证这个决策。
+
+支付、安全、认证、隐私、合规、数据迁移和不可逆操作，需要更强的验证和更明确的责任人。
+
+---
+
+## 状态、证据和真相需要分开
+
+```text
+状态
+= 当前执行到哪里
+
+证据
+= 什么信息支持“发生了什么”这个结论
+
+真相
+= 当前项目被授权继续依赖什么
+```
+
+把三者混在一起，会让工作流逐渐失去可靠性。
+
+---
+
+# 大型系统中的局部世界
+
+大型系统中的 Agent 很难一次可靠理解：
+
+- 整个代码库；
+- 全部设计文档；
+- 所有依赖；
+- 全部历史决策。
+
+因此目标不应该是：
+
+> 让每个 Agent 看见整个世界。
 
 更合理的目标是：
 
-> **让 Agent 看清完成当前 Decision 所需要的完整 Relevant Reality。**
+> **让 Agent 看清完成当前决策所需要的完整相关世界。**
 
-可以抽象成：
+可以理解成：
 
 ```text
-Global Truth
-├── System Invariants
-├── Architecture Boundaries
-├── Critical Contracts
-└── Dependency Relationships
+全局真相
+├── 系统不变量
+├── 架构边界
+├── 关键契约
+└── 依赖关系
         ↓
-Current Task
+当前任务
         ↓
-Truth Projection
+筛选相关信息
         ↓
-Local Truth
+局部真相
 +
-Relevant Global Constraints
+相关全局约束
 +
-Relevant Dependencies
+相关依赖
         ↓
-Agent Reasoning
+Agent 推理与执行
 ```
 
-这也是当前方法论继续演化的重要方向之一。
+大型 Agent 工程真正需要解决的问题之一，就是怎样不断把巨大的现实世界投影成 Agent 能够可靠理解的小世界。
 
 ---
 
 # 推荐阅读路径
 
-| 场景 | 建议 |
-|---|---|
-| 时间有限 | 01 → 07 → 08 |
-| 开始 AI Assisted Development | 02 → 03 → 04 |
-| 管理多个 Agent | 05 → 06 → 11 |
-| 设计可靠 Agent Workflow | 06 → 08 → 11 → 12 |
-| 深入理解 Task Decomposition | 02 → 09 → 10 |
-| 处理大型系统 | 09 → 10 → 13 |
-| 关注 Governance 与 Verification | 08 → 11 → 12 |
-| 跟踪正在进行的研究 | [Research Incubator](research/README.zh-CN.md) |
+如果只是想快速了解整个思想：
+
+```text
+01 AI 重新定义工作
+↓
+07 真正重要的竞争力
+↓
+08 真相治理
+```
+
+如果刚开始使用 AI 开发：
+
+```text
+02 任务粒度
+↓
+03 复杂的极简
+↓
+04 上下文隔离
+```
+
+如果正在管理多个 Agent：
+
+```text
+05 多 Agent 管理
+↓
+06 把工作流当作产品
+↓
+11 验证与证据
+```
+
+如果想深入理解 Agent 软件工程：
+
+```text
+08 真相治理
+↓
+09 有效推理范围
+↓
+10 任务切分、边界与契约
+↓
+11 验证与证据
+↓
+12 决策权与人类质量门
+↓
+13 全局真相与局部真相
+```
+
+如果关心人与 AI 的长期关系：
+
+> 阅读「人与 AI 协作演化」。
+
+如果想了解仍在形成的新理论：
+
+> 阅读 [Research](research/README.zh-CN.md)。
 
 ---
 
 # 与 Maestro 的关系
 
-本 Playbook 的方法论保持 Platform Independent。
+这个 Playbook 的方法论保持平台无关。
 
-**Maestro** 是用于实践和验证这套方法论的一种可执行 Framework。
+**Maestro** 是用于实践和验证其中一部分方法的工作流框架。
 
-两者关系可以理解为：
+两者可以理解成：
 
 ```text
-Agentic Engineering Principles
+Agent 软件工程原则
 ↓
 AI Agent Playbook
 ↓
-Reference Patterns
+可复用工程模式
 ↓
 Maestro
 ```
 
-Playbook 用于定义和持续演化 Methodology。
+Playbook 负责定义和持续演化方法论。
 
-Maestro 用来探索怎样把其中一部分原则编码成：
+Maestro 负责探索怎样把其中的一部分原则落实为：
 
-- Task Contract
-- Role Boundary
-- Gate
-- State Transition
-- Structured Handoff
-- Workflow Execution
+- 任务契约；
+- 角色边界；
+- 质量门；
+- 状态变化；
+- 结构化交接；
+- 工作流执行。
 
-即使未来 Model、Provider、Agent Platform 或具体 Framework 发生变化，Playbook 本身仍然应该成立。
+未来即使模型、平台和具体实现发生变化，这套方法论仍然应该能够继续存在。
 
 ---
 
 # 背景
 
-本 Playbook 来自长期 AI Assisted Engineering 实践，包括大型支付系统相关工作、个人软件开发、Multi-Agent Workflow 与真实项目交付。
+这个 Playbook 来自长期 AI 辅助开发实践。
 
-其中有些内容来自长期反复实践。
+其中既包括：
 
-有些内容来自对大型工程系统的观察与抽象。
+- 个人软件开发；
+- 大型商业软件工程环境；
+- 多 Agent 协作；
+- 工作流设计；
+- 真实项目交付；
+- AI 辅助现实决策。
 
-也有一些内容仍处于研究与验证阶段。
+部分内容来自长期重复实践。
 
-仓库会明确区分这些成熟度。
+部分内容来自对大型工程体系的观察和抽象。
 
-长期目标，是形成一套能够跨越 Model、Tool 与 Platform 变化的软件工程方法论。
+还有一部分内容仍然处于研究和验证阶段。
+
+仓库会尽量明确区分这些不同成熟度。
+
+长期目标是形成一套能够跨越模型、工具和平台变化的工程方法。
 
 ---
 
 # 结语
 
-随着 AI 越来越擅长生产 Implementation，软件工程本身不会消失。
+随着 AI 越来越擅长执行，软件工程本身不会消失。
 
 它的重心正在变化。
 
@@ -482,25 +1020,31 @@ Maestro 用来探索怎样把其中一部分原则编码成：
 ```text
 什么是真的？
 
-Boundary 在哪里？
+问题的边界在哪里？
 
-当前 Worker 有权改变什么？
+当前 Agent 有权改变什么？
 
-什么 Evidence 才足以证明完成？
+什么证据才能证明任务完成？
 
-谁拥有 Decision Authority？
+谁拥有最终决策权？
 
-怎样证明整个系统仍然保持自洽？
+现实和当前设计冲突时应该怎么办？
+
+大型系统怎样让局部执行保持与全局一致？
+
+人与 AI 长期协作以后，又会产生什么新的能力？
 ```
 
-一个成熟的 Agentic Engineering System，价值不在于能够委托最多的工作。
+一个成熟的 Agent 软件工程体系，价值不在于能够把多少工作全部交给 AI。
 
 真正重要的是：
 
-让强大的 Worker 可以高速执行，同时整个工程世界依然保持可理解、可验证、有边界、可恢复，并且始终处于可治理状态。
+> **让越来越强的 Agent 可以高速工作，同时整个工程世界依然保持可理解、可验证、有边界、可恢复、可追溯，并且始终处于人的治理之下。**
+
+这也是这个仓库会持续研究的问题。
 
 ---
 
 ## License
 
-`MIT`
+MIT

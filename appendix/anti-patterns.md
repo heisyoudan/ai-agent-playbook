@@ -105,4 +105,4 @@ These failures share one cause: they depend on human attention and memory.
 
 ---
 
-[Appendix B → Verification Strategies](verification-strategies.md) · [Appendix C → Cheat Sheet](cheatsheet.md) · [← English README](../README.md)
+[Appendix B → Verification Strategies](verification-strategies.md) · [Appendix C → Cheat Sheet](cheatsheet.md) · [← README](../README.zh-CN.md)
