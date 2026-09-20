@@ -111,4 +111,4 @@ Do not automate the whole lifecycle first. Limit scope until exception patterns 
 
 ---
 
-[Chinese README](../README.zh-CN.md) · [Japanese appendix](operational-readiness.ja.md) · [Chinese appendix](operational-readiness.zh-CN.md)
+[README](../README.md) · [Japanese appendix](operational-readiness.ja.md) · [Chinese appendix](operational-readiness.zh-CN.md)

@@ -105,4 +105,4 @@ Agent 修改无关文件、增加未要求的文档，或执行不属于任务�
 
 ---
 
-[附录B → 验证策略](verification-strategies.zh-CN.md) · [附录C → 速查表](cheatsheet.zh-CN.md) · [← 中文README](../README.zh-CN.md)
+[附录B → 验证策略](verification-strategies.zh-CN.md) · [附录C → 速查表](cheatsheet.zh-CN.md) · [← 中文README](../README.md)

@@ -71,4 +71,4 @@ Promote into Playbook（提升进 Playbook）
 
 ---
 
-[← Playbook README](../README.zh-CN.md) · [章节模板](../templates/chapter-template.md)
+[← Playbook README](../README.md) · [章节模板](../templates/chapter-template.md)

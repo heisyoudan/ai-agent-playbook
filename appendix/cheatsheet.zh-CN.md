@@ -97,4 +97,4 @@ boundaries:          禁止修改和非目标
 不能 → 它仍然依赖个人能力。
 ```
 
-[← 中文README](../README.zh-CN.md)
+[← 中文README](../README.md)

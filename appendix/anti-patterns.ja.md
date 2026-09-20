@@ -119,4 +119,4 @@ Agent が「よかれと思って」勝手に判断する。本来の意図と�
 
 ---
 
-[付録B → AI 出力の検収戦略](verification-strategies.ja.md) · [付録C → 早見表](cheatsheet.ja.md) · [← README に戻る](../README.zh-CN.md)
+[付録B → AI 出力の検収戦略](verification-strategies.ja.md) · [付録C → 早見表](cheatsheet.ja.md) · [← README に戻る](../README.md)

@@ -173,4 +173,4 @@ The goal is not to read every generated line. It is to construct an evidence cha
 
 ---
 
-[Appendix A → Failure Patterns](anti-patterns.md) · [Appendix C → Cheat Sheet](cheatsheet.md) · [← README](../README.zh-CN.md)
+[Appendix A → Failure Patterns](anti-patterns.md) · [Appendix C → Cheat Sheet](cheatsheet.md) · [← README](../README.md)

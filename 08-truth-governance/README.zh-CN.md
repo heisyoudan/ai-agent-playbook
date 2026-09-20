@@ -1,869 +1,817 @@
-# 08 — Truth Governance
+# 08 — 真相治理
 
 [日本語](README.ja.md) · [English](README.md) · **简体中文**
 
-**Status: Evolving**
+**状态：持续演化（Evolving）**
 
 ---
 
-## 为什么需要 Truth Governance
+# 为什么需要真相治理
 
-随着 AI Agent 开始承担越来越多的软件开发工作，一个新的问题逐渐变得重要：
+随着 AI Agent 开始承担越来越多的软件开发工作，一个问题变得越来越重要：
 
-> **Agent 到底应该相信什么？**
+> Agent 到底应该相信什么？
 
-传统软件开发中，大量 Project Truth 并没有真正写在任何地方。
+传统软件开发中，大量关键事实从来没有被完整写下来。
 
 它们可能存在于：
 
 - 某个资深开发者的记忆里
+- 过去的需求会议里
 - 历史聊天记录里
-- 需求会议里
-- 未更新的设计文档里
-- Source Code 中
-- Runtime Behavior 中
+- 没有及时更新的设计文档里
+- 代码本身
+- 运行时实际行为
 - 团队长期形成的隐性共识里
 
-Human Developer 可以在工作过程中不断补充这些缺失的信息。
+长期参与项目的人，可以依靠经验把这些信息连接起来。
 
-他可能知道：
+他可能知道某个需求为什么这样设计，某段代码为什么不能修改，某个文档虽然已经过期，但当前实现为什么仍然正确。
 
-- 某个 Requirement 为什么这样写
-- 某段代码为什么不能动
-- 某个设计虽然没有写进文档，但实际上已经被团队接受
-- 某个异常情况过去发生过什么
-- 某个模块真正的 Ownership 在哪里
+这些信息共同构成了一个隐性的项目认知模型。
 
-这些信息共同形成了一个持续存在的：
+对于长期参与项目的人来说，这个模型可以暂时存在于脑中。
 
-> **Implicit Project Model**
+对于 Agent 来说，这种方式非常脆弱。
 
-对于长期参与项目的人类来说，这个模型可以存在于脑中。
+不同 Agent、不同会话、不同模型，很难天然拥有完全相同的历史认知。
 
-对于 Agent 来说，这种模式非常脆弱。
+因此，当 AI 开始成为持续执行者以后，关键工程事实需要逐渐从人的隐性记忆中被提取出来，成为可以被读取、验证、挑战和更新的项目真相。
 
 ---
 
-# Truth Drift
+# 真相漂移
 
-不同 Agent、不同模型、不同 Session，面对同一个模糊 Requirement 时，可能产生不同解释。
+假设需求本身存在一些模糊空间。
 
-如果每个 Worker 都允许自己补全缺失事实：
+第一个 Agent 根据自己的理解补全了一个假设。
+
+第二个 Agent 接收到前一个 Agent 的产物以后，把这个假设当成已经确认的事实。
+
+第三个 Agent 又在这个基础上继续开发。
+
+整个过程可能变成：
 
 ```text
-Requirement
+需求
 ↓
-Agent Interpretation
+Agent A 的解释
 ↓
-Implementation
+实现
 ↓
-New Assumption
+新的隐含假设
 ↓
-Next Agent Interpretation
+Agent B 将假设视为事实
 ↓
-More Implementation
+继续实现
+↓
+新的偏移
 ```
-
-系统就可能逐渐偏离最初目标。
 
 每一步单独看都可能合理。
 
-最终结果却可能已经建立在一组从未被正式确认的 Assumption 上。
+代码可以正常构建。
+
+测试也可能全部通过。
+
+多个 Agent 甚至可能互相审核以后都认为没有问题。
+
+但整个系统已经逐渐偏离了最初真正需要解决的问题。
 
 这种现象可以称为：
 
-> **Truth Drift**
+> **真相漂移（Truth Drift）**
 
-Truth Drift 的危险之处，在于它通常不会立刻表现成明显错误。
+真相漂移最危险的地方，在于它通常不会立刻表现成明显错误。
 
-系统可能：
-
-- 可以 Build
-- Test 全部 PASS
-- Code Review 看起来合理
-- Agent 之间也达成一致
-
-但它们共同遵循的前提可能已经发生偏移。
+一个系统可能在工程形式上非常完整，同时建立在一个从未被正式确认的前提上。
 
 因此：
 
-> **Agent 的关键 Project Truth 应该显式存在于工程系统中。**
+> **Agent 所依赖的关键项目真相，需要显式存在于工程系统中。**
 
 ---
 
-# Reality、Evidence 与 Truth
+# 现实、证据与真相
 
-Truth Governance 首先需要区分三个概念：
+真相治理首先需要区分三个概念：
 
 ```text
-Reality
-Evidence
-Truth
+现实
+证据
+真相
 ```
 
-它们并不等价。
+它们之间有关联，但不能混为一谈。
 
-## Reality
+## 现实
 
-Reality 是系统真实存在的状态。
+现实指当前世界中真正存在的状态。
 
 例如：
 
-- 当前 Repository 中真实存在的代码
-- Production 中真实发生的行为
-- 数据库当前 Schema
-- 客户真实提出的 Requirement
-- 外部 API 当前真实 Contract
-- Runtime 中实际出现的 Failure
+- 当前代码仓库真实存在的实现
+- 数据库当前真实结构
+- 生产环境实际发生的行为
+- 客户真正提出的需求
+- 外部 API 当前真实规则
+- 运行时真正出现的错误
 
-Reality 并不会因为文档怎么写而改变。
+现实拥有最终否决权。
+
+设计文档写的是 A，如果运行结果长期稳定地证明实际是 B，那么工程系统就必须重新调查这种冲突。
 
 ---
 
-## Evidence
+## 证据
 
-Evidence 是我们用来观察和证明 Reality 的信息。
+证据是我们观察现实、支持判断所使用的信息。
 
 例如：
 
-- Source Code
-- Git Diff
-- Test Result
-- Runtime Log
-- Database Schema
-- Official Documentation
-- Screenshot
-- Monitoring Metric
-- Customer Confirmation
-- Reproduction Result
+- 源代码
+- Git 差异
+- 测试结果
+- 运行日志
+- 数据库结构
+- 官方文档
+- 客户确认
+- 监控数据
+- 可重复的实验结果
 
-Evidence 可以支持一个 Claim。
+证据可以支持一个结论。
 
-但 Evidence 自己也可能：
+但证据本身仍然可能存在问题。
 
-- 不完整
-- 过期
-- 被错误解释
-- 只覆盖局部情况
+它可能已经过期。
+
+可能只覆盖一个局部场景。
+
+可能被错误解释。
+
+也可能来自一个不再成立的环境。
 
 因此：
 
-> **Evidence supports Truth, but does not automatically become Truth.**
+> **证据可以支持真相，但单独存在的证据不会自动成为真相。**
 
 ---
 
-## Truth
+## 项目真相
 
-Project Truth 是：
+项目真相指：
 
-> **当前工程系统被授权继续依赖的一组事实、约束与决策。**
+> **当前工程系统被允许继续依赖的一组事实、约束和已经确认的决策。**
 
 例如：
 
 ```text
-Payment Capture cannot exceed Authorized Amount.
+已完成扣款的金额不能超过已授权金额。
 
-Refund cannot exceed Captured Amount.
+退款金额不能超过实际支付金额。
 
-This API is owned by Payment Domain.
+某个 API 由支付模块负责。
 
-The customer has approved Country Override behavior.
+某项行为已经获得客户确认。
 
-This database field is part of the external compatibility contract.
+某个数据库字段属于外部兼容契约，不能随意修改。
 ```
 
-这些内容会直接影响后续：
+这些内容会继续影响：
 
-- Architecture
-- Task Decomposition
-- Implementation
-- Verification
-- Release Decision
+- 架构
+- 任务切分
+- 实现
+- 测试
+- 发布
+- 后续决策
 
-因此 Truth 需要比普通信息拥有更明确的 Authority。
+因此，项目真相比普通上下文拥有更高的工程权重。
 
 ---
 
-# Truth Candidate 与 Authorized Truth
+# 真相候选
 
-AI 可以分析 Reality 和 Evidence。
+AI 非常适合参与真相发现。
 
-AI 也可以提出非常好的 Architecture、Requirement Interpretation 和 Engineering Decision。
+它可以读取：
 
-但 AI 的输出首先应该被理解为：
+- 需求
+- 代码
+- 运行结果
+- 历史设计
+- 技术约束
+- 业务规则
 
-> **Truth Candidate**
+然后形成一个推理结论。
+
+但这个结论首先应该被视为：
+
+> **真相候选**
 
 例如：
 
 ```text
-Reality
+现实
 +
-Requirement
+需求
 +
-Repository
+代码仓库
 +
-Runtime Evidence
+运行证据
 +
-Technical Constraints
+约束
 ↓
-AI Analysis
+AI 分析
 ↓
-Truth Candidate
+真相候选
 ```
 
-如果 Decision 很重要，还可以增加：
+对于重要问题，还可以进一步使用多个 AI 独立分析。
 
-```text
-Independent AI Analysis
-↓
-Cross Review
-↓
-Challenge
-↓
-Evidence Comparison
-↓
-Convergence
-```
+多个模型可以：
 
-但即使多个 AI 最终得出同一个结论：
+- 独立提出结论
+- 互相寻找漏洞
+- 指出冲突
+- 要求补充证据
+- 重新修正结论
 
-> **AI Consensus 仍然只是 Evidence。**
+最终逐渐收敛。
 
-因为多个模型可能拥有同一个 Shared Blind Spot。
+这种方式可以显著降低单个模型独立犯错的概率。
 
-所以更完整的流程应该是：
+但多个 AI 达成一致，仍然不能自动证明结论正确。
 
-```text
-Reality
-↓
-Evidence
-↓
-Truth Candidate
-↓
-Verification
-↓
-Human / Authorized Gate
-↓
-Current Authorized Truth
-```
+它们可能共享同一个知识盲区。
 
-这里的关键词是：
-
-> **Authorized**
-
----
-
-# Current Authorized Truth
-
-Project Truth 不应该被理解成永远不会改变的 Absolute Truth。
-
-软件工程中的很多事实都会发生变化：
-
-- Customer Requirement 改变
-- Runtime Reality 暴露新问题
-- Architecture 被证明存在缺陷
-- External System 改变 Contract
-- 新 Evidence 推翻过去的 Assumption
-
-因此更准确的概念是：
-
-> **Current Authorized Truth**
-
-也就是：
-
-> 基于当前 Evidence，工程系统当前被授权继续依赖的 Truth Version。
-
-例如：
-
-```text
-Reality
-↓
-Evidence
-↓
-Truth Candidate
-↓
-Verification
-↓
-Authorization
-↓
-Project Truth v1
-↓
-Implementation
-↓
-New Evidence
-↓
-Truth Challenge
-↓
-Re-analysis
-↓
-Authorization
-↓
-Project Truth v2
-```
-
-这样 Truth 可以变化，但变化本身必须是显式、可追踪、有 Authority 的。
-
----
-
-# Implementation 可以 Challenge Truth
-
-Agent 在 Implementation 阶段可能发现：
-
-- Requirement 和 Repository 冲突
-- Design 和 Runtime 不一致
-- Contract 无法实现
-- Existing Architecture 与当前 Truth 不兼容
-- Test 暴露了新的 Reality
-
-这时候 Agent 不应该偷偷调整自己的理解，然后继续写代码。
-
-更安全的流程是：
-
-```text
-Conflict Detected
-↓
-Stop Current Path
-↓
-Collect Evidence
-↓
-Raise Truth Challenge
-↓
-Re-analysis
-↓
-Authorized Decision
-↓
-Truth Version Update
-↓
-Task Re-derivation
-↓
-Resume
-```
-
-因此可以形成三条规则：
-
-> **Code can challenge Truth.**
-
-> **Evidence can overturn Truth.**
-
-> **Workers cannot silently rewrite Truth.**
-
-这三条原则非常重要。
-
-它们把：
-
-```text
-Implementation Discovery
-```
-
-和：
-
-```text
-Truth Authority
-```
-
-明确分开。
-
----
-
-# Truth 需要 Authority
-
-如果所有 Worker 都可以随时修改 Truth，那么 Truth 本身就失去意义。
-
-因此不同 Role 应该拥有不同 Authority。
-
-一种可能的模型是：
-
-```text
-Dev Agent
-├── Execute
-├── Observe
-├── Produce Evidence
-└── Challenge Truth
-
-QA Agent
-├── Verify
-├── Reject
-├── Produce Evidence
-└── Challenge Truth
-
-Architecture / Sage Layer
-├── Reconcile Conflicts
-├── Analyze Impact
-└── Produce Truth Candidate
-
-Human / Authorized Owner
-└── Authorize High-impact Truth Change
-```
-
-这里最重要的原则是：
-
-> **Authority should not exceed verification capability.**
-
-一个 Worker 或 Human 能拥有多大的 Authority，取决于它是否有能力真正验证这个 Decision。
-
-点击 Approve 本身不会让一个 Decision 获得可信度。
-
----
-
-# Multi-AI Review 的价值与边界
-
-多个 AI 独立分析同一个问题非常有价值。
-
-例如：
-
-```text
-AI A Analysis
-AI B Analysis
-AI C Analysis
-↓
-Cross Review
-↓
-Conflict
-↓
-Evidence
-↓
-Revision
-↓
-Convergence
-```
-
-这种方式可以显著降低：
-
-> **Single Model Error**
-
-但它无法自动消除：
-
-> **Shared Blind Spot**
-
-如果三个模型都缺少同一个 Domain Reality，它们可能共同得出一个错误但高度一致的结论。
+它们也可能同时缺少一个真正重要的现实条件。
 
 因此：
 
-```text
-AI Agreement
-≠
-Objective Truth
-```
-
-更可靠的 Truth 来源应该是：
-
-```text
-AI Convergence
-+
-Reality Grounding
-+
-Evidence
-+
-Qualified Human Judgment
-```
+> **多模型一致可以提高可信度，但它本身仍然只是证据的一部分。**
 
 ---
 
-# Truth 不应该无限增长
+# 当前授权真相
 
-Truth Governance 还有一个现实风险：
+软件工程中的真相很少永远不变。
 
-> **Truth 本身也有维护成本。**
+客户需求会改变。
 
-如果每一个 Implementation Detail 都升级为 Project Truth，工程系统会被文档与同步成本拖垮。
+外部系统会改变。
 
-因此需要区分不同级别的信息。
+新的运行结果可能暴露过去没有发现的问题。
 
-一种简单模型：
+新的证据也可能推翻旧的架构判断。
+
+因此，项目真相更适合被理解为：
+
+> **当前授权真相**
+
+它表示：
+
+> 基于目前已经获得的证据和判断，项目当前被允许继续依赖的事实版本。
+
+一个简单流程可以表示为：
 
 ```text
-Global / Critical Truth
-├── System Invariants
-├── Architecture Boundaries
-├── Ownership
-├── Critical Contracts
-└── High-risk Decisions
-
-Local Truth
-├── Current Module Decisions
-├── Local Contracts
-└── Task-relevant Constraints
-
-Ephemeral Working Information
-├── Temporary Investigation Notes
-├── Intermediate Reasoning
-└── Short-lived Execution State
+现实
+↓
+证据
+↓
+真相候选
+↓
+验证与挑战
+↓
+授权
+↓
+项目真相 v1
+↓
+实现
+↓
+新的现实与证据
+↓
+发现冲突
+↓
+真相挑战
+↓
+重新分析
+↓
+项目真相 v2
 ```
 
-治理强度应该与 Truth Drift 的影响相匹配。
+这样，真相可以变化。
 
-可以形成一条原则：
+但变化本身必须是显式的，可以追踪的，并且拥有对应的决策权限。
 
-> **Governance intensity should be proportional to drift impact.**
+---
+
+# 实现可以挑战真相
+
+Agent 在开发过程中经常会发现新的事实。
 
 例如：
 
-资金账本规则、Authentication、Security、Data Migration 等高风险区域，需要更严格的 Truth Governance。
+- 需求与现有代码发生冲突。
+- 设计文档与真实运行行为不一致。
+- 某个契约按照当前架构无法实现。
+- 测试暴露了此前没有发现的业务规则。
+- 已有实现说明过去的理解并不完整。
 
-普通 UI 调整、局部实现细节和低风险 Experiment，可以拥有更宽松的流程。
+这时候，实现 Agent 可以提出质疑。
+
+但它不应该在没有任何记录的情况下，自行修改对需求的理解，然后继续开发。
+
+更可靠的流程是：
+
+```text
+发现冲突
+↓
+停止当前有风险的执行路径
+↓
+收集证据
+↓
+提出真相挑战
+↓
+重新分析
+↓
+形成新的决策
+↓
+获得授权
+↓
+更新项目真相
+↓
+重新推导受影响任务
+↓
+恢复执行
+```
+
+这里形成了三条非常重要的规则：
+
+> **代码可以挑战真相。**
+
+> **证据可以推翻旧真相。**
+
+> **执行者不能私自改写真相。**
+
+实现阶段可以发现世界和原先假设不一致。
+
+但发现问题的权限，与改变项目真相的权限，需要保持分离。
 
 ---
 
-# Truth Rot
+# 真相需要决策权
 
-即使 Truth 曾经正确，它也可能随着时间失效。
+如果所有 Agent 都可以随时修改项目真相，那么项目真相本身就失去了意义。
+
+因此不同角色需要拥有不同的权限。
 
 例如：
 
 ```text
-Truth v1
-↓
-Code Changes
-↓
-Dependency Changes
-↓
-Runtime Changes
-↓
-Requirement Changes
-↓
-Truth Document unchanged
+开发 Agent
+├── 可以执行
+├── 可以观察
+├── 可以产生证据
+├── 可以提出真相挑战
+└── 不能私自修改高层项目真相
+
+测试或审查 Agent
+├── 可以验证
+├── 可以拒绝
+├── 可以产生独立证据
+└── 可以提出冲突
+
+架构或协调角色
+├── 可以分析跨模块影响
+├── 可以协调冲突
+└── 可以提出新的真相候选
+
+具备相应能力的人
+└── 负责批准高影响真相变化
 ```
 
-此时就产生：
+这里有一个非常重要的原则：
 
-> **Truth Rot**
+> **决策权不能超过验证能力。**
 
-所以 Truth 不能只被创建。
+能够点击“同意”，并不代表拥有足够能力判断这个决定是否正确。
 
-它还需要：
+一个支付领域架构决策，需要能够理解支付领域的人负责最终判断。
 
-- Version
-- Provenance
-- Change History
-- Dependency Awareness
-- Periodic Challenge
-- Runtime Feedback
+一个安全决策，也需要拥有相应安全能力的判断者。
 
-如果 Reality 已经变化，旧 Truth 仍然继续被 Agent 使用，就会产生系统性的错误。
+因此，Human Gate 的价值来自判断能力，而不只来自“这里有人参与”。
 
 ---
 
-# Truth 与 Documentation
+# 多个 AI 审核的价值和边界
 
-在传统开发中，Documentation 经常被理解成：
+多个 AI 进行独立分析，是降低错误的重要方式。
 
-> 给 Human 阅读的说明书。
+例如：
 
-在 Agentic Engineering 中，它还承担另一个重要角色：
+```text
+AI A 独立分析
+AI B 独立分析
+AI C 独立分析
+↓
+交叉审查
+↓
+寻找冲突
+↓
+要求证据
+↓
+修正结论
+↓
+逐渐收敛
+```
 
-> **Persistent Project Truth**
+这种模式可以降低单个模型因为偶然推理错误产生的风险。
+
+但它无法彻底解决共同盲区。
+
+假设所有模型都不知道某个特殊支付规则。
+
+那么三个 AI 很可能非常自信地得出同一个错误结论。
+
+因此：
+
+> **AI 一致不等于客观真相。**
+
+更可靠的判断来源于：
+
+```text
+AI 的独立分析
++
+真实世界证据
++
+代码与运行环境
++
+领域知识
++
+具备相应能力的最终判断
+```
+
+这也是为什么真相治理不能只依靠“让更多模型投票”。
+
+---
+
+# 真相不能无限增长
+
+真相治理本身也有成本。
+
+如果每一个局部实现细节都需要：
+
+- 记录
+- 审核
+- 授权
+- 版本化
+- 同步
+
+那么项目会被治理成本拖垮。
+
+因此并非所有信息都需要拥有相同等级的治理强度。
+
+可以简单区分为三个层级。
+
+```text
+全局或高影响真相
+├── 系统不变量
+├── 核心架构边界
+├── 模块所有权
+├── 关键业务契约
+├── 资金规则
+├── 安全规则
+└── 高风险决策
+
+局部真相
+├── 当前模块内部已经确认的规则
+├── 当前 API 契约
+└── 当前任务直接依赖的约束
+
+临时工作信息
+├── 调查笔记
+├── 中间推理
+├── 尝试失败的方案
+└── 短期执行状态
+```
+
+全局或高影响真相一旦发生漂移，会影响大量下游工作，因此需要更严格的治理。
+
+局部真相需要稳定，但影响范围相对有限。
+
+临时工作信息可以帮助当前工作，但没有必要全部提升为正式项目真相。
+
+因此：
+
+> **治理强度应该与真相漂移造成的影响相匹配。**
+
+高风险事实需要严格治理。
+
+低风险、可恢复的局部变化，可以采用更轻量的流程。
+
+---
+
+# 真相也会过期
+
+一个事实曾经正确，并不代表它永远正确。
+
+例如：
+
+```text
+项目真相 v1
+↓
+代码发生变化
+↓
+依赖发生变化
+↓
+运行环境发生变化
+↓
+客户需求发生变化
+↓
+项目文档仍然停留在 v1
+```
+
+这时候就出现了真相腐化。
+
+旧信息仍然存在。
+
+Agent 也仍然可以读取它。
+
+但它已经不能准确描述当前世界。
+
+因此，项目真相还需要具备：
+
+- 版本
+- 来源
+- 变更历史
+- 适用范围
+- 与代码或契约之间的关系
+- 被新证据挑战的能力
+
+真相治理的目标不只是创建文档。
+
+还要让过期信息能够逐渐失去权威。
+
+---
+
+# 文档的角色正在改变
+
+传统软件开发中，文档经常被理解成：
+
+> 给人阅读的说明。
+
+在 Agent 软件工程中，文档还承担另一个越来越重要的角色：
+
+> **持久化项目真相。**
 
 原因很简单。
 
-系统中的 Worker 可能持续变化：
+模型可以更换。
 
-```text
-Different Model
-Different Session
-Different Agent
-Different Developer
-Different Tool
-```
+Agent 可以更换。
 
-但 Project 仍然需要维持连续性。
+会话可以结束。
+
+开发者也可能离开项目。
+
+但项目仍然需要保持认知连续性。
 
 因此：
 
-> **Workers are replaceable. Project Truth persists.**
+> **执行者可以替换，项目真相必须持续存在。**
 
-这意味着关键 Engineering Decision 应尽量脱离某个 Worker 的长期记忆，进入可以持续被读取、验证和挑战的 Artifact。
+重要的工程事实不能只存在于某一次对话或某一个人的记忆中。
+
+它们需要进入可以长期读取、验证和挑战的工程产物。
 
 ---
 
-# Truth 与 Task
+# 真相与任务的关系
 
-Task 不应该自己重新定义世界。
+任务不应该重新定义世界。
 
 更合理的关系是：
 
 ```text
-Project Truth
+项目真相
 ↓
-Architecture / Boundary
+架构与边界
 ↓
-Relevant Truth Projection
+提取当前任务需要的相关真相
 ↓
-Task Contract
+任务契约
 ↓
-Agent Execution
+Agent 执行
 ↓
-Verification
+验证
 ↓
-Evidence
+证据
 ```
 
-Task Contract 负责告诉 Agent：
+任务契约负责告诉 Agent：
 
-- 当前目标是什么
-- 当前允许做什么
-- 当前不能做什么
-- 怎样证明完成
+- 这次要完成什么。
+- 当前允许修改什么。
+- 当前禁止修改什么。
+- 怎样证明任务完成。
 
-Project Truth 负责告诉整个系统：
+项目真相负责告诉整个工程系统：
 
-- 当前世界是什么
-- 哪些事实已经被授权
-- 哪些 Invariant 必须保持
-- 哪些 Boundary 不允许被局部 Worker 随意改变
+- 当前世界是什么。
+- 哪些关键事实已经被确认。
+- 哪些规则必须保持。
+- 哪些边界不能由局部任务随意改变。
 
 ---
 
-# Truth 与 Evidence 的闭环
+# 最小真相治理循环
 
-Truth Governance 最终应该形成一个持续循环。
+一个可以复用的最小流程是：
 
-```text
-Reality
-↓
-Evidence
-↓
-Truth Candidate
-↓
-Verification
-↓
-Authorization
-↓
-Current Authorized Truth
-↓
-Implementation
-↓
-Runtime / Test / Review
-↓
-New Evidence
-↓
-├── Truth Still Holds
-│      ↓
-│   Continue
-│
-└── Conflict
-       ↓
-   Truth Challenge
-       ↓
-   Re-analysis
-       ↓
-   Truth vNext
-```
-
-这使 Truth 成为一个可以持续被 Reality 校正的系统。
+1. 观察现实。
+2. 收集证据。
+3. 形成真相候选。
+4. 使用独立分析寻找错误和冲突。
+5. 明确仍然存在的不确定性。
+6. 将高影响决策交给拥有对应判断能力的负责人。
+7. 记录当前授权真相。
+8. 从当前真相中推导有边界的任务。
+9. 执行并验证。
+10. 将新的证据重新反馈到真相判断中。
 
 ---
 
-# Practical Pattern
+# 失败模式一：静默改写真相
 
-一个最小可复用的 Truth Governance Pattern 可以写成：
+假设任务要求 A。
 
-```text
-1. Observe Reality
+Agent 在开发时发现 A 很难实现。
 
-2. Collect Evidence
+于是它自行认为 B 更合理。
 
-3. Produce Truth Candidate
-
-4. Challenge with independent reasoning
-
-5. Identify unresolved uncertainty
-
-6. Send high-impact decision to authorized owner
-
-7. Record Current Authorized Truth
-
-8. Derive bounded tasks from that truth
-
-9. Verify implementation
-
-10. Feed new evidence back into truth evaluation
-```
-
----
-
-# Failure Pattern: Silent Truth Rewrite
-
-一个常见失败模式：
+随后：
 
 ```text
-Task says A
+任务要求 A
 ↓
-Agent finds A difficult
+Agent 假设 B
 ↓
-Agent assumes B
+Agent 实现 B
 ↓
-Agent implements B
+测试也按照 B 编写
 ↓
-Tests are written against B
-↓
-Everything PASS
+所有测试通过
 ```
 
-从 Implementation 角度看，整个流程非常成功。
+从代码执行角度看，这次工作非常成功。
 
-从 Engineering 角度看，系统已经发生 Truth Drift。
+从工程角度看，项目已经偏离了原始目标。
 
 因此：
 
-> **A successful implementation against unauthorized assumptions is still a failed engineering outcome.**
+> **基于未经授权假设完成的“成功实现”，依然属于失败的工程结果。**
 
 ---
 
-# Failure Pattern: Perfect Verification Against Wrong Truth
+# 失败模式二：在错误真相上完美验证
 
-另一个危险情况：
+还有一种更加危险的情况：
 
 ```text
-Wrong Truth
+错误真相
 ↓
-Correct Task Derivation
+正确任务切分
 ↓
-Correct Implementation
+正确实现
 ↓
-Correct Tests
+正确测试
 ↓
-Correct QA
+正确审查
 ↓
-PASS
+全部通过
 ```
 
-每一层都按照输入正确工作。
+每一个 Agent 都正确完成了自己的工作。
 
-最终整个系统仍然错误。
+整个系统仍然得到了错误结果。
 
 这说明：
 
-> **Verification can prove conformity to Truth. It cannot automatically prove that the Truth itself is correct.**
+> **验证可以证明实现是否符合当前真相。验证无法自动证明当前真相本身一定正确。**
 
-因此 Verification Architecture 和 Truth Governance 必须同时存在。
-
----
-
-# Failure Pattern: Over-governed Truth
-
-Truth Governance 也可能走向另一个极端：
-
-```text
-Every Decision
-↓
-Truth Update
-↓
-Cross Review
-↓
-Human Approval
-↓
-Documentation Update
-↓
-Implementation
-```
-
-如果所有局部变化都经过最高级别治理，Human 很快会成为整个系统的 Throughput Bottleneck。
-
-因此真正可扩展的系统需要：
-
-```text
-Low-risk Local Decision
-→ Local Authority
-
-Medium-impact Contract Decision
-→ Independent Verification
-
-High-impact Global Truth
-→ Qualified Human Gate
-```
-
-Truth Governance 的目标是保护高价值 Truth。
-
-并不要求所有信息都拥有同样强度的流程。
+因此，真相治理和验证体系需要同时存在。
 
 ---
 
-# Open Questions
+# 失败模式三：治理过度
 
-本章主干已经相对稳定，但以下课题仍处于研究阶段，尚不足以写成确定的机制：
+真相治理还可能走向另一个极端。
 
-- **Truth Versioning** —— Truth 的版本应该以什么粒度存在，如何与 Code、Contract、Architecture 的变化对应
-- **Truth Change Propagation** —— 一次 Truth 更新之后，哪些下游产物（任务、实现、测试、文档）必须重新验证
-- **Truth Rot Detection** —— 如何在不依赖人工定期巡检的前提下发现已经失效的 Truth
-- **Human Authority Scaling** —— 当 Truth 数量增长时，如何避免 Human Gate 成为吞吐瓶颈
+如果每一个决策都需要：
 
-这些问题会在 [Research Incubator](../research/README.zh-CN.md) 中继续跟踪，成熟之后再补入本章。
+- 更新项目真相
+- 重新审核
+- 人工批准
+- 更新文档
+- 重新派发任务
 
----
+那么整个工程系统很快会被治理流程拖慢。
 
-# Core Principles
+因此，治理本身也需要控制成本。
 
-本章可以浓缩成以下原则。
+低风险的局部决定，可以在明确边界内由 Agent 处理。
 
-> **Truth must have authority.**
+影响契约的决定，需要更强验证。
 
-Truth 必须拥有明确的 Authority。
+影响系统核心真相的决定，才需要升级到更高权限。
 
----
+真相治理保护的是高价值事实。
 
-> **AI consensus is evidence, not proof.**
-
-多个模型达成一致可以提高 Confidence，但不能自动成为 Truth。
-
----
-
-> **Code can challenge Truth. Evidence can overturn Truth. Workers cannot silently rewrite Truth.**
-
-Implementation 可以发现问题，Evidence 可以推翻旧 Truth，但 Worker 不能自行改写世界。
+它不要求所有信息都进入最高强度的治理流程。
 
 ---
 
-> **Governance intensity should be proportional to drift impact.**
+# 仍在研究的问题
 
-Truth Drift 的影响越大，治理强度越高。
+本章的核心逻辑已经相对稳定，但仍然存在几个尚未完全解决的问题。
+
+第一，真相版本应该细化到什么程度。
+
+第二，当真相发生变化以后，怎样自动判断哪些任务、代码、测试和证据已经失效。
+
+第三，怎样主动发现已经过期的真相，而不完全依赖人工检查。
+
+第四，当项目规模持续增长以后，怎样避免高层决策者成为整个系统唯一的瓶颈。
+
+这些问题会继续在 [Research](../research/README.zh-CN.md) 中调查，并在成熟以后进入后续章节。
 
 ---
 
-> **Workers are replaceable. Project Truth persists.**
+# 核心原则
 
-Worker 可以替换，Project Truth 必须持续存在。
+本章可以浓缩成几句话：
+
+> **关键真相必须经过明确授权。**
 
 ---
 
-# Closing Thought
+> **AI 一致可以增加可信度，但不能单独证明事实。**
 
-AI Agent 的能力正在快速提升。
+---
 
-它们可以写更多代码、阅读更多文件、执行更长的 Workflow，也可以自主完成越来越复杂的 Task。
+> **代码可以挑战真相。**
 
-但执行能力越强，一个问题就越重要：
+---
+
+> **证据可以推翻旧真相。**
+
+---
+
+> **执行者不能私自改写真相。**
+
+---
+
+> **治理强度应该与真相漂移的影响相匹配。**
+
+---
+
+> **执行者可以替换，项目真相必须持续存在。**
+
+---
+
+# 结语
+
+AI Agent 的执行能力正在快速提高。
+
+它们可以阅读更多代码，修改更多文件，完成更长的工作流，也可以承担越来越复杂的任务。
+
+执行能力越强，一个问题就越重要：
 
 > **它正在基于什么世界做决定？**
 
-如果这个世界来自：
+如果这个世界来自模糊需求、过期文档、历史聊天、未经确认的假设，或者 Agent 自己临时补全的解释，那么更强的执行能力只会让错误传播得更快。
 
-- 随机 Context
-- 历史聊天
-- 模糊 Requirement
-- 未经授权的 Assumption
-- Agent 自己临时补全的解释
-
-那么更强的执行能力可能只会让错误传播得更快。
-
-因此 Agentic Engineering 的一个核心任务，是建立一个能够回答这些问题的系统：
+因此，Agent 软件工程需要建立一套能够持续回答这些问题的机制：
 
 ```text
-什么是当前被授权的 Truth？
+当前项目相信什么？
 
-这个 Truth 基于什么 Evidence？
+这些事实来自哪里？
 
-谁有权改变它？
+谁有权限改变它们？
 
-什么情况下必须 Challenge 它？
+什么情况下必须提出挑战？
 
-哪些 Worker 只能执行，哪些 Worker 可以裁决？
+新的证据是否已经推翻旧判断？
 
-Truth 变化以后，哪些下游结果需要重新验证？
+真相变化以后，哪些下游成果还值得继续相信？
 ```
 
 当这些问题可以被明确回答时，Agent 才真正进入一个可以被工程化治理的世界。
 
 ---
 
-[← 07 — 真正的竞争力在哪里](../07-what-really-matters/README.zh-CN.md) · [下一章 → 09 — 有效推理范围](../09-effective-reasoning-scope/README.zh-CN.md)
+[← 07 — 真正重要的竞争力](../07-what-really-matters/README.zh-CN.md) · [下一章 → 09 — 有效推理范围](../09-effective-reasoning-scope/README.zh-CN.md)

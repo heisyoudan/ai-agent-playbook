@@ -71,4 +71,4 @@ No research notes are published yet. Observations from ongoing work are being co
 
 ---
 
-[← Playbook README](../README.zh-CN.md) · [Chapter template](../templates/chapter-template.md)
+[← Playbook README](../README.md) · [Chapter template](../templates/chapter-template.md)
