@@ -1,4 +1,4 @@
-# 10 — 境界・契約・成果物
+# 10 — Decomposition, Boundaries & Contracts
 
 **日本語** · [English](README.md) · [简体中文](README.zh-CN.md)
 

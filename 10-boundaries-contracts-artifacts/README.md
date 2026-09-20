@@ -1,4 +1,4 @@
-# 10 — Boundaries, Contracts & Artifacts
+# 10 — Decomposition, Boundaries & Contracts
 
 [日本語](README.ja.md) · **English** · [简体中文](README.zh-CN.md)
 
